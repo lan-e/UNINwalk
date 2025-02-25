@@ -11,7 +11,10 @@ import { RouterLink, RouterView } from 'vue-router'
         </RouterLink>
         <div>
           <RouterLink to="/">POČETNA</RouterLink>
-          <RouterLink to="/about">O NAMA</RouterLink>
+          <RouterLink to="/unin1">UNIN1</RouterLink>
+          <RouterLink to="/unin2">UNIN2</RouterLink>
+          <RouterLink to="/unin3">UNIN3</RouterLink>
+          <RouterLink to="/about">NASTAVNICI</RouterLink>
         </div>
       </nav>
     </div>
