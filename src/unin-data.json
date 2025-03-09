@@ -1,0 +1,54 @@
+{
+  "UNIN1-1": {
+    "k1": { "id": "k1", "name": "K-1", "type": "PREDAVAONICA" },
+    "k2": { "id": "k2", "name": "K-2", "type": "RAČUNALNI LABORATORIJ" },
+    "k3": { "id": "k3", "name": "K-3", "type": "LABORATORIJ" },
+    "k4": { "id": "k4", "name": "K-4", "type": "" },
+    "k5": { "id": "k5", "name": "K-5", "type": "LABORATORIJ" },
+    "k6": { "id": "k6", "name": "K-6", "type": "" },
+    "k7": { "id": "k7", "name": "K-7", "type": "STUDENTSKA REFERADA" },
+    "k9": { "id": "k9", "name": "K-9", "type": "RAČUNALNI LABORATORIJ" },
+    "k10": { "id": "k10", "name": "K-10", "type": "LABORATORIJ" },
+    "k11": { "id": "k11", "name": "K-11", "type": "LABORATORIJ" },
+    "k12": { "id": "k12", "name": "K-12", "type": "" },
+    "k13": {
+      "id": "k13",
+      "name": "K-13",
+      "type": "CENTAR ZA DIGITALNO NAKLADNIŠTVO (TISKARA)"
+    },
+    "k17": { "id": "k17", "name": "K-17", "type": "TEHNIČKA PODRŠKA" },
+    "k18": { "id": "k18", "name": "K-18", "type": "" },
+    "k19": { "id": "k19", "name": "K-19", "type": "" },
+    "k20": { "id": "k20", "name": "K-20", "type": "" }
+  },
+  "UNIN2-1": {
+    "k101": { "id": "k101", "name": "K-101", "type": "PREDAVAONICA" },
+    "k102": { "id": "k102", "name": "K-102", "type": "PREDAVAONICA" },
+    "k103": { "id": "k103", "name": "K-103", "type": "KABINET" },
+    "k104": { "id": "k104", "name": "K-104", "type": "STUDENTSKA SLUŽBA" },
+    "k105": { "id": "k105", "name": "K-105", "type": "KABINET" },
+    "k106": { "id": "k106", "name": "K-106", "type": "KABINET" },
+    "k107": { "id": "k107", "name": "K-107", "type": "KABINET" },
+    "k108": { "id": "k108", "name": "K-108", "type": "PREDAVAONICA" },
+    "k109": { "id": "k109", "name": "K-109", "type": "PREDAVAONICA" }
+  },
+  "UNIN2-2": {
+    "k110": { "id": "k110", "name": "K-110", "type": "PREDAVAONICA" },
+    "k111": { "id": "k111", "name": "K-111", "type": "KABINET" },
+    "k112": {
+      "id": "k112",
+      "name": "K-112",
+      "type": "STUDENTSKA KNJIŽNICA",
+      "info": {
+        "hours": "pon, uto, sri, pet  9-17 h, čet 9-20 h",
+        "phone": "+385 (0)42 493 316",
+        "mail": "knjiznica.vz@unin.hr",
+        "employee": "Jasna Šipek",
+        "employee_mail": "jasna.sipek@unin.hr"
+      }
+    },
+    "k113": { "id": "k113", "name": "K-113", "type": "KABINET" },
+    "k114": { "id": "k114", "name": "K-114", "type": "KABINET" },
+    "k115": { "id": "k115", "name": "K-115", "type": "PREDAVAONICA" }
+  }
+}
