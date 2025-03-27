@@ -3,14 +3,20 @@ import { ref } from "vue";
 
 export const useRoomsStore = defineStore("rooms", () => {
   const currentRoom = ref(null);
+  const isModalOpen = ref(false);
 
   function selectRoom(room) {
     currentRoom.value = room;
   }
 
-  function deselectRoom() {
-    currentRoom.value = null;
+  function openModal() {
+    isModalOpen.value = true;
   }
 
-  return { currentRoom, selectRoom, deselectRoom };
+  function deselectRoom() {
+    currentRoom.value = null;
+    isModalOpen.value = false;
+  }
+
+  return { currentRoom, isModalOpen, selectRoom, openModal, deselectRoom };
 });

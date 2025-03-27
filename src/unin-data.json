@@ -1,54 +1,448 @@
 {
   "UNIN1-1": {
-    "k1": { "id": "k1", "name": "K-1", "type": "PREDAVAONICA" },
-    "k2": { "id": "k2", "name": "K-2", "type": "RAČUNALNI LABORATORIJ" },
-    "k3": { "id": "k3", "name": "K-3", "type": "LABORATORIJ" },
-    "k4": { "id": "k4", "name": "K-4", "type": "" },
-    "k5": { "id": "k5", "name": "K-5", "type": "LABORATORIJ" },
-    "k6": { "id": "k6", "name": "K-6", "type": "" },
-    "k7": { "id": "k7", "name": "K-7", "type": "STUDENTSKA REFERADA" },
-    "k9": { "id": "k9", "name": "K-9", "type": "RAČUNALNI LABORATORIJ" },
-    "k10": { "id": "k10", "name": "K-10", "type": "LABORATORIJ" },
-    "k11": { "id": "k11", "name": "K-11", "type": "LABORATORIJ" },
-    "k12": { "id": "k12", "name": "K-12", "type": "" },
+    "k1": {
+      "id": "k1",
+      "name": "K-1",
+      "type": "PREDAVAONICA",
+      "x": 20,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k2": {
+      "id": "k2",
+      "name": "K-2",
+      "type": "RAČUNALNI LABORATORIJ",
+      "x": 20,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k3": {
+      "id": "k3",
+      "name": "K-3",
+      "type": "LABORATORIJ",
+      "x": 320,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k4": {
+      "id": "k4",
+      "name": "K-4",
+      "type": "",
+      "x": 485,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k5": {
+      "id": "k5",
+      "name": "K-5",
+      "type": "LABORATORIJ",
+      "x": 650,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k6": {
+      "id": "k6",
+      "name": "K-6",
+      "type": "",
+      "x": 745,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k7": {
+      "id": "k7",
+      "name": "K-7",
+      "type": "STUDENTSKA REFERADA",
+      "x": 840,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k9": {
+      "id": "k9",
+      "name": "K-9",
+      "type": "RAČUNALNI LABORATORIJ",
+      "x": 930,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k10": {
+      "id": "k10",
+      "name": "K-10",
+      "type": "LABORATORIJ",
+      "x": 930,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k11": {
+      "id": "k11",
+      "name": "K-11",
+      "type": "LABORATORIJ",
+      "x": 1200,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k12": {
+      "id": "k12",
+      "name": "K-12",
+      "type": "",
+      "x": 1290,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
     "k13": {
       "id": "k13",
       "name": "K-13",
-      "type": "CENTAR ZA DIGITALNO NAKLADNIŠTVO (TISKARA)"
+      "type": "CENTAR ZA DIGITALNO NAKLADNIŠTVO (TISKARA)",
+      "x": 1380,
+      "y": 120,
+      "width": 260,
+      "height": 110
     },
-    "k17": { "id": "k17", "name": "K-17", "type": "TEHNIČKA PODRŠKA" },
-    "k18": { "id": "k18", "name": "K-18", "type": "" },
-    "k19": { "id": "k19", "name": "K-19", "type": "" },
-    "k20": { "id": "k20", "name": "K-20", "type": "" }
+    "k17": {
+      "id": "k17",
+      "name": "K-17",
+      "type": "TEHNIČKA PODRŠKA",
+      "x": 1460,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k18": {
+      "id": "k18",
+      "name": "K-18",
+      "type": "",
+      "x": 1730,
+      "y": 180,
+      "width": 80,
+      "height": 70
+    },
+    "k19": {
+      "id": "k19",
+      "name": "K-19",
+      "type": "",
+      "x": 1820,
+      "y": 180,
+      "width": 80,
+      "height": 70
+    },
+    "k20": {
+      "id": "k20",
+      "name": "K-20",
+      "type": "",
+      "x": 1910,
+      "y": 180,
+      "width": 80,
+      "height": 70
+    },
+    "k21": {
+      "id": "k21",
+      "name": "K-21",
+      "type": "LABORATORIJ",
+      "x": 650,
+      "y": 250,
+      "width": 150,
+      "height": 70
+    }
+  },
+  "UNIN1-2": {
+    "k22": {
+      "id": "k22",
+      "name": "K-22",
+      "type": "PREDAVAONICA",
+      "x": 20,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k23": {
+      "id": "k23",
+      "name": "K-23",
+      "type": "PREDAVAONICA",
+      "x": 20,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k24": {
+      "id": "k24",
+      "name": "K-24",
+      "type": "ODJELA ZA NASTAVNIŠTVO",
+      "x": 320,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k25": {
+      "id": "k25",
+      "name": "K-25",
+      "type": "PREDAVAONICA",
+      "x": 485,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k26": {
+      "id": "k26",
+      "name": "K-26",
+      "type": "PREDAVAONICA",
+      "x": 650,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k27": {
+      "id": "k27",
+      "name": "K-27",
+      "type": "",
+      "x": 745,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k28": {
+      "id": "k28",
+      "name": "K-28",
+      "type": "",
+      "x": 840,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k29": {
+      "id": "k29",
+      "name": "K-29",
+      "type": "RAČUNALNI LABORATORIJ",
+      "x": 930,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k30": {
+      "id": "k30",
+      "name": "K-30",
+      "type": "RAČUNALNI LABORATORIJ",
+      "x": 930,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k31": {
+      "id": "k31",
+      "name": "K-31",
+      "type": "",
+      "x": 1200,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k32": {
+      "id": "k32",
+      "name": "K-32",
+      "type": "",
+      "x": 1290,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k33": {
+      "id": "k33",
+      "name": "K-33",
+      "type": "PREDAVAONICA",
+      "x": 1380,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k36": {
+      "id": "k36",
+      "name": "K-36",
+      "type": "PREDAVAONICA",
+      "x": 1460,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k37": {
+      "id": "k37",
+      "name": "K-37",
+      "type": "",
+      "x": 1460,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k38": {
+      "id": "k38",
+      "name": "K-38",
+      "type": "POSLOVNA INFORMATIKA I NASTAVNIŠTVO",
+      "x": 1730,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k39": {
+      "id": "k39",
+      "name": "K-39",
+      "type": "POSLOVNA INFORMATIKA I NASTAVNIŠTVO",
+      "x": 1990,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    }
   },
   "UNIN2-1": {
-    "k101": { "id": "k101", "name": "K-101", "type": "PREDAVAONICA" },
-    "k102": { "id": "k102", "name": "K-102", "type": "PREDAVAONICA" },
-    "k103": { "id": "k103", "name": "K-103", "type": "KABINET" },
-    "k104": { "id": "k104", "name": "K-104", "type": "STUDENTSKA SLUŽBA" },
-    "k105": { "id": "k105", "name": "K-105", "type": "KABINET" },
-    "k106": { "id": "k106", "name": "K-106", "type": "KABINET" },
-    "k107": { "id": "k107", "name": "K-107", "type": "KABINET" },
-    "k108": { "id": "k108", "name": "K-108", "type": "PREDAVAONICA" },
-    "k109": { "id": "k109", "name": "K-109", "type": "PREDAVAONICA" }
+    "k101": {
+      "id": "k101",
+      "name": "K-101",
+      "type": "PREDAVAONICA",
+      "x": 20,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    },
+    "k102": {
+      "id": "k102",
+      "name": "K-102",
+      "type": "PREDAVAONICA",
+      "x": 20,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k103": {
+      "id": "k103",
+      "name": "K-103",
+      "type": "",
+      "x": 320,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k104": {
+      "id": "k104",
+      "name": "K-104",
+      "type": "STUDENTSKA SLUŽBA ZA RAD SA STUDENTIMA",
+      "x": 485,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k105": {
+      "id": "k105",
+      "name": "K-105",
+      "type": "",
+      "x": 650,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k106": {
+      "id": "k106",
+      "name": "K-106",
+      "type": "",
+      "x": 745,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k107": {
+      "id": "k107",
+      "name": "K-107",
+      "type": "",
+      "x": 840,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k108": {
+      "id": "k108",
+      "name": "K-108",
+      "type": "PREDAVAONICA",
+      "x": 930,
+      "y": 50,
+      "width": 260,
+      "height": 110
+    },
+    "k109": {
+      "id": "k109",
+      "name": "K-109",
+      "type": "PREDAVAONICA",
+      "x": 930,
+      "y": 180,
+      "width": 260,
+      "height": 110
+    }
   },
   "UNIN2-2": {
-    "k110": { "id": "k110", "name": "K-110", "type": "PREDAVAONICA" },
-    "k111": { "id": "k111", "name": "K-111", "type": "KABINET" },
+    "k110": {
+      "id": "k110",
+      "name": "K-110",
+      "type": "PREDAVAONICA",
+      "x": 20,
+      "y": 110,
+      "width": 260,
+      "height": 180
+    },
+    "k111": {
+      "id": "k111",
+      "name": "K-111",
+      "type": "",
+      "x": 320,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
     "k112": {
       "id": "k112",
       "name": "K-112",
       "type": "STUDENTSKA KNJIŽNICA",
       "info": {
-        "hours": "pon, uto, sri, pet  9-17 h, čet 9-20 h",
-        "phone": "+385 (0)42 493 316",
-        "mail": "knjiznica.vz@unin.hr",
-        "employee": "Jasna Šipek",
-        "employee_mail": "jasna.sipek@unin.hr"
-      }
+        "radno_vrijeme": "pon, uto, sri, pet  9-17 h, čet 9-20 h",
+        "telefon": "+385 (0)42 493 316",
+        "email": "knjiznica.vz@unin.hr",
+        "knjižničarka": "jasna.sipek@unin.hr"
+      },
+      "x": 485,
+      "y": 120,
+      "width": 150,
+      "height": 70
     },
-    "k113": { "id": "k113", "name": "K-113", "type": "KABINET" },
-    "k114": { "id": "k114", "name": "K-114", "type": "KABINET" },
-    "k115": { "id": "k115", "name": "K-115", "type": "PREDAVAONICA" }
+    "k113": {
+      "id": "k113",
+      "name": "K-113",
+      "type": "",
+      "x": 650,
+      "y": 120,
+      "width": 80,
+      "height": 70
+    },
+    "k114": {
+      "id": "k114",
+      "name": "K-114",
+      "type": "",
+      "x": 745,
+      "y": 120,
+      "width": 150,
+      "height": 70
+    },
+    "k115": {
+      "id": "k115",
+      "name": "K-115",
+      "type": "PREDAVAONICA",
+      "x": 930,
+      "y": 110,
+      "width": 260,
+      "height": 180
+    }
   }
 }

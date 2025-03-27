@@ -5,29 +5,38 @@
             {{ roomsStore?.currentRoom?.name }}
         </div>
         <div v-if="roomsStore?.currentRoom?.info" class="info-container">
-            <div class="info-item">
-                <div class="info-title">email</div>
-                {{ roomsStore?.currentRoom?.info?.mail }}
-            </div>
-            <div class="info-item">
-                <div class="info-title">telefon</div>
-                {{ roomsStore?.currentRoom?.info?.phone }}
-            </div>
-            <div class="info-item">
-                <div class="info-title">radno vrijeme</div>
-                {{ roomsStore?.currentRoom?.info?.hours }}
-            </div>
-            <div class="info-item">
-                <div class="info-title">knjižničarka</div>
-                <div>{{ roomsStore?.currentRoom?.info?.employee }}</div>
-                <div>{{ roomsStore?.currentRoom?.info?.employee_mail }}</div>
+            <div v-for="(item, title) in roomsStore?.currentRoom?.info">
+                <div class="info-item">
+                    <div class="info-title">
+                        {{ formatTitle(title) }}
+                    </div>
+                    {{ item }}
+                </div>
             </div>
         </div>
+        <Button v-if="roomsStore?.currentRoom" variant="icon" @click="roomsStore.deselectRoom">
+            <template #icon>
+                <Icon name="close" />
+            </template>
+        </Button>
     </div>
-    <div v-if="roomsStore?.currentRoom" class="overlay" @click="roomsStore.deselectRoom"></div>
+    <div v-if="roomsStore?.currentRoom" class="overlay" @click="roomsStore.deselectRoom" />
 </template>
 
 <script setup>
 import { useRoomsStore } from '@/stores/rooms';
+import Button from './UI/Button.vue';
+import Icon from './UI/Icon.vue';
+
 const roomsStore = useRoomsStore()
+
+function formatTitle(title) {
+    return title.split('_')
+            .map((word, index) => 
+                index === 0 
+                    ? word.charAt(0).toUpperCase() + word.slice(1) 
+                    : word
+            )
+            .join(' ')
+}
 </script>

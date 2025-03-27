@@ -90,7 +90,7 @@ const sendMessage = async () => {
 
     let botResponse = 'Oprostite, ne razumijem pitanje. Možete pitati o radnom vremenu, kontaktu, upisima ili lokaciji predavaona.'
 
-    const roomRegex = /\b(10[0-9]|1[1-9][0-9]|2[0-9][0-9]|300)\b/g
+    const roomRegex = /\b([1-9]|[1-9][0-9]|[1-2][0-9][0-9]|300)\b/g
     const roomMatches = userQuestion.match(roomRegex)
 
     if (roomMatches && roomMatches.length > 0) {
@@ -100,11 +100,19 @@ const sendMessage = async () => {
 
         // determine which section the room is in
         let roomSection = ''
+        let routeSection = ''
         if (roomInfo && roomInfo.section) {
             roomSection = `${roomInfo.section}`
         }
 
-        botResponse = `Predavaona <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="${roomNumber}">${roomNumber}</a> nalazi se u ${roomSection}. Klik na broj predavaone otvara njenu lokaciju!`
+        if (roomSection === 'UNIN2-1' || roomSection === 'UNIN2-2') {
+            routeSection = 'unin2'
+        }
+        if (roomSection === 'UNIN1-1' || roomSection === 'UNIN1-2') {
+            routeSection = 'unin1'
+        }
+
+        botResponse = `Predavaona <a href="javascript:void(0)" class="router-link" data-route="${routeSection}" data-room="${roomNumber}">${roomNumber}</a> nalazi se u ${roomSection}. Klik na broj predavaone otvara njenu lokaciju!`
     } else {
         for (const [key, response] of Object.entries(responses)) {
             if (userQuestion.includes(key)) {

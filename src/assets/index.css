@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 .modal {
   display: flex;
   flex-direction: column;
@@ -16,7 +22,7 @@
   z-index: 3;
 
   .modal-title {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 16px;
   }
 
@@ -26,7 +32,7 @@
     gap: 16px;
 
     .info-title {
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: 4px;
     }
   }
@@ -42,20 +48,40 @@
 }
 
 .floor-plan {
-  width: 100%;
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.floor {
   margin: 0 auto;
+  width: 2200px;
+  height: 300px;
+  max-width: 1200px;
+}
 
-  g {
-    cursor: pointer;
-    transition: fill 0.3s ease;
+.floor-title {
+  font-weight: 600;
+  font-size: 24px;
+  margin-top: 48px;
+}
 
-    &:hover rect {
-      fill: #bbbbbb;
-    }
+.room {
+  cursor: pointer;
+  transition: fill 0.3s ease;
 
-    &.selected rect {
-      fill: #a0a0a0;
-    }
+  &:hover rect {
+    fill: #bbbbbb;
   }
+
+  &.selected rect {
+    fill: #a0a0a0;
+  }
+}
+
+.info-button {
+  position: fixed;
+  left: 48px;
+  bottom: 48px;
 }
