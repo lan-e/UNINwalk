@@ -19,26 +19,46 @@
   </header>
 
   <RouterView />
+
+  <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
+  <Button v-if="roomsStore?.currentRoom" @click="openModal" suffix="Info" class="info-button">
+    <template #icon>
+      <Icon name="info" />
+    </template>
+  </Button>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import ToggleTheme from './components/ToggleTheme.vue';
+import { useRoomsStore } from './stores/rooms';
+import RoomModal from './components/RoomModal.vue';
+import Button from './components/UI/Button.vue';
+import Icon from './components/UI/Icon.vue';
 
-const checkIsMobile = () => window.innerWidth < 768
-
-const isMobile = ref(checkIsMobile())
+const roomsStore = useRoomsStore();
+const checkIsMobile = () => window.innerWidth < 768;
+const isMobile = ref(checkIsMobile());
 
 const updateIsMobile = () => {
-  isMobile.value = checkIsMobile()
+  isMobile.value = checkIsMobile();
+}
+
+function openModal() {
+  roomsStore.openModal();
+
+  const isScrollable = document.documentElement.scrollHeight > window.innerHeight;
+  if (isScrollable) {
+    document.body.classList.add("has-scroll");
+  }
 }
 
 onMounted(() => {
-  window.addEventListener('resize', updateIsMobile)
+  window.addEventListener("resize", updateIsMobile);
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateIsMobile)
+  window.removeEventListener("resize", updateIsMobile);
 })
 </script>

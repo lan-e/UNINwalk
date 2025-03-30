@@ -16,6 +16,7 @@ export const useRoomsStore = defineStore("rooms", () => {
   function deselectRoom() {
     currentRoom.value = null;
     isModalOpen.value = false;
+    document.body.classList.remove("has-scroll");
   }
 
   return { currentRoom, isModalOpen, selectRoom, openModal, deselectRoom };

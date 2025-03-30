@@ -250,8 +250,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
 }
-body:has(.overlay) {
-  /* Prevent scrolling body while overlay is visible (prevents layout shift) */
+body.has-scroll {
+  /* Prevents scrolling body while overlay is visible (prevents layout shift) */
   overflow-y: scroll;
   height: 100%;
   position: fixed;
