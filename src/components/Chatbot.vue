@@ -154,7 +154,8 @@ onMounted(() => {
                     roomsStore.currentRoom = {
                         id: roomInfo.id,
                         name: roomInfo.name,
-                        type: roomInfo.type
+                        type: roomInfo.type,
+                        info: roomInfo.info,
                     }
                     console.log('Room saved to store:', roomsStore.currentRoom)
                 } else {

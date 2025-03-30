@@ -6,7 +6,12 @@ export const useRoomsStore = defineStore("rooms", () => {
   const isModalOpen = ref(false);
 
   function selectRoom(room) {
-    currentRoom.value = room;
+    currentRoom.value = {
+      id: room.id,
+      name: room.name,
+      type: room.type,
+      info: room.info,
+    };
   }
 
   function openModal() {
