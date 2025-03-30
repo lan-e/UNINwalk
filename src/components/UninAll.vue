@@ -3,7 +3,6 @@
         <svg viewBox="0 0 413 321" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_7_1530)">
                 <!-- Parking and other paths -->
-                <path d="M413 0H0V321H413V0Z" fill="white" />
                 <path
                     d="M60.2362 181.812V199.071H53.6453V210.022H399.206V198.982H341.901V181.812H264.684V199.032H134.059V181.812H60.2362Z"
                     fill="#E7E7E8" />

@@ -14,7 +14,7 @@
             <input v-model="userInput" @keyup.enter="sendMessage" placeholder="Postavite pitanje..."
                 :disabled="isTyping" />
             <button @click="sendMessage" :disabled="!userInput || isTyping">
-                <img :src="SendIcon" />
+                <Icon name="send" />
             </button>
         </div>
     </div>
@@ -22,15 +22,14 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import SendIcon from "../assets/send_icon.svg"
 import { useRoomsStore } from '@/stores/rooms'
 import { useRouter } from 'vue-router'
 import uninData from '../unin-data.json'
-
+import Icon from './UI/Icon.vue'
 
 const messages = ref([
     {
-        text: 'Pozdrav! Kako vam mogu pomoći?',
+        text: 'Pozdrav! Kako ti mogu pomoći?',
         sender: 'bot',
         time: new Date().toLocaleTimeString()
     }
@@ -168,81 +167,3 @@ onMounted(() => {
     })
 })
 </script>
-
-<style scoped lang="scss">
-.chatbot-container {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    width: 100%;
-    max-width: 400px;
-    height: 500px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-}
-
-.message {
-    max-width: 80%;
-    padding: 8px 16px;
-    border-radius: 16px;
-}
-
-.message.user {
-    align-self: flex-end;
-    background: #535252;
-    color: white;
-    border-bottom-right-radius: 4px;
-}
-
-.message.bot {
-    align-self: flex-start;
-    background: #f0f0f0;
-    border-bottom-left-radius: 0.25rem;
-}
-
-.message-time {
-    font-size: 12px;
-    color: #969696;
-    margin-top: 4px;
-}
-
-.chat-input {
-    padding: 1rem;
-    display: flex;
-    gap: 0.5rem;
-    border-top: 1px solid #ddd;
-}
-
-input {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    outline: none;
-}
-
-button {
-    display: flex;
-    align-items: center;
-    background: #E30613;
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-</style>

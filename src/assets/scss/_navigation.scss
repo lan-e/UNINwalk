@@ -1,0 +1,32 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 16px;
+
+  .navigation {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    a {
+      color: var(--color-text);
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        color: #969696;
+      }
+
+      &.router-link-exact-active {
+        color: #e30613;
+
+        &:hover {
+          color: #e30613;
+          cursor: default;
+        }
+      }
+    }
+  }
+}

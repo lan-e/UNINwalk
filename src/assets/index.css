@@ -1,52 +1,78 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap");
-
-*,
-body {
-  font-family: "Roboto", sans-serif;
-  margin: 0;
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
+  --vt-c-indigo: #2c3e50;
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 }
 
-.modal {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 4px 4px 8px #ccc;
-  padding: 16px;
-  height: 300px;
-  width: 300px;
-  font-size: 14px;
-  z-index: 3;
-
-  .modal-title {
-    font-weight: 600;
-    font-size: 16px;
-  }
-
-  .info-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    .info-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-  }
+/* Default light theme */
+:root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #cccccc5b;
-  height: 100vh;
-  width: 100vw;
+/* Explicit light theme (for manual toggle) */
+:root.light-theme {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+}
+
+/* Explicit dark theme (for manual toggle) */
+:root.dark-theme {
+  --color-background: var(--vt-c-black);
+  --color-background-soft: var(--vt-c-black-soft);
+  --color-background-mute: var(--vt-c-black-mute);
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
+}
+
+/* Automatic dark theme based on system preference (when no manual preference is set) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-theme) {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
+.theme-toggle {
+  background: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: var(--color-text);
+  transition: background-color 0.3s;
+}
+.theme-toggle:hover {
+  background-color: var(--color-background-mute);
 }
 
 .floor-plan {
@@ -60,7 +86,6 @@ body {
 .floor {
   margin: 0 auto;
   width: 100%;
-  margin-bottom: 20px;
 }
 
 .floor-title {
@@ -72,14 +97,205 @@ body {
 .room {
   cursor: pointer;
   transition: fill 0.3s ease;
+}
+.room:hover rect {
+  fill: #bbbbbb;
+}
+.room.selected rect {
+  fill: #a0a0a0;
+}
 
-  &:hover rect {
-    fill: #bbbbbb;
-  }
+.chatbot-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-mute);
+  width: 100%;
+  max-width: 400px;
+  height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
 
-  &.selected rect {
-    fill: #a0a0a0;
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.message {
+  max-width: 80%;
+  padding: 8px 16px;
+  border-radius: 16px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #535252;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message.bot {
+  align-self: flex-start;
+  color: var(--color-text);
+  background: var(--color-background-soft);
+  border-bottom-left-radius: 0.25rem;
+}
+.message.bot a {
+  color: #e30613;
+}
+
+.message-time {
+  font-size: 12px;
+  color: #969696;
+  margin-top: 4px;
+}
+
+.chat-input {
+  padding: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  border-top: 1px solid #ddd;
+}
+
+input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  background: #e30613;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 16px;
+}
+nav .navigation {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+nav .navigation a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+nav .navigation a:hover {
+  color: #969696;
+}
+nav .navigation a.router-link-exact-active {
+  color: #e30613;
+}
+nav .navigation a.router-link-exact-active:hover {
+  color: #e30613;
+  cursor: default;
+}
+
+@media screen and (max-width: 768px) {
+  nav .navigation {
+    gap: 10px;
   }
+  nav .navigation a {
+    font-size: 12px;
+  }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .theme-toggle {
+    padding: 0;
+  }
+  .theme-toggle:hover {
+    background: none;
+  }
+  .chatbot-container {
+    height: 300px;
+  }
+  .floor-title {
+    font-size: 14px;
+  }
+}
+*,
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.5s, background-color 0.5s;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+}
+body:has(.overlay) {
+  /* Prevent scrolling body while overlay is visible (prevents layout shift) */
+  overflow-y: scroll;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  background: var(--color-background);
+  box-shadow: 4px 4px 8px var(--color-background);
+  padding: 16px;
+  height: 300px;
+  width: 300px;
+  font-size: 14px;
+  z-index: 3;
+}
+.modal .modal-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+.modal .info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal .info-container .info-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(204, 204, 204, 0.3568627451);
+  height: 100vh;
+  width: 100vw;
 }
 
 .info-button {
@@ -87,3 +303,7 @@ body {
   left: 48px;
   bottom: 48px;
 }
+
+.about {
+  margin: 32px;
+}/*# sourceMappingURL=index.css.map */

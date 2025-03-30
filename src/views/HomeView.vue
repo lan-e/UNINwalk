@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
-    <Chatbot />
     <UninAll />
+    <Chatbot />
   </div>
 </template>
 
@@ -17,6 +17,7 @@ import UninAll from '@/components/UninAll.vue';
   align-items: center;
   gap: 48px;
   padding: 32px;
+  padding-top: 0;
 }
 
 @media (max-width: 768px) {

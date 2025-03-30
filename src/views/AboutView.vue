@@ -4,10 +4,3 @@
       sva pitanja vezana za Sveučilište Sjever.</div>
   </div>
 </template>
-
-<style>
-.about {
-  margin: 32px;
-  color: #535252;
-}
-</style>

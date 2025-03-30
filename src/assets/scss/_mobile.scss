@@ -1,0 +1,29 @@
+@media screen and (max-width: 768px) {
+  nav .navigation {
+    gap: 10px;
+
+    a {
+      font-size: 12px;
+    }
+  }
+
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  .theme-toggle {
+    padding: 0;
+
+    &:hover {
+      background: none;
+    }
+  }
+
+  .chatbot-container {
+    height: 300px;
+  }
+
+  .floor-title {
+    font-size: 14px;
+  }
+}
