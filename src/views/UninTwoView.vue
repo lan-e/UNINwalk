@@ -1,11 +1,11 @@
 <template>
     <div class="floor-plan">
         <div class="floor-title">PRIZEMLJE (101-109)</div>
-        <svg class="floor">
+        <svg class="floor" viewBox="0 0 1210 340" width="100%" preserveAspectRatio="xMidYMid meet">
             <Room v-for="room in rooms1" :key="room.id" :room="room" />
         </svg>
         <div class="floor-title">1. KAT (110-115)</div>
-        <svg class="floor">
+        <svg class="floor" viewBox="0 0 1210 340" width="100%" preserveAspectRatio="xMidYMid meet">
             <Room v-for="room in rooms2" :key="room.id" :room="room" />
         </svg>
         <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
@@ -34,3 +34,9 @@ onUnmounted(() => {
     roomsStore.deselectRoom()
 })
 </script>
+
+<style scoped>
+.floor {
+    max-width: 1200px;
+}
+</style>
