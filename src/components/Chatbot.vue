@@ -26,6 +26,7 @@ import { useRoomsStore } from '@/stores/rooms'
 import { useRouter } from 'vue-router'
 import uninData from '../unin-data.json'
 import Icon from './UI/Icon.vue'
+import { getChatbotAnswer } from '@/bot/chatbot'
 
 const messages = ref([
     {
@@ -40,13 +41,6 @@ const messagesContainer = ref(null)
 const roomsStore = useRoomsStore()
 const router = useRouter()
 
-const responses = {
-    'radno vrijeme': 'Fakultet je otvoren od ponedjeljka do petka, od 7:00 do 20:00.',
-    'kontakt': 'Možete nas kontaktirati na email: <a href="mailto:info@unin.hr">info@unin.hr</a> ili telefon: <a href="tel:012345678">01/234-5678</a>',
-    'upisi': 'Upisi započinju u srpnju. Više informacija možete pronaći na <a href="https://www.unin.hr/popis-studijskih-programa/" target="_blank">službenim stranicama fakulteta</a>.',
-    'predavaona': 'Molim vas unesite broj predavaone koju tražite, npr. "Gdje je predavaona 101?"',
-}
-
 function findRoom(room) {
     for (let section of ['UNIN2-1', 'UNIN2-2', 'UNIN1-1', 'UNIN1-2']) {
         if (uninData[section] && uninData[section][`k${room}`]) {
@@ -59,30 +53,6 @@ function findRoom(room) {
     }
     return null; // return null if room is not found
 }
-
-async function getAnswer(userQuestion) {
-  try {
-    const response = await fetch("/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ question: userQuestion })
-    });
-    
-    if (response.ok) {
-      const json = await response.json();
-      return json.message;
-    } else {
-      console.error("Error response:", response.status);
-      return "Žao mi je, nisam uspio obraditi vaš upit.";
-    }
-  } catch (error) {
-    console.error("Error answering question:", error);
-    return "Žao mi je, došlo je do pogreške pri komunikaciji sa serverom.";
-  }
-}
-
 
 const sendMessage = async () => {
     if (!userInput.value || isTyping.value) return
@@ -97,7 +67,7 @@ const sendMessage = async () => {
 
     userInput.value = ''
     isTyping.value = true
-    const botResponse = await getAnswer(userQuestion)
+    const botResponse = await getChatbotAnswer(userQuestion)
 
     messages.value.push({
         text: botResponse,
