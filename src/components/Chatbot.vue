@@ -2,7 +2,7 @@
     <div class="chatbot-container">
         <div class="chat-messages" ref="messagesContainer">
             <div v-for="(message, index) in messages" :key="index" :class="['message', message.sender]">
-                <div class="message-content" v-html="formatMessage(message.text)">
+                <div class="message-content" v-html="message.text">
                 </div>
                 <div class="message-time">
                     {{ message.time }}
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, onUnmounted } from 'vue'
 import { useRoomsStore } from '@/stores/rooms'
 import { useRouter } from 'vue-router'
 import uninData from '../unin-data.json'
@@ -47,17 +47,6 @@ const responses = {
     'predavaona': 'Molim vas unesite broj predavaone koju tražite, npr. "Gdje je predavaona 101?"',
 }
 
-function formatMessage(text) {
-    if (text.includes('<a href=')) {
-        return text
-    }
-
-    const urlRegex = /(https?:\/\/[^\s]+)/g
-    return text.replace(urlRegex, url =>
-        `<a href="${url}" target="_blank">${url}</a>`
-    )
-}
-
 function findRoom(room) {
     for (let section of ['UNIN2-1', 'UNIN2-2', 'UNIN1-1', 'UNIN1-2']) {
         if (uninData[section] && uninData[section][`k${room}`]) {
@@ -71,10 +60,34 @@ function findRoom(room) {
     return null; // return null if room is not found
 }
 
+async function getAnswer(userQuestion) {
+  try {
+    const response = await fetch("/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question: userQuestion })
+    });
+    
+    if (response.ok) {
+      const json = await response.json();
+      return json.message;
+    } else {
+      console.error("Error response:", response.status);
+      return "Žao mi je, nisam uspio obraditi vaš upit.";
+    }
+  } catch (error) {
+    console.error("Error answering question:", error);
+    return "Žao mi je, došlo je do pogreške pri komunikaciji sa serverom.";
+  }
+}
+
+
 const sendMessage = async () => {
     if (!userInput.value || isTyping.value) return
 
-    const userQuestion = userInput.value.toLowerCase()
+    const userQuestion = userInput.value
 
     messages.value.push({
         text: userInput.value,
@@ -84,42 +97,7 @@ const sendMessage = async () => {
 
     userInput.value = ''
     isTyping.value = true
-
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    let botResponse = 'Oprostite, ne razumijem pitanje. Možete pitati o radnom vremenu, kontaktu, upisima ili lokaciji predavaona.'
-
-    const roomRegex = /\b([1-9]|[1-9][0-9]|[1-2][0-9][0-9]|300)\b/g
-    const roomMatches = userQuestion.match(roomRegex)
-
-    if (roomMatches && roomMatches.length > 0) {
-        const roomNumber = roomMatches[0]
-        const roomInfo = findRoom(roomNumber)
-        console.log('roominof', roomInfo)
-
-        // determine which section the room is in
-        let roomSection = ''
-        let routeSection = ''
-        if (roomInfo && roomInfo.section) {
-            roomSection = `${roomInfo.section}`
-        }
-
-        if (roomSection === 'UNIN2-1' || roomSection === 'UNIN2-2') {
-            routeSection = 'unin2'
-        }
-        if (roomSection === 'UNIN1-1' || roomSection === 'UNIN1-2') {
-            routeSection = 'unin1'
-        }
-
-        botResponse = `Predavaona <a href="javascript:void(0)" class="router-link" data-route="${routeSection}" data-room="${roomNumber}">${roomNumber}</a> nalazi se u ${roomSection}. Klik na broj predavaone otvara njenu lokaciju!`
-    } else {
-        for (const [key, response] of Object.entries(responses)) {
-            if (userQuestion.includes(key)) {
-                botResponse = response
-                break
-            }
-        }
-    }
+    const botResponse = await getAnswer(userQuestion)
 
     messages.value.push({
         text: botResponse,
@@ -139,32 +117,36 @@ const scrollToBottom = () => {
     }
 }
 
+const handleRouterLinkClick = (e) => {
+    if (e.target.classList.contains('router-link')) {
+        const route = e.target.getAttribute('data-route')
+        const room = e.target.getAttribute('data-room')
+
+        if (room) {
+            let roomInfo = findRoom(room);
+
+            if (roomInfo) {
+                roomsStore.currentRoom = {
+                    id: roomInfo.id,
+                    name: roomInfo.name,
+                    type: roomInfo.type,
+                    info: roomInfo.info,
+                }
+                console.log('Room saved to store:', roomsStore.currentRoom)
+            } else {
+                console.log('Room not found:', room)
+            }
+        }
+        router.push(route);
+    }
+};
+
 onMounted(() => {
     scrollToBottom()
-
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('router-link')) {
-            const route = e.target.getAttribute('data-route')
-            const room = e.target.getAttribute('data-room')
-
-            if (room) {
-                let roomInfo = findRoom(room);
-
-                if (roomInfo) {
-                    roomsStore.currentRoom = {
-                        id: roomInfo.id,
-                        name: roomInfo.name,
-                        type: roomInfo.type,
-                        info: roomInfo.info,
-                    }
-                    console.log('Room saved to store:', roomsStore.currentRoom)
-                } else {
-                    console.log('Room not found');
-                }
-            }
-
-            router.push(route)
-        }
-    })
+    document.addEventListener('click', handleRouterLinkClick);
 })
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleRouterLinkClick);
+});
 </script>
