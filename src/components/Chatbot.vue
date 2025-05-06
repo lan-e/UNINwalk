@@ -27,10 +27,12 @@ import { useRouter } from 'vue-router'
 import uninData from '../unin-data.json'
 import Icon from './UI/Icon.vue'
 import { getChatbotAnswer } from '@/bot/chatbot'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n();
 const messages = ref([
     {
-        text: 'Pozdrav! Kako ti mogu pomoći?',
+        text: t('bot_message'),
         sender: 'bot',
         time: new Date().toLocaleTimeString()
     }

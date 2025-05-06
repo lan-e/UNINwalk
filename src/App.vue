@@ -11,12 +11,13 @@
             <img v-else alt="logo" src="@/assets/logo.svg" />
           </RouterLink>
           <div class="navigation">
-            <RouterLink to="/">POČETNA</RouterLink>
+            <RouterLink to="/">{{ $t('home') }}</RouterLink>
             <RouterLink to="/unin1">UNIN1</RouterLink>
             <RouterLink to="/unin2">UNIN2</RouterLink>
             <RouterLink to="/unin3">UNIN3</RouterLink>
-            <RouterLink to="/about">NASTAVNICI</RouterLink>
+            <RouterLink to="/about">{{ $t('teachers') }}</RouterLink>
             <ToggleTheme />
+            <LanguageSwitcher />
           </div>
         </nav>
       </div>
@@ -43,6 +44,7 @@ import Button from './components/UI/Button.vue';
 import Icon from './components/UI/Icon.vue';
 import LoadingSpinner from './components/UI/LoadingSpinner.vue';
 import { initializeChatbot, getInitializationStatus } from './bot/chatbot.js';
+import LanguageSwitcher from './components/LanguageSwitcher.vue';
 
 const roomsStore = useRoomsStore();
 const checkIsMobile = () => window.innerWidth < 768;

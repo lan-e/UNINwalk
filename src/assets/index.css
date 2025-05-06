@@ -190,6 +190,7 @@ nav {
   justify-content: space-between;
   gap: 10px;
   margin: 16px;
+  text-transform: uppercase;
 }
 nav .navigation {
   display: flex;
