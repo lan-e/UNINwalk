@@ -11,7 +11,7 @@
         </div>
 
         <div class="chat-input">
-            <input v-model="userInput" @keyup.enter="sendMessage" placeholder="Postavite pitanje..."
+            <input v-model="userInput" @keyup.enter="sendMessage" :placeholder="$t('bot_input_message')"
                 :disabled="isTyping" />
             <button @click="sendMessage" :disabled="!userInput || isTyping">
                 <Icon name="send" />

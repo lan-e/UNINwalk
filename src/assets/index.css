@@ -236,6 +236,49 @@ nav .navigation a.router-link-exact-active:hover {
     font-size: 14px;
   }
 }
+.teachers-wrapper {
+  margin: 32px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.teacher-container {
+  display: flex;
+  gap: 16px;
+  color: var(--color-text);
+  background: var(--color-background-mute);
+  box-shadow: 4px 4px 8px var(--color-background);
+  border-radius: 16px;
+  padding: 12px 16px;
+  width: 400px;
+}
+.teacher-container .teacher-image {
+  width: 104px;
+  height: 104px;
+  border-radius: 8px;
+}
+.teacher-container .teacher-info .name {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+.teacher-container .teacher-info a {
+  color: var(--color-text);
+  height: 16px;
+}
+.teacher-container .teacher-info a:hover {
+  color: #e30613;
+}
+.teacher-container .teacher-info .title,
+.teacher-container .teacher-info .email {
+  font-size: 16px;
+}
+.teacher-container .teacher-info .icons {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
 *,
 body {
   font-family: "Roboto", sans-serif;
@@ -303,8 +346,4 @@ body.has-scroll {
   position: fixed;
   left: 48px;
   bottom: 48px;
-}
-
-.about {
-  margin: 32px;
 }/*# sourceMappingURL=index.css.map */

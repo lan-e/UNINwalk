@@ -5,11 +5,13 @@ const messages = {
     home: "Home",
     teachers: "Teachers",
     bot_message: "Hello! How may I help you?",
+    bot_input_message: "Ask me a question...",
   },
   hr: {
     home: "Početna",
     teachers: "Nastavnici",
-    bot_message: "Pozdrav! Kako ti mogu pomoći?",
+    bot_message: "Pozdrav! Kako mogu pomoći?",
+    bot_input_message: "Postavite mi pitanje...",
   },
 };
 

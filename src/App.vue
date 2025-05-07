@@ -15,7 +15,7 @@
             <RouterLink to="/unin1">UNIN1</RouterLink>
             <RouterLink to="/unin2">UNIN2</RouterLink>
             <RouterLink to="/unin3">UNIN3</RouterLink>
-            <RouterLink to="/about">{{ $t('teachers') }}</RouterLink>
+            <RouterLink to="/teachers">{{ $t('teachers') }}</RouterLink>
             <ToggleTheme />
             <LanguageSwitcher />
           </div>

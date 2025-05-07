@@ -5,6 +5,7 @@
 @import "scss/chatbot";
 @import "scss/navigation";
 @import "scss/mobile";
+@import "scss/teachers";
 
 *,
 body {
@@ -77,8 +78,4 @@ body {
   position: fixed;
   left: 48px;
   bottom: 48px;
-}
-
-.about {
-  margin: 32px;
 }
