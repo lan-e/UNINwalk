@@ -7,7 +7,7 @@
     "phone": "042/493-371",
     "web": "https://scholar.google.com/citations?user=iKMgEqoAAAAJ&hl=hr&oi=ao",
     "room": "27",
-    "building": "/unin1"
+    "room_route": "/unin1"
   },
   {
     "name": "Jelena Vlašić",
@@ -17,7 +17,7 @@
     "phone": "042/493-371",
     "web": "https://scholar.google.hr/citations?user=BqihCmsAAAAJ&hl=hr",
     "room": "27",
-    "building": "/unin1"
+    "room_route": "/unin1"
   },
   {
     "name": "Andrija Bernik",
@@ -26,6 +26,6 @@
     "image": "teacher3.png",
     "web": "https://scholar.google.hr/citations?user=XP-ercgAAAAJ&hl=en&oi=ao",
     "room": "34",
-    "building": "/unin1"
+    "room_route": "/unin1"
   }
 ]

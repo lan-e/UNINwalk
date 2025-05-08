@@ -6,12 +6,16 @@ const messages = {
     teachers: "Teachers",
     bot_message: "Hello! How may I help you?",
     bot_input_message: "Ask me a question...",
+    floor1: "Ground floor",
+    floor2: "First floor",
   },
   hr: {
     home: "Početna",
     teachers: "Nastavnici",
     bot_message: "Pozdrav! Kako mogu pomoći?",
     bot_input_message: "Postavite mi pitanje...",
+    floor1: "Prizemlje",
+    floor2: "1. kat",
   },
 };
 

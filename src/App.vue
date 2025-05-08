@@ -12,9 +12,24 @@
           </RouterLink>
           <div class="navigation">
             <RouterLink to="/">{{ $t('home') }}</RouterLink>
-            <RouterLink to="/unin1">UNIN1</RouterLink>
-            <RouterLink to="/unin2">UNIN2</RouterLink>
-            <RouterLink to="/unin3">UNIN3</RouterLink>
+            <div v-if="isMobile">
+              <div class="dropdown">
+                <button class="dropdown-button" @click="toggleDropdown">
+                  UNIN
+                  <Icon name="arrow_drop_down" style="font-size:12px" />
+                </button>
+                <div class="dropdown-content" v-show="showDropdown">
+                  <RouterLink to="/unin1">UNIN1</RouterLink>
+                  <RouterLink to="/unin2">UNIN2</RouterLink>
+                  <RouterLink to="/unin3">UNIN3</RouterLink>
+                </div>
+              </div>
+            </div>
+            <template v-else>
+              <RouterLink to="/unin1">UNIN1</RouterLink>
+              <RouterLink to="/unin2">UNIN2</RouterLink>
+              <RouterLink to="/unin3">UNIN3</RouterLink>
+            </template>
             <RouterLink to="/teachers">{{ $t('teachers') }}</RouterLink>
             <ToggleTheme />
             <LanguageSwitcher />
@@ -51,6 +66,18 @@ const checkIsMobile = () => window.innerWidth < 768;
 const isMobile = ref(checkIsMobile());
 const isLoading = ref(true);
 const loadingMessage = ref('Initializing...');
+const showDropdown = ref(false);
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
+
+const closeDropdownOnClickOutside = (event) => {
+  const dropdown = document.querySelector('.dropdown');
+  if (dropdown && !dropdown.contains(event.target) && showDropdown.value) {
+    showDropdown.value = false;
+  }
+};
 
 const updateIsMobile = () => {
   isMobile.value = checkIsMobile();
@@ -105,9 +132,11 @@ async function initializeChatbotWithLoading() {
 onMounted(() => {
   window.addEventListener("resize", updateIsMobile);
   initializeChatbotWithLoading();
+  document.addEventListener('click', closeDropdownOnClickOutside);
 })
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateIsMobile);
+  document.removeEventListener('click', closeDropdownOnClickOutside);
 })
 </script>
