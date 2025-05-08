@@ -60,12 +60,14 @@ import Icon from './components/UI/Icon.vue';
 import LoadingSpinner from './components/UI/LoadingSpinner.vue';
 import { initializeChatbot, getInitializationStatus } from './bot/chatbot.js';
 import LanguageSwitcher from './components/LanguageSwitcher.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const roomsStore = useRoomsStore();
 const checkIsMobile = () => window.innerWidth < 768;
 const isMobile = ref(checkIsMobile());
 const isLoading = ref(true);
-const loadingMessage = ref('Initializing...');
+const loadingMessage = ref(t('initializing_llm_message'));
 const showDropdown = ref(false);
 
 const toggleDropdown = () => {

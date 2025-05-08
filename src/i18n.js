@@ -8,6 +8,8 @@ const messages = {
     bot_input_message: "Ask me a question...",
     floor1: "Ground floor",
     floor2: "First floor",
+    initializing_llm_message: "Initializing chatbot...",
+    loading_message: "Loading chatbot...",
   },
   hr: {
     home: "Početna",
@@ -16,6 +18,8 @@ const messages = {
     bot_input_message: "Postavite mi pitanje...",
     floor1: "Prizemlje",
     floor2: "1. kat",
+    initializing_llm_message: "Inicijalizacija chatbot asistenta...",
+    loading_message: "Učitavanje chatbot asistenta...",
   },
 };
 

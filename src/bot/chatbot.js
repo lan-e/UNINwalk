@@ -9,6 +9,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import data from "./data.json";
 import { Document } from "langchain/document";
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
+import { useI18n } from "vue-i18n";
 
 // Store the chain instance
 let chatChain = null;
@@ -24,6 +25,8 @@ function formatDocumentsAsString(documents) {
 }
 
 export async function initializeChatbot() {
+  const { t } = useI18n();
+
   // If already initialized or initializing, return current status
   if (
     initializationStatus.isInitialized ||
@@ -37,18 +40,18 @@ export async function initializeChatbot() {
     initializationStatus = {
       isInitializing: true,
       isInitialized: false,
-      status: "initializing",
+      status: t("initializing_llm_message"),
       error: null,
     };
 
     // Step 1: Initialize embeddings
-    initializationStatus.status = "Initializing embeddings...";
+    initializationStatus.status = t("initializing_llm_message");
     const embeddings = new HuggingFaceInferenceEmbeddings({
       apiKey: import.meta.env.VITE_HUGGINGFACEHUB_API_KEY,
     });
 
     // Step 2: Initialize LLM
-    initializationStatus.status = "Initializing LLM...";
+    initializationStatus.status = t("initializing_llm_message");
     const model = new ChatGroq({
       apiKey: import.meta.env.VITE_GROQ_API_KEY,
       model: "llama-3.3-70b-versatile",
@@ -56,18 +59,17 @@ export async function initializeChatbot() {
     });
 
     // Step 3: Create documents
-    initializationStatus.status = "Creating documents...";
+    initializationStatus.status = t("loading_message");
     const docs = data.map(
       (obj) => new Document({ pageContent: JSON.stringify(obj) })
     );
 
     // Step 4: Create vector store (this is the longest step)
-    initializationStatus.status =
-      "Building vector store (this may take a while)...";
+    initializationStatus.status = t("loading_message");
     const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
 
     // Step 5: Initialize retriever
-    initializationStatus.status = "Setting up retriever...";
+    initializationStatus.status = t("loading_message");
     const vectorStoreRetriever = vectorStore.asRetriever();
 
     // Step 6: Create prompt template
