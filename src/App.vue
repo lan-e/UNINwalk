@@ -19,9 +19,9 @@
                   <Icon name="arrow_drop_down" style="font-size:12px" />
                 </button>
                 <div class="dropdown-content" v-show="showDropdown">
-                  <RouterLink to="/unin1">UNIN1</RouterLink>
-                  <RouterLink to="/unin2">UNIN2</RouterLink>
-                  <RouterLink to="/unin3">UNIN3</RouterLink>
+                  <RouterLink to="/unin1" @click="showDropdown = false">UNIN1</RouterLink>
+                  <RouterLink to="/unin2" @click="showDropdown = false">UNIN2</RouterLink>
+                  <RouterLink to="/unin3" @click="showDropdown = false">UNIN3</RouterLink>
                 </div>
               </div>
             </div>
