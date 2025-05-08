@@ -15,7 +15,7 @@
 import { onUnmounted } from 'vue';
 import Room from '@/components/Room.vue';
 import { useRoomsStore } from '@/stores/rooms';
-import uninData from '../unin-data.json'
+import uninData from '../data/unin-data.json'
 
 const roomsStore = useRoomsStore()
 const rooms1 = uninData['UNIN1-1']

@@ -77,7 +77,7 @@
 
 <script setup>
 import { useRoomsStore } from '@/stores/rooms';
-import uninData from '../unin-data.json'
+import uninData from '../data/unin-data.json'
 
 const roomsStore = useRoomsStore()
 const rooms = uninData['UNIN2-1']

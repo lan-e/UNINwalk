@@ -245,6 +245,7 @@ nav .navigation a.router-link-exact-active:hover {
 
 .teacher-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   color: var(--color-text);
   background: var(--color-background-mute);
@@ -264,10 +265,13 @@ nav .navigation a.router-link-exact-active:hover {
 }
 .teacher-container .teacher-info a {
   color: var(--color-text);
-  height: 16px;
 }
 .teacher-container .teacher-info a:hover {
   color: #e30613;
+}
+.teacher-container .teacher-info .router-link {
+  font-size: 16px;
+  text-decoration: none;
 }
 .teacher-container .teacher-info .title,
 .teacher-container .teacher-info .email {

@@ -15,6 +15,9 @@
                 <a v-if="info.web" :href="info.web" target="_blank">
                     <Icon name="language" />
                 </a>
+                <a href="javascript:void(0)" :data-route="info.room_route" :data-room="info.room" class="router-link">
+                    k{{ info.room }}
+                </a>
             </div>
         </div>
     </div>
@@ -22,11 +25,25 @@
 
 <script setup>
 import Icon from './UI/Icon.vue';
+import { useRoomsStore } from '@/stores/rooms';
+import { onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
     info: {
         type: Object,
         required: true
     }
+});
+const roomsStore = useRoomsStore()
+const router = useRouter()
+
+let cleanup;
+onMounted(() => {
+  cleanup = roomsStore.setupRoomClickListener(router);
+});
+
+onUnmounted(() => {
+  if (cleanup) cleanup();
 });
 </script>
