@@ -8,6 +8,7 @@
         <nav>
           <RouterLink to="/">
             <img v-if="isMobile" alt="logo" src="@/assets/logo-mobile.svg" />
+            <img v-else-if="locale === 'en'" src="@/assets/logo-en.svg" alt="">
             <img v-else alt="logo" src="@/assets/logo.svg" />
           </RouterLink>
           <div class="navigation">
@@ -62,7 +63,7 @@ import { initializeChatbot, getInitializationStatus } from './bot/chatbot.js';
 import LanguageSwitcher from './components/LanguageSwitcher.vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const roomsStore = useRoomsStore();
 const checkIsMobile = () => window.innerWidth < 768;
 const isMobile = ref(checkIsMobile());

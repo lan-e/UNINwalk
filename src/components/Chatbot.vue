@@ -1,7 +1,7 @@
 <template>
     <div class="chatbot-container">
         <div class="chat-messages" ref="messagesContainer">
-            <div v-for="(message, index) in messages" :key="index" :class="['message', message.sender]">
+            <div v-for="(message, index) in displayMessages" :key="index" :class="['message', message.sender]">
                 <div class="message-content" v-html="message.text">
                 </div>
                 <div class="message-time">
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted } from 'vue'
+import { ref, onMounted, nextTick, onUnmounted, computed } from 'vue'
 import { useRoomsStore } from '@/stores/rooms'
 import { useRouter } from 'vue-router'
 import Icon from './UI/Icon.vue'
@@ -29,19 +29,23 @@ import { getChatbotAnswer } from '@/bot/chatbot'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
-const messages = ref([
-    {
-        text: t('bot_message'),
-        sender: 'bot',
-        time: new Date().toLocaleTimeString()
-    }
-])
+const messages = ref([])
 const userInput = ref('')
 const isTyping = ref(false)
 const messagesContainer = ref(null)
 const roomsStore = useRoomsStore()
 const router = useRouter()
 
+// Computed property that includes initial message
+const displayMessages = computed(() => {
+    const initialMessage = {
+        text: t('bot_message'),
+        sender: 'bot',
+        time: new Date().toLocaleTimeString(),
+        isInitial: true
+    }
+    return [initialMessage, ...messages.value]
+})
 
 const sendMessage = async () => {
     if (!userInput.value || isTyping.value) return
