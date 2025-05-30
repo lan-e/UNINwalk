@@ -370,6 +370,17 @@ body.has-scroll {
   margin-bottom: 4px;
 }
 
+.link-button {
+  padding: 0;
+  color: var(--color-text);
+  background: transparent;
+  height: -moz-max-content;
+  height: max-content;
+}
+.link-button:hover {
+  color: #e30613;
+}
+
 .overlay {
   position: absolute;
   top: 0;

@@ -1,5 +1,7 @@
 [
   {
+    "id": "teach1",
+    "type": "TEACHER",
     "name": "Snježana Ivančić Valenko",
     "title": "viši predavač, dr. sc.",
     "email": "snjezana.ivancic@unin.hr",
@@ -10,6 +12,8 @@
     "room_route": "/unin1"
   },
   {
+    "id": "teach2",
+    "type": "TEACHER",
     "name": "Jelena Vlašić",
     "title": "predavač, dipl. ing.",
     "email": "jelena.vlasic@unin.hr",
@@ -20,6 +24,8 @@
     "room_route": "/unin1"
   },
   {
+    "id": "teach3",
+    "type": "TEACHER",
     "name": "Andrija Bernik",
     "title": "docent, dr. sc.",
     "email": "andrija.bernik@unin.hr",

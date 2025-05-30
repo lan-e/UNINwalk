@@ -6,7 +6,7 @@
 
 <script setup>
 import Teacher from '@/components/Teacher.vue';
-import teachersData from '@/data/teachers-data.json';
+import teachersData from '@/bot/teachers-data.json';
 import teacher1Image from '@/assets/images/teacher1.png';
 import teacher2Image from '@/assets/images/teacher2.png';
 import teacher3Image from '@/assets/images/teacher3.png';

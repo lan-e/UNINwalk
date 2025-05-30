@@ -65,6 +65,17 @@ body {
   }
 }
 
+.link-button{
+  padding: 0;
+  color: var(--color-text);
+  background: transparent;
+  height: max-content;
+
+  &:hover {
+    color: #e30613;
+  }
+}
+
 .overlay {
   position: absolute;
   top: 0;

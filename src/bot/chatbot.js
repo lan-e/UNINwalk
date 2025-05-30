@@ -7,6 +7,7 @@ import {
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import data from "./data.json";
+import teachersData from "./teachers-data.json";
 import { Document } from "langchain/document";
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
 import { useI18n } from "vue-i18n";
@@ -58,15 +59,31 @@ export async function initializeChatbot() {
       temperature: 0,
     });
 
-    // Step 3: Create documents
+    // Step 3: Create documents from both room data and professor data
     initializationStatus.status = t("loading_message");
-    const docs = data.map(
-      (obj) => new Document({ pageContent: JSON.stringify(obj) })
+    
+    // Create documents for room data
+    const roomDocs = data.map(
+      (obj) => new Document({ 
+        pageContent: JSON.stringify(obj),
+        metadata: { type: "room" }
+      })
     );
+
+    // Create documents for professor data
+    const teachersDocs = teachersData.map(
+      (professor) => new Document({ 
+        pageContent: JSON.stringify(professor),
+        metadata: { type: "teacher" }
+      })
+    );
+
+    // Combine all documents
+    const allDocs = [...roomDocs, ...teachersDocs];
 
     // Step 4: Create vector store (this is the longest step)
     initializationStatus.status = t("loading_message");
-    const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
+    const vectorStore = await MemoryVectorStore.fromDocuments(allDocs, embeddings);
 
     // Step 5: Initialize retriever
     initializationStatus.status = t("loading_message");
@@ -74,17 +91,47 @@ export async function initializeChatbot() {
 
     // Step 6: Create prompt template
     initializationStatus.status = "Configuring chatbot chain...";
-    const SYSTEM_TEMPLATE = `Use the following pieces of context to answer the question at the end.
+    const SYSTEM_TEMPLATE = `You are a chatbot that answers student questions about University North information, room numbers and teachers information.
+    Use the following pieces of context to answer the question at the end.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.
     
-    VERY IMPORTANT: If your answer contains information about room numbers (like K-112, A-201, etc.),
-    format each room number inside a special link like this, also be sure to change UNIN1, UNIN2 and UNIN3 accordingly:
-    <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="ROOM_NUMBER">ROOM_NUMBER</a>
+    VERY IMPORTANT FORMATTING RULES:
+    1. Room numbers: Format ALL room numbers as clickable navigation links:
+       <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="ROOM_NUMBER">ROOM_NUMBER</a>
+       
+       For example: Predavaona <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="112">K-112</a> nalazi se u UNIN2.
     
-    For example, if you need to mention room K-112 that is in UNIN2, format it as:
-    Predavaona <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="112">K-112</a> nalazi se u UNIN2.
+    2. Teacher rooms: Format teacher room numbers as clickable links using their room_route:
+       For example, if teacher is in room 27 with room_route "/unin1":
+       Nalazi se u UNIN1, u kabinetu <a href="javascript:void(0)" class="router-link" data-route="/unin1" data-room="27">K-27</a>.
     
-    Make sure ALL room numbers in your response are formatted this way, as these links will be used to navigate to room locations.
+    3. Email addresses: Format ALL email addresses as clickable mailto links:
+       <a href="mailto:email@address.com">email@address.com</a>
+       
+       For example: E-mail adresa je <a href="mailto:email@address.com">email@address.com</a>.
+    
+    4. Phone numbers: Format ALL phone numbers as clickable tel links:
+       <a href="tel:phone-number">phone-number</a>
+       
+       For example: telefon <a href="tel:042/493-371">042/493-371</a>.
+    
+    5. Web links: Format ALL web URLs as clickable links with descriptive text:
+       <a href="https://full-url">descriptive text</a>
+       
+       For example: Također, možete ju pronaći na Google Scholaru putem sljedećeg <a target="_blank" href="https://scholar.google.com/citations?user=iKMgEqoAAAAJ&hl=hr&oi=ao">linka</a>.
+    
+    6. Gender-appropriate language: Use appropriate Croatian grammar based on the teacher's gender. 
+       Determine gender from the teacher's name and use correct possessive pronouns:
+       - For female teachers: "Njezina e-mail adresa", "Ona se nalazi", "njezin kabinet"
+       - For male teachers: "Njegova e-mail adresa", "On se nalazi", "njegov kabinet"
+       
+       Examples:
+       - Female: "Snježana Ivančić Valenko je viši predavač. Njezina e-mail adresa je..."
+       - Male: "Andrija Bernik je docent. Njegova e-mail adresa je..."
+    
+    7. You can answer questions about both rooms/facilities and teachers (their contact info, offices, etc.).
+    
+    Make sure ALL contact information (emails, phones, room numbers, web links) in your response are formatted as clickable links and use gender-appropriate Croatian grammar.
     ----------------
     {context}`;
 
