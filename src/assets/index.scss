@@ -65,7 +65,7 @@ body {
   }
 }
 
-.link-button{
+.link-button {
   padding: 0;
   color: var(--color-text);
   background: transparent;
@@ -83,6 +83,7 @@ body {
   background: #cccccc5b;
   height: 100vh;
   width: 100vw;
+  z-index: 2;
 }
 
 .info-button {

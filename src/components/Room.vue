@@ -26,5 +26,6 @@ const roomsStore = useRoomsStore();
 
 const selectRoom = () => {
     roomsStore.selectRoom(props.room);
+    roomsStore.openModal();
 };
 </script>

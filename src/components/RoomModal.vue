@@ -14,13 +14,13 @@
                 </div>
             </div>
         </div>
-        <Button v-if="roomsStore?.currentRoom" variant="icon" @click="roomsStore.deselectRoom">
+        <Button v-if="roomsStore?.currentRoom" variant="icon" @click="roomsStore.closeModal">
             <template #icon>
                 <Icon name="close" />
             </template>
         </Button>
     </div>
-    <div v-if="roomsStore?.currentRoom" class="overlay" @click="roomsStore.deselectRoom" />
+    <div v-if="roomsStore?.currentRoom" class="overlay" @click="roomsStore.closeModal" />
 </template>
 
 <script setup>

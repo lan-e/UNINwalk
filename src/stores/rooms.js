@@ -85,10 +85,20 @@ export const useRoomsStore = defineStore("rooms", () => {
 
   function openModal() {
     isModalOpen.value = true;
+
+    const isScrollable =
+      document.documentElement.scrollHeight > window.innerHeight;
+    if (isScrollable) {
+      document.body.classList.add("has-scroll");
+    }
   }
 
   function deselectRoom() {
     currentRoom.value = null;
+    closeModal();
+  }
+
+  function closeModal() {
     isModalOpen.value = false;
     document.body.classList.remove("has-scroll");
   }
@@ -102,5 +112,6 @@ export const useRoomsStore = defineStore("rooms", () => {
     setupRoomClickListener,
     openModal,
     deselectRoom,
+    closeModal,
   };
 });

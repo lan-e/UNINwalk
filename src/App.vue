@@ -3,50 +3,47 @@
     <LoadingSpinner :message="loadingMessage" />
   </div>
   <template v-else>
-    <header>
-      <div class="wrapper">
-        <nav>
-          <RouterLink to="/">
-            <img v-if="isMobile" alt="logo" src="@/assets/logo-mobile.svg" />
-            <img v-else-if="locale === 'en'" src="@/assets/logo-en.svg" alt="">
-            <img v-else alt="logo" src="@/assets/logo.svg" />
-          </RouterLink>
-          <div class="navigation">
-            <RouterLink to="/">{{ $t('home') }}</RouterLink>
-            <div v-if="isMobile">
-              <div class="dropdown">
-                <button class="dropdown-button" @click="toggleDropdown">
-                  UNIN
-                  <Icon name="arrow_drop_down" style="font-size:12px" />
-                </button>
-                <div class="dropdown-content" v-show="showDropdown">
-                  <RouterLink to="/unin1" @click="showDropdown = false">UNIN1</RouterLink>
-                  <RouterLink to="/unin2" @click="showDropdown = false">UNIN2</RouterLink>
-                  <RouterLink to="/unin3" @click="showDropdown = false">UNIN3</RouterLink>
+    <div @click="handleClickOutsideRoom">
+      <header>
+        <div class="wrapper">
+          <nav>
+            <RouterLink to="/">
+              <img v-if="isMobile" alt="logo" src="@/assets/logo-mobile.svg" />
+              <img v-else-if="locale === 'en'" src="@/assets/logo-en.svg" alt="">
+              <img v-else alt="logo" src="@/assets/logo.svg" />
+            </RouterLink>
+            <div class="navigation">
+              <RouterLink to="/">{{ $t('home') }}</RouterLink>
+              <div v-if="isMobile">
+                <div class="dropdown">
+                  <button class="dropdown-button" @click="toggleDropdown">
+                    UNIN
+                    <Icon name="arrow_drop_down" style="font-size:12px" />
+                  </button>
+                  <div class="dropdown-content" v-show="showDropdown">
+                    <RouterLink to="/unin1" @click="showDropdown = false">UNIN1</RouterLink>
+                    <RouterLink to="/unin2" @click="showDropdown = false">UNIN2</RouterLink>
+                    <RouterLink to="/unin3" @click="showDropdown = false">UNIN3</RouterLink>
+                  </div>
                 </div>
               </div>
+              <template v-else>
+                <RouterLink to="/unin1">UNIN1</RouterLink>
+                <RouterLink to="/unin2">UNIN2</RouterLink>
+                <RouterLink to="/unin3">UNIN3</RouterLink>
+              </template>
+              <RouterLink to="/teachers">{{ $t('teachers') }}</RouterLink>
+              <ToggleTheme />
+              <LanguageSwitcher />
             </div>
-            <template v-else>
-              <RouterLink to="/unin1">UNIN1</RouterLink>
-              <RouterLink to="/unin2">UNIN2</RouterLink>
-              <RouterLink to="/unin3">UNIN3</RouterLink>
-            </template>
-            <RouterLink to="/teachers">{{ $t('teachers') }}</RouterLink>
-            <ToggleTheme />
-            <LanguageSwitcher />
-          </div>
-        </nav>
-      </div>
-    </header>
+          </nav>
+        </div>
+      </header>
 
-    <RouterView />
+      <RouterView />
 
-    <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
-    <Button v-if="roomsStore?.currentRoom" @click="openModal" suffix="Info" class="info-button">
-      <template #icon>
-        <Icon name="info" />
-      </template>
-    </Button>
+      <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
+    </div>
   </template>
 </template>
 
@@ -86,14 +83,20 @@ const updateIsMobile = () => {
   isMobile.value = checkIsMobile();
 }
 
-function openModal() {
-  roomsStore.openModal();
-
-  const isScrollable = document.documentElement.scrollHeight > window.innerHeight;
-  if (isScrollable) {
-    document.body.classList.add("has-scroll");
+const handleClickOutsideRoom = (event) => {
+  if (roomsStore?.currentRoom) {
+    // check if the click was on a room, modal or modal overlay
+    const isRoomClick = event.target.closest('[id^="room-"]');
+    const isModalClick = event.target.closest('.modal');
+    const isModalOverlayClick = event.target.closest('.overlay');
+    
+    // deselect room if click is outside room, modal, and modal overlay
+    if (!isRoomClick && !isModalClick && !isModalOverlayClick) {
+      roomsStore.deselectRoom();
+      roomsStore.closeModal();
+    }
   }
-}
+};
 
 async function initializeChatbotWithLoading() {
   try {
