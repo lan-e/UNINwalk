@@ -61,21 +61,23 @@ export async function initializeChatbot() {
 
     // Step 3: Create documents from both room data and professor data
     initializationStatus.status = t("loading_message");
-    
+
     // Create documents for room data
     const roomDocs = data.map(
-      (obj) => new Document({ 
-        pageContent: JSON.stringify(obj),
-        metadata: { type: "room" }
-      })
+      (obj) =>
+        new Document({
+          pageContent: JSON.stringify(obj),
+          metadata: { type: "room" },
+        })
     );
 
     // Create documents for professor data
     const teachersDocs = teachersData.map(
-      (professor) => new Document({ 
-        pageContent: JSON.stringify(professor),
-        metadata: { type: "teacher" }
-      })
+      (professor) =>
+        new Document({
+          pageContent: JSON.stringify(professor),
+          metadata: { type: "teacher" },
+        })
     );
 
     // Combine all documents
@@ -83,7 +85,10 @@ export async function initializeChatbot() {
 
     // Step 4: Create vector store (this is the longest step)
     initializationStatus.status = t("loading_message");
-    const vectorStore = await MemoryVectorStore.fromDocuments(allDocs, embeddings);
+    const vectorStore = await MemoryVectorStore.fromDocuments(
+      allDocs,
+      embeddings
+    );
 
     // Step 5: Initialize retriever
     initializationStatus.status = t("loading_message");
@@ -91,15 +96,17 @@ export async function initializeChatbot() {
 
     // Step 6: Create prompt template
     initializationStatus.status = "Configuring chatbot chain...";
-    const SYSTEM_TEMPLATE = `You are a chatbot that answers student questions about University North information, room numbers and teachers information.
+    const SYSTEM_TEMPLATE = `You are a chatbot that answers student questions about University North information, toilets (or WC), room numbers and teachers information.
     Use the following pieces of context to answer the question at the end.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.
+    For rooms that do not exist, just answer they do not exist.
     
     VERY IMPORTANT FORMATTING RULES:
     1. Room numbers: Format ALL room numbers as clickable navigation links:
        <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="ROOM_NUMBER">ROOM_NUMBER</a>
        
-       For example: Predavaona <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="112">K-112</a> nalazi se u UNIN2.
+       For example, if room is 112 which is inside UNIN2-1 or UNIN2-2, in both case route will be /unin2:
+       Predavaona <a href="javascript:void(0)" class="router-link" data-route="/unin2" data-room="112">K-112</a> nalazi se u UNIN2.
     
     2. Teacher rooms: Format teacher room numbers as clickable links using their room_route:
        For example, if teacher is in room 27 with room_route "/unin1":

@@ -292,5 +292,29 @@
     "name": "K-115",
     "type": "PREDAVAONICA",
     "building": "UNIN2-2"
+  },
+  {
+    "id": "toilets1",
+    "name": "TOILETS",
+    "type": "",
+    "building": "UNIN1-1"
+  },
+  {
+    "id": "toilets2",
+    "name": "TOILETS",
+    "type": "",
+    "building": "UNIN1-2"
+  },
+  {
+    "id": "toilets3",
+    "name": "TOILETS",
+    "type": "",
+    "building": "UNIN2-1"
+  },
+  {
+    "id": "toilets4",
+    "name": "TOILETS",
+    "type": "",
+    "building": "UNIN2-2"
   }
 ]
