@@ -17,7 +17,7 @@
   margin: 20px 0;
 }
 
-.room {
+.clickable {
   cursor: pointer;
   transition: fill 0.3s ease;
 
@@ -28,4 +28,13 @@
   &.selected rect {
     fill: #dfaaaa;
   }
+}
+
+.room-name {
+  font-size: 10px;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  color: #000;
 }

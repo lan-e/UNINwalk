@@ -1,6 +1,6 @@
 <template>
     <g :id="'room-' + room.id" @click="selectRoom"
-        :class="['room', { selected: roomsStore?.currentRoom?.id === room.id }]">
+        :class="['room', { selected: roomsStore?.currentRoom?.id === room.id }, { clickable: isClickable}]">
         <svg width="1131" height="323" x="9.69" y="53.71" viewBox="0 0 1131 323" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
@@ -11,9 +11,16 @@
         <text :x="room.x + room.width / 2" :y="room.y + 30" font-weight="bold" text-anchor="middle">
             {{ room.name }}
         </text>
-        <text v-if="room.type" :x="room.x + room.width / 2" :y="room.y + 50" font-size="12" text-anchor="middle">
+        <foreignObject
+            v-if="room.type"
+            :x="room.x + 5"
+            :y="room.y + 40"
+            :width="room.width - 10"
+            :height="room.height - 50"
+            class="room-name"
+        >
             {{ room.type }}
-        </text>
+        </foreignObject>
         <ToiletsIcon v-if="room.id.includes('toilets')" :x="room.x + 14" :y="room.y" />
         <StairsIconFloorOne v-if="room.id.includes('ground_stairs')" :x="room.x" :y="room.y" />
         <StairsIconGroundFloor v-if="room.id.includes('floor_stairs')" :x="room.x" :y="room.y" />
@@ -34,9 +41,10 @@ const props = defineProps({
 });
 
 const roomsStore = useRoomsStore();
+const isClickable = !props.room.id.includes('toilets') && !props.room.id.includes('_stairs');
 
 const selectRoom = () => {
-    if(props.room.id.includes('toilets') || props.room.id.includes('_stairs')) return
+    if(!isClickable) return
     roomsStore.selectRoom(props.room);
     roomsStore.openModal();
 };
