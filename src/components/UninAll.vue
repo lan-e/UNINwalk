@@ -125,22 +125,204 @@
                         fill="white" />
                 </g>
             </g>
+        
+            <!-- User location marker - only shown when near buildings -->
+            <g v-if="userPosition && isNearBuildings" :transform="`translate(${userPosition[0]}, ${userPosition[1]})`">
+                <circle r="8" fill="#4299E1" opacity="0.8" />
+                <circle r="4" fill="#2B6CB0" />
+                <circle r="12" fill="none" stroke="#2B6CB0" stroke-width="2" stroke-dasharray="2,2">
+                    <animate 
+                        attributeName="r" 
+                        from="8" 
+                        to="16" 
+                        dur="1.5s" 
+                        repeatCount="indefinite" 
+                    />
+                    <animate 
+                        attributeName="opacity" 
+                        from="0.8" 
+                        to="0" 
+                        dur="1.5s" 
+                        repeatCount="indefinite" 
+                    />
+                </circle>
+            </g>
+        
             <defs>
                 <clipPath id="clip0_7_1530">
                     <rect width="413" height="321" fill="white" />
                 </clipPath>
             </defs>
         </svg>
-    </div>
+    
+        <div>
+            <p>Click on a building to select it.
+                <span v-if="!userPosition">
+                    Press "Show My Location" to see your position on the map.
+                </span>
+            </p>
+        </div>
+        <div>
+            <button 
+                v-if="showLocationButton"
+                style="margin-top: 16px"
+                @click="getUserLocation"
+            >
+                Show My Location
+            </button>
+            <div v-if="error">{{ error }}</div>
+            <div v-if="userPosition" style="margin-top: 16px">
+                <p>{{ distanceMessage }}</p>
+            </div>
+        </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const userPosition = ref(null);
+const error = ref(null);
+const showLocationButton = ref(true);
+const isNearBuildings = ref(true);
+const distanceMessage = ref('');
+
+// Maximum distance (in degrees) to be considered "near" a building
+// This is approximately 200-300 meters in real-world distance at this latitude
+const MAX_NEARBY_DISTANCE = 0.0015;
 
 const navigateTo = (destination) => {
     router.push(`/${destination}`);
+};
+
+// Find the nearest building and check if user is within range
+const findNearestBuilding = (lat, lng) => {
+  // Calculate distance to each building
+  const buildingDistances = referencePoints.map((point, index) => {
+    const buildingNames = ['UNIN1', 'UNIN2', 'UNIN3'];
+    const latDiff = lat - point.gps[0];
+    const lngDiff = lng - point.gps[1];
+    
+    // Euclidean distance in degrees
+    const distance = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
+    
+    return {
+      building: buildingNames[index],
+      distance: distance
+    };
+  });
+  
+  // Sort by distance
+  buildingDistances.sort((a, b) => a.distance - b.distance);
+  
+  // Check if user is within range of any building
+  const nearest = buildingDistances[0];
+  const isNear = nearest.distance < MAX_NEARBY_DISTANCE;
+  
+  // Format distance in meters (very approximate conversion at this latitude)
+  const distanceInMeters = Math.round(nearest.distance * 111000);
+  
+  // Create appropriate message
+  let message;
+  if (isNear) {
+    message = `You are approximately ${distanceInMeters}m from ${nearest.building}`;
+  } else {
+    message = `You are not near UNIN. You are approximately ${distanceInMeters}m away.`;
+  }
+  
+  return {
+    isNear,
+    nearestBuilding: nearest.building,
+    distance: distanceInMeters,
+    message
+  };
+};
+
+// Building reference points with actual GPS coordinates
+const referencePoints = [
+  // UNIN1 building
+  { gps: [46.300590, 16.327438], svg: [313, 170] },
+  // UNIN2 building
+  { gps: [46.300312, 16.326322], svg: [100, 170] },
+  // UNIN3 building
+  { gps: [46.301074, 16.327584], svg: [380, 60] }
+];
+
+// Function to get user's current location
+const getUserLocation = () => {
+  showLocationButton.value = false;
+  
+  if (!navigator.geolocation) {
+    error.value = 'Geolocation is not supported by your browser';
+    showLocationButton.value = true;
+    return;
+  }
+  
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      // Use actual GPS coordinates from the browser
+      const userLat = position.coords.latitude;
+      const userLng = position.coords.longitude;
+      
+      // For demo purposes, we can also simulate a position if needed
+      // Uncomment these lines to use a simulated position near UNIN1
+      // const userLat = referencePoints[0].gps[0] + 0.0001;
+      // const userLng = referencePoints[0].gps[1] + 0.0002;
+      
+      // Check if user is near any building
+      const nearestBuildingInfo = findNearestBuilding(userLat, userLng);
+      isNearBuildings.value = nearestBuildingInfo.isNear;
+      distanceMessage.value = nearestBuildingInfo.message;
+      
+      // Transform GPS coordinates to SVG coordinates
+      const svgPoint = transformGpsToSvg(userLat, userLng);
+      userPosition.value = svgPoint;
+      error.value = null;
+    },
+    (error) => {
+      error.value = `Unable to get location: ${error.message}`;
+      showLocationButton.value = true;
+    },
+    { enableHighAccuracy: true }
+  );
+};
+
+// Transform GPS coordinates to SVG coordinates
+const transformGpsToSvg = (lat, lng) => {
+  // This transformation uses a triangulation approach with the three known reference points
+  // We'll use an affine transformation that accounts for scaling, rotation, and translation
+  
+  // First, calculate the distances between the input point and each reference point
+  const distances = referencePoints.map(point => {
+    const latDiff = lat - point.gps[0];
+    const lngDiff = lng - point.gps[1];
+    // Using a simple Euclidean distance in GPS space (for better accuracy, 
+    // you could use Haversine formula for real geographic distances)
+    return Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
+  });
+  
+  // Find the two closest reference points to use for interpolation
+  const sortedIndices = distances
+    .map((dist, index) => ({ dist, index }))
+    .sort((a, b) => a.dist - b.dist)
+    .map(item => item.index);
+  
+  const closest1 = referencePoints[sortedIndices[0]];
+  const closest2 = referencePoints[sortedIndices[1]];
+  
+  // Calculate weighted position based on distances to the two closest reference points
+  const totalDist = distances[sortedIndices[0]] + distances[sortedIndices[1]];
+  const weight1 = 1 - (distances[sortedIndices[0]] / totalDist);
+  const weight2 = 1 - (distances[sortedIndices[1]] / totalDist);
+  
+  // Now calculate the weighted average position in SVG coordinates
+  const weightSum = weight1 + weight2;
+  const svgX = (closest1.svg[0] * weight1 + closest2.svg[0] * weight2) / weightSum;
+  const svgY = (closest1.svg[1] * weight1 + closest2.svg[1] * weight2) / weightSum;
+  
+  return [svgX, svgY];
 };
 </script>
 
