@@ -10,6 +10,11 @@ const messages = {
     floor2: "First floor",
     initializing_llm_message: "Initializing chatbot...",
     loading_message: "Loading chatbot...",
+    your_location_button: "Current Location",
+    building_info_message: "Click on a building to select it.",
+    map_instructions: "Press \"Current Location\" to see your position on the map.",
+    location_nearby: "You are approximately {distance}m from {building}",
+    location_far: "You are not near UNIN. You are approximately {distance}m away.",
   },
   hr: {
     home: "Početna",
@@ -20,6 +25,11 @@ const messages = {
     floor2: "1. kat",
     initializing_llm_message: "Inicijalizacija chatbot asistenta...",
     loading_message: "Učitavanje chatbot asistenta...",
+    your_location_button: "Trenutna lokacija",
+    building_info_message: "Pritisnite na zgradu za prikaz tlocrta predavaona.",
+    map_instructions: "Pritisnite \"Trenutna lokacija\" za prikaz svoje lokacije na mapi.",
+    location_nearby: "Nalazite se {distance}m od {building}-a",
+    location_far: "Ne nalazite se blizu UNIN. Udaljeni ste otprilike {distance}m.",
   },
 };
 

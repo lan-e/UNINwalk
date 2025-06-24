@@ -156,9 +156,9 @@
         </svg>
     
         <div>
-            <p>Click on a building to select it.
+            <p>{{ $t('building_info_message') }}
                 <span v-if="!userPosition">
-                    Press "Show My Location" to see your position on the map.
+                    {{ $t('map_instructions') }}
                 </span>
             </p>
         </div>
@@ -168,11 +168,26 @@
                 style="margin-top: 16px"
                 @click="getUserLocation"
             >
-                Show My Location
+                {{ $t('your_location_button') }}
             </button>
             <div v-if="error">{{ error }}</div>
-            <div v-if="userPosition" style="margin-top: 16px">
-                <p>{{ distanceMessage }}</p>
+            <div v-if="userPosition">
+                <p v-if="isNearBuildings">
+                    {{
+                        t('location_nearby', { 
+                            distance: nearestBuildingInfo?.distance, 
+                            building: nearestBuildingInfo?.nearestBuilding 
+                        })
+                    }}
+                </p>
+                <p v-else>
+                    {{
+                        t('location_far', { 
+                            distance: nearestBuildingInfo?.distance, 
+                            building: nearestBuildingInfo?.nearestBuilding
+                        })
+                    }}
+                </p>
             </div>
         </div>
   </div>
@@ -180,14 +195,16 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
+const { t } = useI18n();
 const router = useRouter();
 const userPosition = ref(null);
 const error = ref(null);
 const showLocationButton = ref(true);
 const isNearBuildings = ref(true);
-const distanceMessage = ref('');
+const nearestBuildingInfo = ref({})
 
 // Maximum distance (in degrees) to be considered "near" a building
 // This is approximately 200-300 meters in real-world distance at this latitude
@@ -224,19 +241,10 @@ const findNearestBuilding = (lat, lng) => {
   // Format distance in meters (very approximate conversion at this latitude)
   const distanceInMeters = Math.round(nearest.distance * 111000);
   
-  // Create appropriate message
-  let message;
-  if (isNear) {
-    message = `You are approximately ${distanceInMeters}m from ${nearest.building}`;
-  } else {
-    message = `You are not near UNIN. You are approximately ${distanceInMeters}m away.`;
-  }
-  
   return {
     isNear,
     nearestBuilding: nearest.building,
     distance: distanceInMeters,
-    message
   };
 };
 
@@ -272,9 +280,8 @@ const getUserLocation = () => {
       // const userLng = referencePoints[0].gps[1] + 0.0002;
       
       // Check if user is near any building
-      const nearestBuildingInfo = findNearestBuilding(userLat, userLng);
+      nearestBuildingInfo.value = findNearestBuilding(userLat, userLng);
       isNearBuildings.value = nearestBuildingInfo.isNear;
-      distanceMessage.value = nearestBuildingInfo.message;
       
       // Transform GPS coordinates to SVG coordinates
       const svgPoint = transformGpsToSvg(userLat, userLng);
