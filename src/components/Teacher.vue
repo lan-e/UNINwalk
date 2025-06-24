@@ -15,7 +15,7 @@
                 <a v-if="info.web" :href="info.web" target="_blank">
                     <Icon name="language" />
                 </a>
-                <button type="button" :data-route="info.room_route" :data-room="info.room" class="router-link link-button">
+                <button v-if="info.room" type="button" :data-route="info.room_route" :data-room="info.room" class="router-link link-button">
                     <Icon name="meeting_room" />
                     K-{{ info.room }}
                 </button>

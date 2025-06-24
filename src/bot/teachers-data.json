@@ -19,7 +19,7 @@
     "email": "jelena.vlasic@unin.hr",
     "image": "teacher2.png",
     "phone": "042/493-371",
-    "web": "https://scholar.google.hr/citations?user=BqihCmsAAAAJ&hl=hr",
+    "web": "https://scholar.google.hr/citations?user=BqihCmsAAAAJ",
     "room": "27",
     "room_route": "/unin1"
   },
@@ -30,8 +30,42 @@
     "title": "docent, dr. sc.",
     "email": "andrija.bernik@unin.hr",
     "image": "teacher3.png",
-    "web": "https://scholar.google.hr/citations?user=XP-ercgAAAAJ&hl=en&oi=ao",
+    "web": "https://scholar.google.hr/citations?user=XP-ercgAAAAJ",
     "room": "34",
+    "room_route": "/unin1"
+  },
+  {
+    "id": "teach4",
+    "type": "TEACHER",
+    "name": "Emil Dumić",
+    "title": "dr. sc.",
+    "email": "emil.dumic@unin.hr",
+    "image": "teacher4.jpg",
+    "web": "https://scholar.google.hr/citations?user=inIKfK4AAAAJ",
+    "room": "",
+    "room_route": ""
+  },
+  {
+    "id": "teach5",
+    "type": "TEACHER",
+    "name": "Robert Geček",
+    "title": "dr. sc.",
+    "email": "robert.gecek@unin.hr",
+    "image": "teacher5.jpg",
+    "phone": "042/493-365",
+    "web": "",
+    "room": "24",
+    "room_route": "/unin1"
+  },
+  {
+    "id": "teach6",
+    "type": "TEACHER",
+    "name": "Mario Periša",
+    "title": "dr. sc.",
+    "email": "mario.perisa@unin.hr",
+    "image": "teacher6.jpg",
+    "web": "https://scholar.google.hr/citations?user=jVkX20QAAAAJ",
+    "room": "27",
     "room_route": "/unin1"
   }
 ]
