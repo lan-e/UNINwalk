@@ -9,10 +9,14 @@
                 </div>
             </div>
         </div>
+        
+        <div v-if="isLoading">
+            <LoadingSpinner :message="loadingMessage" />
+        </div>
 
         <div class="chat-input">
             <input v-model="userInput" @keyup.enter="sendMessage" :placeholder="$t('bot_input_message')"
-                :disabled="isTyping" />
+                :disabled="isTyping || isLoading" />
             <button @click="sendMessage" :disabled="!userInput || isTyping">
                 <Icon name="send" />
             </button>
@@ -27,6 +31,7 @@ import { useRouter } from 'vue-router'
 import Icon from './UI/Icon.vue'
 import { getChatbotAnswer } from '@/bot/chatbot'
 import { useI18n } from 'vue-i18n'
+import LoadingSpinner from './UI/LoadingSpinner.vue'
 
 const { t } = useI18n();
 const messages = ref([])
@@ -35,6 +40,15 @@ const isTyping = ref(false)
 const messagesContainer = ref(null)
 const roomsStore = useRoomsStore()
 const router = useRouter()
+
+const props = defineProps({
+    isLoading: {
+        type: Boolean,
+    },
+    loadingMessage: {
+        type: String
+    }
+});
 
 // Computed property that includes initial message
 const displayMessages = computed(() => {

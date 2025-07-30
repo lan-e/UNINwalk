@@ -1,8 +1,4 @@
 <template>
-  <div v-if="isLoading">
-    <LoadingSpinner :message="loadingMessage" />
-  </div>
-  <template v-else>
     <Login v-if="!userEmail" @login-success="handleLoginSuccess" />
     <div v-else @click="handleClickOutsideRoom">
       <header>
@@ -56,11 +52,10 @@
         </div>
       </header>
 
-      <RouterView />
+      <RouterView :isLoading="isLoading" :loadingMessage="loadingMessage"/>
 
       <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
     </div>
-  </template>
 </template>
 
 <script setup>
