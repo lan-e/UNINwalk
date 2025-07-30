@@ -67,15 +67,19 @@
   }
 }
 
-.theme-toggle {
+.theme-toggle-button {
   background: none;
+  gap: 4px;
   cursor: pointer;
   padding: 8px;
-  border-radius: 50%;
+  border-radius: 4px;
   color: var(--color-text);
-  transition: background-color 0.3s;
 
   &:hover {
     background-color: var(--color-background-mute);
+  }
+
+  .active {
+    color: #e30613;
   }
 }
