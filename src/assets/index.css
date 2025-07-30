@@ -64,11 +64,13 @@
   }
 }
 .theme-toggle-button {
-  background: none;
+  display: flex;
   gap: 4px;
+  background: none;
   cursor: pointer;
   padding: 8px;
   border-radius: 4px;
+  border: none;
   color: var(--color-text);
 }
 .theme-toggle-button:hover {
@@ -128,6 +130,22 @@
   border: 1px solid #ddd;
   border-radius: 8px;
 }
+.chatbot-container button {
+  display: flex;
+  align-items: center;
+  background: #e30613;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.chatbot-container button:hover {
+  background: #c82333;
+}
+.chatbot-container button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 
 .chat-messages {
   display: flex;
@@ -180,21 +198,6 @@ input {
   border: 1px solid #ddd;
   border-radius: 4px;
   outline: none;
-}
-
-button {
-  display: flex;
-  align-items: center;
-  background: #e30613;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
 }
 
 nav {
@@ -260,10 +263,10 @@ nav hr {
 nav .user-profile {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 4px 8px;
   gap: 8px;
   text-transform: initial;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--color-text-secondary);
 }
 nav .dropdown-content {
@@ -358,21 +361,23 @@ nav .dropdown-content a:hover {
 .face-login-container {
   color: var(--color-text);
   background: var(--color-background);
+  height: 100vh;
+  width: 100vw;
+}
+.face-login-container .face-login-content {
   padding: 20px;
   position: absolute;
   left: 50%;
   transform: translate(-50%);
 }
-.face-login-container .login-page-image {
+.face-login-container .face-login-content .login-page-image {
   width: 150px;
   margin: 24px 0;
 }
-
-.header {
+.face-login-container .header {
   text-align: center;
 }
-
-.buttons-wrapper {
+.face-login-container .buttons-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -380,7 +385,7 @@ nav .dropdown-content a:hover {
   gap: 8px;
   margin-top: 15px;
 }
-.buttons-wrapper .buttons {
+.face-login-container .buttons-wrapper .buttons {
   display: flex;
   gap: 8px;
 }
@@ -599,11 +604,14 @@ body.has-scroll {
 }
 
 .link-button {
+  display: flex;
+  align-items: center;
   padding: 0;
   color: var(--color-text);
   background: transparent;
   height: -moz-max-content;
   height: max-content;
+  border: none;
 }
 .link-button:hover {
   color: #e30613;

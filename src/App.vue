@@ -1,8 +1,4 @@
 <template>
-  <div v-if="isLoading">
-    <LoadingSpinner :message="loadingMessage" />
-  </div>
-  <template v-else>
     <Login v-if="!userEmail" @login-success="handleLoginSuccess" />
     <div v-else @click="handleClickOutsideRoom">
       <header>
@@ -43,7 +39,7 @@
                 <div class="dropdown-content settings" v-show="showSettingsDropdown">
                   <span class="user-profile">
                     <span class="user-email">{{ userEmail }}</span>
-                    <Icon @click="logout" name="logout" style="font-size:20px;cursor: pointer;"/>
+                    <Icon @click="logout" name="logout" style="font-size:16px;cursor: pointer;"/>
                   </span>
                   <hr />
                   <ToggleTheme />
@@ -56,11 +52,10 @@
         </div>
       </header>
 
-      <RouterView />
+      <RouterView :isLoading="isLoading" :loadingMessage="loadingMessage" />
 
       <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
     </div>
-  </template>
 </template>
 
 <script setup>
@@ -69,9 +64,7 @@ import { RouterLink, RouterView } from 'vue-router';
 import ToggleTheme from './components/ToggleTheme.vue';
 import { useRoomsStore } from './stores/rooms';
 import RoomModal from './components/RoomModal.vue';
-import Button from './components/UI/Button.vue';
 import Icon from './components/UI/Icon.vue';
-import LoadingSpinner from './components/UI/LoadingSpinner.vue';
 import { initializeChatbot, getInitializationStatus } from './bot/chatbot.js';
 import LanguageSwitcher from './components/LanguageSwitcher.vue';
 import { useI18n } from 'vue-i18n';
@@ -105,16 +98,29 @@ const handleLoginSuccess = (email) => {
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
+  if (showDropdown.value) {
+    showSettingsDropdown.value = false;
+  }
 };
 
 const toggleSettingsDropdown = () => {
   showSettingsDropdown.value = !showSettingsDropdown.value;
+  if (showSettingsDropdown.value) {
+    showDropdown.value = false;
+  }
 };
 
 const closeDropdownOnClickOutside = (event) => {
-  const dropdown = document.querySelector('.dropdown');
-  if (dropdown && !dropdown.contains(event.target) && showDropdown.value) {
+  const dropdownButtons = document.querySelectorAll('.dropdown-button');
+  const dropdownContents = document.querySelectorAll('.dropdown-content');
+
+  const clickedInsideDropdown = [...dropdownButtons, ...dropdownContents].some(el =>
+    el.contains(event.target)
+  );
+
+  if (!clickedInsideDropdown) {
     showDropdown.value = false;
+    showSettingsDropdown.value = false;
   }
 };
 

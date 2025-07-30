@@ -1,140 +1,135 @@
 <template>
   <div class="face-login-container">
-    <div class="header">
-      <h1>UNINwalk</h1>
-      <img src="../assets/logo-mobile.svg" class="login-page-image" alt="">
-      <h3>Register/login or continue as a guest.</h3>
-      
-      <div class="buttons-wrapper">
-        <div class="buttons">
-          <Button
-            suffix="Login"
-            @click="mode = 'login'"
-            :class="{ active: mode === 'login' }"
-          />
-          <Button 
-            suffix="New here? Register"
-            variant="secondary"
-            @click="mode = 'register'" 
-            :class="{ active: mode === 'register' }"
-          />
-        </div>
-        <Button
-          suffix="Continue as a guest"
-          @click="continueAsGuest"
-        />
-      </div>
-    </div>
-
-    <div class="loading-status" v-if="!modelsLoaded">
-      <p>Loading face recognition models... {{ loadingProgress }}</p>
-      <div class="loading-bar">
-        <div class="loading-fill" :style="{ width: loadingProgress }"></div>
-      </div>
-    </div>
-
-    <div v-if="modelsLoaded" class="camera-section">
-      <video 
-        ref="videoElement" 
-        autoplay 
-        muted 
-        playsinline
-        v-show="showCamera"
-        @loadedmetadata="onVideoLoaded"
-      ></video>
-      
-      <canvas 
-        ref="canvasElement" 
-        class="overlay-canvas"
-        v-show="showCamera"
-      ></canvas>
-      
-      <div v-if="capturedImage" class="captured-image">
-        <img :src="capturedImage" alt="Captured face" />
-        <Button suffix="Retake Photo" @click="retakePhoto" class="retake-button" />
-      </div>
-    </div>
-
-    <!-- Registration Form -->
-    <div v-if="mode === 'register' && modelsLoaded" class="register-form">
-      <div class="form-group">
-        <label for="studentEmail">Email:</label>
-        <input 
-          id="studentEmail"
-          v-model="studentEmail" 
-          type="email" 
-          placeholder="Enter email address"
-          :disabled="processing"
-        />
-      </div>
-      
-      <div class="form-group">
-        <label for="studentName">Name:</label>
-        <input 
-          id="studentName"
-          v-model="studentName" 
-          type="text" 
-          placeholder="Enter full name"
-          :disabled="processing"
-        />
-      </div>
-    </div>
-
-    <div v-if="modelsLoaded && (mode === 'register' || mode === 'login')">
-      <Button
-        v-if="!showCamera && !capturedImage"
-        suffix="Start camera" 
-        :disabled="processing"
-        @click="startCamera" 
-      />
-      <Button 
-        v-if="showCamera"
-        suffix="Capture photo"
-        :disabled="processing"
-        @click="capturePhoto"
-      />
-      
-      <Button
-        v-if="capturedImage"
-        :suffix="mode === 'login' ? 'Login' : 'Register Student'"
-        :disabled="processing || (mode === 'register' && (!studentEmail || !studentName))"
-        @click="submitPhoto" 
-      />
-    </div>
-
-    <div class="status" v-if="status">
-      <div :class="['status-message', statusType]">
-        {{ status }}
-      </div>
-    </div>
-
-    <div v-if="loginResult" class="login-result">
-      <div v-if="loginResult.success" class="success-result">
-        <h3>Login Successful!</h3>
-        <p><strong>Welcome:</strong> {{ loginResult.student.name }}</p>
-        <p><strong>Email:</strong> {{ loginResult.student.email }}</p>
-        <p><strong>Confidence:</strong> {{ (loginResult.confidence * 100).toFixed(1) }}%</p>
-      </div>
-      <div v-else class="error-result">
-        <h3>Login Failed</h3>
-        <p>{{ loginResult.message }}</p>
-      </div>
-    </div>
-
-    <!-- Students List -->
-    <div v-if="modelsLoaded" class="students-section">
-      <h3>Registered Students ({{ Object.keys(registeredStudents).length }})</h3>
-      <div v-if="Object.keys(registeredStudents).length > 0" class="students-list">
-        <div v-for="(student, email) in registeredStudents" :key="email" class="student-card">
-          <div>
-            <strong>{{ student.name }}</strong><br>
-            <small>Email: {{ email }}</small><br>
-            <small>Registered: {{ new Date(student.registeredAt).toLocaleString() }}</small>
+    <div class="face-login-content">
+      <div class="header">
+        <h1>UNINwalk</h1>
+        <img src="../assets/logo-mobile.svg" class="login-page-image" alt="">
+        <h3>Register/login or continue as a guest.</h3>
+    
+        <div class="buttons-wrapper">
+          <div class="buttons">
+            <Button
+              suffix="Login"
+              @click="mode = 'login'"
+              :class="{ active: mode === 'login' }"
+            />
+            <Button
+              suffix="New here? Register"
+              variant="secondary"
+              @click="mode = 'register'"
+              :class="{ active: mode === 'register' }"
+            />
           </div>
-          <Button suffix="Delete" @click="deleteStudent(email)" class="delete-btn" />
+          <Button
+            suffix="Continue as a guest"
+            @click="continueAsGuest"
+          />
         </div>
       </div>
-      <p v-else>No students registered yet.</p>
+      <div class="loading-status" v-if="!modelsLoaded">
+        <p>Loading face recognition models... {{ loadingProgress }}</p>
+        <div class="loading-bar">
+          <div class="loading-fill" :style="{ width: loadingProgress }"></div>
+        </div>
+      </div>
+      <div v-if="modelsLoaded" class="camera-section">
+        <video
+          ref="videoElement"
+          autoplay
+          muted
+          playsinline
+          v-show="showCamera"
+          @loadedmetadata="onVideoLoaded"
+        ></video>
+    
+        <canvas
+          ref="canvasElement"
+          class="overlay-canvas"
+          v-show="showCamera"
+        ></canvas>
+    
+        <div v-if="capturedImage" class="captured-image">
+          <img :src="capturedImage" alt="Captured face" />
+          <Button suffix="Retake Photo" @click="retakePhoto" class="retake-button" />
+        </div>
+      </div>
+      <!-- Registration Form -->
+      <div v-if="mode === 'register' && modelsLoaded" class="register-form">
+        <div class="form-group">
+          <label for="studentEmail">Email:</label>
+          <input
+            id="studentEmail"
+            v-model="studentEmail"
+            type="email"
+            placeholder="Enter email address"
+            :disabled="processing"
+          />
+        </div>
+    
+        <div class="form-group">
+          <label for="studentName">Name:</label>
+          <input
+            id="studentName"
+            v-model="studentName"
+            type="text"
+            placeholder="Enter full name"
+            :disabled="processing"
+          />
+        </div>
+      </div>
+      <div v-if="modelsLoaded && (mode === 'register' || mode === 'login')">
+        <Button
+          v-if="!showCamera && !capturedImage"
+          suffix="Start camera"
+          :disabled="processing"
+          @click="startCamera"
+        />
+        <Button
+          v-if="showCamera"
+          suffix="Capture photo"
+          :disabled="processing"
+          @click="capturePhoto"
+        />
+    
+        <Button
+          v-if="capturedImage"
+          :suffix="mode === 'login' ? 'Login' : 'Register Student'"
+          :disabled="processing || (mode === 'register' && (!studentEmail || !studentName))"
+          @click="submitPhoto"
+        />
+      </div>
+      <div class="status" v-if="status">
+        <div :class="['status-message', statusType]">
+          {{ status }}
+        </div>
+      </div>
+      <div v-if="loginResult" class="login-result">
+        <div v-if="loginResult.success" class="success-result">
+          <h3>Login Successful!</h3>
+          <p><strong>Welcome:</strong> {{ loginResult.student.name }}</p>
+          <p><strong>Email:</strong> {{ loginResult.student.email }}</p>
+          <p><strong>Confidence:</strong> {{ (loginResult.confidence * 100).toFixed(1) }}%</p>
+        </div>
+        <div v-else class="error-result">
+          <h3>Login Failed</h3>
+          <p>{{ loginResult.message }}</p>
+        </div>
+      </div>
+      <!-- Students List -->
+      <div v-if="modelsLoaded" class="students-section">
+        <h3>Registered Students ({{ Object.keys(registeredStudents).length }})</h3>
+        <div v-if="Object.keys(registeredStudents).length > 0" class="students-list">
+          <div v-for="(student, email) in registeredStudents" :key="email" class="student-card">
+            <div>
+              <strong>{{ student.name }}</strong><br>
+              <small>Email: {{ email }}</small><br>
+              <small>Registered: {{ new Date(student.registeredAt).toLocaleString() }}</small>
+            </div>
+            <Button suffix="Delete" @click="deleteStudent(email)" class="delete-btn" />
+          </div>
+        </div>
+        <p v-else>No students registered yet.</p>
+      </div>
     </div>
   </div>
 </template>

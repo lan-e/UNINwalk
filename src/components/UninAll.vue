@@ -163,13 +163,12 @@
             </p>
         </div>
         <div>
-            <button 
+            <Button
                 v-if="showLocationButton"
                 style="margin-top: 16px"
+                :suffix="$t('your_location_button')"
                 @click="getUserLocation"
-            >
-                {{ $t('your_location_button') }}
-            </button>
+            />
             <div v-if="error">{{ error }}</div>
             <div v-if="userPosition">
                 <p v-if="isNearBuildings">
@@ -197,6 +196,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import Button from './UI/Button.vue';
 
 const { t } = useI18n();
 const router = useRouter();

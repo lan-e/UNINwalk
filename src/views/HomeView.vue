@@ -1,13 +1,22 @@
 <template>
   <div class="home-container">
     <UninAll />
-    <Chatbot />
+    <Chatbot :isLoading="isLoading" :loadingMessage="loadingMessage" />
   </div>
 </template>
 
 <script setup>
 import Chatbot from '@/components/Chatbot.vue';
 import UninAll from '@/components/UninAll.vue';
+
+const props = defineProps({
+    isLoading: {
+        type: Boolean
+    },
+    loadingMessage: {
+        type: String
+    }
+})
 </script>
 
 <style>

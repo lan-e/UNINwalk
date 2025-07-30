@@ -20,7 +20,6 @@ defineProps({
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 16rem;
 }
 
 .spinner {
@@ -28,8 +27,8 @@ defineProps({
     border-radius: 50%;
     border: 4px solid #f3f3f3;
     border-top: 4px solid #e30613;
-    height: 4rem;
-    width: 4rem;
+    height: 3rem;
+    width: 3rem;
     margin-bottom: 1rem;
 }
 
