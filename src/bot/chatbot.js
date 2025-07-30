@@ -10,7 +10,6 @@ import data from "./data.json";
 import teachersData from "./teachers-data.json";
 import { Document } from "langchain/document";
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
-import { useI18n } from "vue-i18n";
 
 // Store the chain instance
 let chatChain = null;
@@ -25,9 +24,7 @@ function formatDocumentsAsString(documents) {
   return documents.map((document) => document.pageContent).join("\n\n");
 }
 
-export async function initializeChatbot() {
-  const { t } = useI18n();
-
+export async function initializeChatbot(t) {
   // If already initialized or initializing, return current status
   if (
     initializationStatus.isInitialized ||
@@ -159,10 +156,12 @@ export async function initializeChatbot() {
     ]);
 
     // Set status to initialized
+    if (initializationStatus.status !== "ready") {
+      initializationStatus.status = "ready";
+    }
     initializationStatus = {
       isInitializing: false,
       isInitialized: true,
-      status: "ready",
       error: null,
     };
 

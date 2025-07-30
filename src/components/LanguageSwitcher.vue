@@ -1,9 +1,9 @@
 <template>
-    <div class="language-switch">
-        <div v-for="lang in ['en', 'hr']" :key="lang" @click="toggleLanguage(lang)"
-            :class="['language-switch-option', { 'active': locale === lang }]">
-            <span>{{ lang.toUpperCase() }}</span>
-        </div>
+    <div class="language-toggle">
+        <button @click="toggleLanguage" class="language-toggle-button">
+            <span :class="{ 'active': locale === 'en' }">EN</span>
+            <span :class="{ 'active': locale === 'hr' }">HR</span>
+        </button>
     </div>
 </template>
 
@@ -12,32 +12,31 @@ import { useI18n } from "vue-i18n";
 
 const { locale } = useI18n();
 
-function toggleLanguage(language) {
-    if(locale.value !== language) {
-        localStorage.setItem('locale', language)
-        return locale.value = language
-    }
+function toggleLanguage() {
+    locale.value = locale.value === 'en' ? 'hr' : 'en';
+    localStorage.setItem('locale', locale.value);
 }
 </script>
 
 <style scoped lang="scss">
-.language-switch {
-    font-size: 13px;
+.language-toggle-button {
+    background: none;
+    border: none;
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    color: var(--color-text);
+    font-size: 16px;
 
-    .language-switch-option {
-        cursor: pointer;
+    &:hover {
+        background-color: var(--color-background-mute);
+    }
 
-        &:hover {
-            color: #969696
-        }
-
+    span {
         &.active {
-            cursor: default;
             color: #e30613;
-
-            &:hover {
-                color: #e30613
-            }
         }
     }
 }

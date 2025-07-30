@@ -48,6 +48,34 @@ nav {
     display: inline-block;
   }
 
+   .dropdown-content.settings {
+    position: absolute;
+    right: 4px;
+    max-width: 200px;
+    width: max-content;
+    word-break: break-word;
+    left: initial;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  hr {
+    border:none;
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  .user-profile{
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+    text-transform: initial;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+
   .dropdown-content {
     position: absolute;
     background-color: var(--color-background);
