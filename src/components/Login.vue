@@ -4,24 +4,24 @@
       <div class="header">
         <h1>UNINwalk</h1>
         <img src="../assets/logo-mobile.svg" class="login-page-image" alt="">
-        <h3>Register/login or continue as a guest.</h3>
+        <h3>{{ $t('loginPageTitle') }}</h3>
     
         <div class="buttons-wrapper">
           <div class="buttons">
             <Button
-              suffix="Login"
+              :suffix="$t('loginButton')"
               @click="mode = 'login'"
               :class="{ active: mode === 'login' }"
             />
             <Button
-              suffix="New here? Register"
+              :suffix="$t('registerButton')"
               variant="secondary"
               @click="mode = 'register'"
               :class="{ active: mode === 'register' }"
             />
           </div>
           <Button
-            suffix="Continue as a guest"
+            :suffix="$t('enterAsGuestButton')"
             @click="continueAsGuest"
           />
         </div>
@@ -117,15 +117,15 @@
       </div>
       <!-- Students List -->
       <div v-if="modelsLoaded" class="students-section">
-        <h3>Registered Students ({{ Object.keys(registeredStudents).length }})</h3>
+        <h3>{{ $t('registeredStudentsTitle') }} ({{ Object.keys(registeredStudents).length }})</h3>
         <div v-if="Object.keys(registeredStudents).length > 0" class="students-list">
           <div v-for="(student, email) in registeredStudents" :key="email" class="student-card">
             <div>
               <strong>{{ student.name }}</strong><br>
               <small>Email: {{ email }}</small><br>
-              <small>Registered: {{ new Date(student.registeredAt).toLocaleString() }}</small>
+              <small>{{ $t('registered') }}: {{ new Date(student.registeredAt).toLocaleString() }}</small>
             </div>
-            <Button suffix="Delete" @click="deleteStudent(email)" class="delete-btn" />
+            <Button :suffix="$t('deleteButton')" @click="deleteStudent(email)" class="delete-btn" />
           </div>
         </div>
         <p v-else>No students registered yet.</p>
@@ -138,9 +138,11 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as faceapi from 'face-api.js'
 import Button from './UI/Button.vue'
+import { useI18n } from 'vue-i18n';
 
 // Define emits
 const emit = defineEmits(['login-success'])
+const { t } = useI18n();
 
 // Refs
 const videoElement = ref(null)
@@ -192,29 +194,20 @@ function saveStudentsToStorage() {
 async function loadModels() {
   try {
     loadingProgress.value = '10%'
-    status.value = 'Loading face detection model...'
     
     await faceapi.nets.tinyFaceDetector.loadFromUri('/models')
     loadingProgress.value = '40%'
     
-    status.value = 'Loading face landmarks model...'
     await faceapi.nets.faceLandmark68Net.loadFromUri('/models')
     loadingProgress.value = '70%'
     
-    status.value = 'Loading face recognition model...'
     await faceapi.nets.faceRecognitionNet.loadFromUri('/models')
     loadingProgress.value = '100%'
     
     modelsLoaded.value = true
-    status.value = 'Models loaded successfully! Ready to use.'
     statusType.value = 'success'
     
-    setTimeout(() => {
-      status.value = ''
-    }, 3000)
-    
   } catch (error) {
-    status.value = 'Error loading models: ' + error.message
     statusType.value = 'error'
     console.error('Model loading error:', error)
   }

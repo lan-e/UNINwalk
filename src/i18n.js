@@ -15,7 +15,14 @@ const messages = {
     map_instructions: "Press \"Current Location\" to see your position on the map.",
     location_nearby: "You are approximately {distance}m from {building}",
     location_far: "You are not near UNIN. You are approximately {distance}m away.",
-    coming_soon: "Coming soon..."
+    coming_soon: "Coming soon...",
+    registerButton: "New here? Register",
+    loginButton: "Login",
+    deleteButton: "Delete",
+    loginPageTitle: "Register/login or continue as a guest.",
+    enterAsGuestButton: "Continue as a guest",
+    registeredStudentsTitle: "Registered students",
+    registered: "Registered"
   },
   hr: {
     home: "Početna",
@@ -31,7 +38,14 @@ const messages = {
     map_instructions: "Pritisnite \"Trenutna lokacija\" za prikaz svoje lokacije na mapi.",
     location_nearby: "Nalazite se {distance}m od {building}-a",
     location_far: "Ne nalazite se blizu UNIN. Udaljeni ste otprilike {distance}m.",
-    coming_soon: "Uskoro..."
+    coming_soon: "Uskoro...",
+    registerButton: "Nemaš profil? Registriraj se",
+    loginButton: "Logiraj se",
+    deleteButton: "Obriši",
+    loginPageTitle: "Registriraj/logiraj se ili nastavi kao gost.",
+    enterAsGuestButton: "Nastavi kao gost",
+    registeredStudentsTitle: "Registrirani studenti",
+    registered: "Registriran"
   },
 };
 
