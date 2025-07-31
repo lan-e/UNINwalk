@@ -266,7 +266,7 @@ nav .user-profile {
   padding: 4px 8px;
   gap: 8px;
   text-transform: initial;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-text-secondary);
 }
 nav .dropdown-content {
@@ -277,6 +277,7 @@ nav .dropdown-content {
   border-radius: 4px;
   top: 100%;
   left: 0;
+  margin-top: 8px;
 }
 nav .dropdown-content a {
   color: var(--color-text);
@@ -316,6 +317,8 @@ nav .dropdown-content a:hover {
   display: flex;
   gap: 32px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .teacher-container {
@@ -334,8 +337,14 @@ nav .dropdown-content a:hover {
   height: 104px;
   border-radius: 8px;
 }
+.teacher-container .teacher-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .teacher-container .teacher-info .name {
-  font-size: 24px;
+  font-size: 20px;
+  font-weight: 500;
   margin-bottom: 4px;
 }
 .teacher-container .teacher-info a {
@@ -350,7 +359,7 @@ nav .dropdown-content a:hover {
 }
 .teacher-container .teacher-info .title,
 .teacher-container .teacher-info .email {
-  font-size: 16px;
+  font-size: 14px;
 }
 .teacher-container .teacher-info .icons {
   display: flex;
@@ -612,6 +621,7 @@ body.has-scroll {
   height: -moz-max-content;
   height: max-content;
   border: none;
+  cursor: pointer;
 }
 .link-button:hover {
   color: #e30613;

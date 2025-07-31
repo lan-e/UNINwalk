@@ -39,7 +39,7 @@
                 <div class="dropdown-content settings" v-show="showSettingsDropdown">
                   <span class="user-profile">
                     <span class="user-email">{{ userEmail }}</span>
-                    <Icon @click="logout" name="logout" style="font-size:16px;cursor: pointer;"/>
+                    <Icon @click="logout" name="logout" style="font-size:18px;cursor: pointer;"/>
                   </span>
                   <hr />
                   <ToggleTheme />

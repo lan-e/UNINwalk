@@ -28,7 +28,7 @@ function toggleLanguage() {
     padding: 8px;
     border-radius: 4px;
     color: var(--color-text);
-    font-size: 12px;
+    font-size: 14px;
 
     &:hover {
         background-color: var(--color-background-mute);

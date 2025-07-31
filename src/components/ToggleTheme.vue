@@ -1,8 +1,8 @@
 <template>
     <div class="theme-toggle">
         <button @click="toggleTheme" class="theme-toggle-button">
-            <Icon name="light_mode" :class="{ 'active': !isDarkTheme }" style="font-size:16px" />
-            <Icon name="dark_mode" :class="{ 'active': isDarkTheme }" style="font-size:16px" />
+            <Icon name="light_mode" :class="{ 'active': !isDarkTheme }" style="font-size:18px" />
+            <Icon name="dark_mode" :class="{ 'active': isDarkTheme }" style="font-size:18px" />
         </button>
     </div>
 </template>
