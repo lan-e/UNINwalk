@@ -1,5 +1,17 @@
 [
   {
+    "id": "p1",
+    "type": "PARKING",
+    "building": "UNIN1-1",
+    "spots": "70"
+  },
+  {
+    "id": "p2",
+    "type": "PARKING",
+    "building": "UNIN2-1",
+    "spots": "60"
+  },
+  {
     "id": "k1",
     "name": "K-1",
     "type": "PREDAVAONICA",
