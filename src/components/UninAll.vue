@@ -17,18 +17,18 @@
                     d="M244.605 242.419L248.197 295.021H406.695L399.206 217.839H234.255V224.753H129.796V216.688H6.36401V283.118H102.101V315.882H121.587V242.032L244.605 242.419Z"
                     fill="#8489A7" />
                 <!-- P2 -->
-                <g transform="translate(48, 240) scale(0.8)">
+                <g transform="translate(48, 236) scale(0.8)">
                     <path d="M0.295455 24V0.727272H9.02273C10.8106 0.727272 12.3106 1.06061 13.5227 1.72727C14.7424 2.39394 15.6629 3.31061 16.2841 4.47727C16.9129 5.63636 17.2273 6.95454 17.2273 8.43182C17.2273 9.92424 16.9129 11.25 16.2841 12.4091C15.6553 13.5682 14.7273 14.4811 13.5 15.1477C12.2727 15.8068 10.7614 16.1364 8.96591 16.1364H3.18182V12.6705H8.39773C9.44318 12.6705 10.2992 12.4886 10.9659 12.125C11.6326 11.7614 12.125 11.2614 12.4432 10.625C12.7689 9.98864 12.9318 9.25758 12.9318 8.43182C12.9318 7.60606 12.7689 6.87879 12.4432 6.25C12.125 5.62121 11.6288 5.13258 10.9545 4.78409C10.2879 4.42803 9.42803 4.25 8.375 4.25H4.51136V24H0.295455ZM20.6619 24V20.9545L28.7415 13.0341C29.5142 12.2538 30.1581 11.5606 30.6733 10.9545C31.1884 10.3485 31.5748 9.76136 31.8324 9.19318C32.09 8.625 32.2188 8.01894 32.2188 7.375C32.2188 6.64015 32.0521 6.01136 31.7188 5.48864C31.3854 4.95833 30.9271 4.54924 30.3438 4.26136C29.7604 3.97348 29.0975 3.82954 28.3551 3.82954C27.59 3.82954 26.9195 3.98864 26.3438 4.30682C25.768 4.61742 25.321 5.06061 25.0028 5.63636C24.6922 6.21212 24.5369 6.89773 24.5369 7.69318H20.5256C20.5256 6.21591 20.8627 4.93182 21.5369 3.84091C22.2112 2.75 23.1392 1.9053 24.321 1.30682C25.5104 0.708333 26.8741 0.40909 28.4119 0.40909C29.9725 0.40909 31.3438 0.700757 32.5256 1.28409C33.7074 1.86742 34.6241 2.66667 35.2756 3.68182C35.9347 4.69697 36.2642 5.85606 36.2642 7.15909C36.2642 8.0303 36.0975 8.88636 35.7642 9.72727C35.4309 10.5682 34.8438 11.5 34.0028 12.5227C33.1695 13.5455 31.9991 14.7841 30.4915 16.2386L26.4801 20.3182V20.4773H36.6165V24H20.6619Z" fill="white"/>
                 </g>
-                 <text x="61" y="270" fill="white" font-size="8" text-anchor="middle">
+                 <text x="61" y="270" fill="white" font-size="10" text-anchor="middle">
                     {{ availableP2 }}/{{ parkingData.p2.spots }}
                 </text>
 
                 <!-- P1 -->
-                <g transform="translate(308, 240) scale(0.8)">
+                <g transform="translate(308, 236) scale(0.8)">
                     <path d="M0.295455 24V0.727272H9.02273C10.8106 0.727272 12.3106 1.06061 13.5227 1.72727C14.7424 2.39394 15.6629 3.31061 16.2841 4.47727C16.9129 5.63636 17.2273 6.95454 17.2273 8.43182C17.2273 9.92424 16.9129 11.25 16.2841 12.4091C15.6553 13.5682 14.7273 14.4811 13.5 15.1477C12.2727 15.8068 10.7614 16.1364 8.96591 16.1364H3.18182V12.6705H8.39773C9.44318 12.6705 10.2992 12.4886 10.9659 12.125C11.6326 11.7614 12.125 11.2614 12.4432 10.625C12.7689 9.98864 12.9318 9.25758 12.9318 8.43182C12.9318 7.60606 12.7689 6.87879 12.4432 6.25C12.125 5.62121 11.6288 5.13258 10.9545 4.78409C10.2879 4.42803 9.42803 4.25 8.375 4.25H4.51136V24H0.295455ZM30.1278 0.727272V24H25.9119V4.82954H25.7756L20.3324 8.30682V4.44318L26.1165 0.727272H30.1278Z" fill="white"/>
                 </g>
-                <text x="320" y="270" fill="white" font-size="8" text-anchor="middle">
+                <text x="320" y="270" fill="white" font-size="10" text-anchor="middle">
                     {{ availableP1 }}/{{ parkingData.p1.spots }}
                 </text>
                 <!-- UNIN2 Section -->
@@ -181,7 +181,16 @@
             />
             <div v-if="error">{{ error }}</div>
             <div v-if="userPosition">
-                <p v-if="isNearBuildings">
+                <p v-if="isInsideBuilding">
+
+                    {{
+                        t('location_inside', { 
+                            distance: nearestBuildingInfo?.distance, 
+                            building: nearestBuildingInfo?.nearestBuilding 
+                        })
+                    }}
+                </p>
+                <p v-else-if="isNearBuildings">
                     {{
                         t('location_nearby', { 
                             distance: nearestBuildingInfo?.distance, 
@@ -216,6 +225,8 @@ const error = ref(null);
 const showLocationButton = ref(true);
 const isNearBuildings = ref(true);
 const nearestBuildingInfo = ref({})
+const isInsideBuilding = ref(false);
+const MAX_INSIDE_DISTANCE = 0.0002; // approximately 20-30 meters (inside building)
 const { parkingData, availableP1, availableP2 } = useParking();
 
 // Maximum distance (in degrees) to be considered "near" a building
@@ -248,12 +259,18 @@ const findNearestBuilding = (lat, lng) => {
   
   // Check if user is within range of any building
   const nearest = buildingDistances[0];
+  
+  // Check if user is inside a building (very close distance)
+  const isInsideBuilding = nearest.distance < MAX_INSIDE_DISTANCE;
+  
+  // Check if user is nearby any building
   const isNear = nearest.distance < MAX_NEARBY_DISTANCE;
   
   // Format distance in meters (very approximate conversion at this latitude)
   const distanceInMeters = Math.round(nearest.distance * 111000);
   
   return {
+    isInsideBuilding,
     isNear,
     nearestBuilding: nearest.building,
     distance: distanceInMeters,
@@ -272,33 +289,42 @@ const referencePoints = [
 
 // Function to get user's current location
 const getUserLocation = () => {
-  showLocationButton.value = false;
+    showLocationButton.value = false;
+
+    if (!navigator.geolocation) {
+        error.value = 'Geolocation is not supported by your browser';
+        showLocationButton.value = true;
+        return;
+    }
   
-  if (!navigator.geolocation) {
-    error.value = 'Geolocation is not supported by your browser';
-    showLocationButton.value = true;
-    return;
-  }
-  
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      // Use actual GPS coordinates from the browser
-      const userLat = position.coords.latitude;
-      const userLng = position.coords.longitude;
-      
-      // For demo purposes, we can also simulate a position if needed
-      // Uncomment these lines to use a simulated position near UNIN1
-      // const userLat = referencePoints[0].gps[0] + 0.0001;
-      // const userLng = referencePoints[0].gps[1] + 0.0002;
-      
-      // Check if user is near any building
-      nearestBuildingInfo.value = findNearestBuilding(userLat, userLng);
-      isNearBuildings.value = nearestBuildingInfo.isNear;
-      
-      // Transform GPS coordinates to SVG coordinates
-      const svgPoint = transformGpsToSvg(userLat, userLng);
-      userPosition.value = svgPoint;
-      error.value = null;
+    navigator.geolocation.getCurrentPosition((position) => {
+        // Use actual GPS coordinates from the browser
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        
+        // Uncomment these lines to use a position near UNIN1
+        // const userLat = referencePoints[0].gps[0] + 0.0001;
+        // const userLng = referencePoints[0].gps[1] + 0.0002;
+
+        // Uncomment these lines to use a position inside UNIN1, UNIN2 or UNIN3
+        // // Inside UNIN1
+        // const userLat = 46.300569
+        // const userLng = 16.327483;
+        // // Inside UNIN2
+        // const userLat = 46.300305;
+        // const userLng = 16.326414;
+        // // Inside UNIN3
+        // const userLat = 46.300979;
+        // const userLng =  16.327630;
+    
+        // Check if user is near any building
+        nearestBuildingInfo.value = findNearestBuilding(userLat, userLng);
+        isNearBuildings.value = nearestBuildingInfo.value.isNear;
+        isInsideBuilding.value = nearestBuildingInfo.value.isInsideBuilding;
+        // Transform GPS coordinates to SVG coordinates
+        const svgPoint = transformGpsToSvg(userLat, userLng);
+        userPosition.value = svgPoint;
+        error.value = null;
     },
     (error) => {
       error.value = `Unable to get location: ${error.message}`;
