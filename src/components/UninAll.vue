@@ -180,29 +180,43 @@
                 @click="getUserLocation"
             />
             <div v-if="error">{{ error }}</div>
-            <div v-if="userPosition">
-                <p v-if="isInsideBuilding">
-
+           <div v-if="userPosition">
+                <p v-if="isInsideBuilding && nearestLocationInfo?.isParking">
+                    {{
+                        t('location_inside_parking', { 
+                            location: nearestLocationInfo?.nearestLocation 
+                        })
+                    }}
+                </p>
+                <p v-else-if="isNearBuildings && nearestLocationInfo?.isParking">
+                    {{
+                        t('location_nearby_parking', { 
+                            distance: nearestLocationInfo?.distance, 
+                            location: nearestLocationInfo?.nearestLocation 
+                        })
+                    }}
+                </p>
+                <p v-else-if="isInsideBuilding">
                     {{
                         t('location_inside', { 
-                            distance: nearestBuildingInfo?.distance, 
-                            building: nearestBuildingInfo?.nearestBuilding 
+                            distance: nearestLocationInfo?.distance, 
+                            location: nearestLocationInfo?.nearestLocation 
                         })
                     }}
                 </p>
                 <p v-else-if="isNearBuildings">
                     {{
                         t('location_nearby', { 
-                            distance: nearestBuildingInfo?.distance, 
-                            building: nearestBuildingInfo?.nearestBuilding 
+                            distance: nearestLocationInfo?.distance, 
+                            location: nearestLocationInfo?.nearestLocation 
                         })
                     }}
                 </p>
                 <p v-else>
                     {{
                         t('location_far', { 
-                            distance: nearestBuildingInfo?.distance, 
-                            building: nearestBuildingInfo?.nearestBuilding
+                            distance: nearestLocationInfo?.distance, 
+                            location: nearestLocationInfo?.nearestLocation
                         })
                     }}
                 </p>
@@ -224,7 +238,7 @@ const userPosition = ref(null);
 const error = ref(null);
 const showLocationButton = ref(true);
 const isNearBuildings = ref(true);
-const nearestBuildingInfo = ref({})
+const nearestLocationInfo = ref({})
 const isInsideBuilding = ref(false);
 const MAX_INSIDE_DISTANCE = 0.0002; // approximately 20-30 meters (inside building)
 const { parkingData, availableP1, availableP2 } = useParking();
@@ -238,10 +252,10 @@ const navigateTo = (destination) => {
 };
 
 // Find the nearest building and check if user is within range
-const findNearestBuilding = (lat, lng) => {
-  // Calculate distance to each building
-  const buildingDistances = referencePoints.map((point, index) => {
-    const buildingNames = ['UNIN1', 'UNIN2', 'UNIN3'];
+const findNearestLocation = (lat, lng) => {
+  // Calculate distance to each location (buildings + parking)
+  const locationNames = ['UNIN1', 'UNIN2', 'UNIN3', 'P2', 'P1'];
+  const locationDistances = referencePoints.map((point, index) => {
     const latDiff = lat - point.gps[0];
     const lngDiff = lng - point.gps[1];
     
@@ -249,31 +263,33 @@ const findNearestBuilding = (lat, lng) => {
     const distance = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
     
     return {
-      building: buildingNames[index],
-      distance: distance
+      location: locationNames[index],
+      distance: distance,
+      isParking: locationNames[index].startsWith('P') // Check if it's parking
     };
   });
   
   // Sort by distance
-  buildingDistances.sort((a, b) => a.distance - b.distance);
+  locationDistances.sort((a, b) => a.distance - b.distance);
   
-  // Check if user is within range of any building
-  const nearest = buildingDistances[0];
+  // Check if user is within range of any location
+  const nearest = locationDistances[0];
   
-  // Check if user is inside a building (very close distance)
-  const isInsideBuilding = nearest.distance < MAX_INSIDE_DISTANCE;
+  // Check if user is inside a location (very close distance)
+  const isInsideLocation = nearest.distance < MAX_INSIDE_DISTANCE;
   
-  // Check if user is nearby any building
+  // Check if user is nearby any location
   const isNear = nearest.distance < MAX_NEARBY_DISTANCE;
   
   // Format distance in meters (very approximate conversion at this latitude)
   const distanceInMeters = Math.round(nearest.distance * 111000);
   
   return {
-    isInsideBuilding,
+    isInsideLocation,
     isNear,
-    nearestBuilding: nearest.building,
+    nearestLocation: nearest.location,
     distance: distanceInMeters,
+    isParking: nearest.isParking
   };
 };
 
@@ -284,7 +300,11 @@ const referencePoints = [
   // UNIN2 building
   { gps: [46.300312, 16.326322], svg: [100, 170] },
   // UNIN3 building
-  { gps: [46.301074, 16.327584], svg: [380, 60] }
+  { gps: [46.301074, 16.327584], svg: [380, 60] },
+  // P2 parking area
+  { gps: [46.299981, 16.326308], svg: [61, 250] },
+  // P1 parking area
+  { gps: [46.300289, 16.327681], svg: [320, 250] }
 ];
 
 // Function to get user's current location
@@ -296,7 +316,7 @@ const getUserLocation = () => {
         showLocationButton.value = true;
         return;
     }
-  
+
     navigator.geolocation.getCurrentPosition((position) => {
         // Use actual GPS coordinates from the browser
         const userLat = position.coords.latitude;
@@ -316,19 +336,25 @@ const getUserLocation = () => {
         // // Inside UNIN3
         // const userLat = 46.300979;
         // const userLng =  16.327630;
-    
-        // Check if user is near any building
-        nearestBuildingInfo.value = findNearestBuilding(userLat, userLng);
-        isNearBuildings.value = nearestBuildingInfo.value.isNear;
-        isInsideBuilding.value = nearestBuildingInfo.value.isInsideBuilding;
+        // // P2 parking
+        // const userLat = 46.299981;
+        // const userLng = 16.326308;
+        // // P1 parking
+        // const userLat = 46.300289;
+        // const userLng = 16.327681;
+
+        // Check if user is near any location (buildings or parking)
+        nearestLocationInfo.value = findNearestLocation(userLat, userLng);
+        isNearBuildings.value = nearestLocationInfo.value.isNear;
+        isInsideBuilding.value = nearestLocationInfo.value.isInsideLocation;
         // Transform GPS coordinates to SVG coordinates
         const svgPoint = transformGpsToSvg(userLat, userLng);
         userPosition.value = svgPoint;
         error.value = null;
     },
     (error) => {
-      error.value = `Unable to get location: ${error.message}`;
-      showLocationButton.value = true;
+        error.value = `Unable to get location: ${error.message}`;
+        showLocationButton.value = true;
     },
     { enableHighAccuracy: true }
   );
