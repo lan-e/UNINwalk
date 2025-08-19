@@ -286,10 +286,10 @@ async function submitPhoto() {
 async function registerStudent() {
   status.value = 'Processing face for registration...'
   
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  // Validate email format (only allow @unin.hr)
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@unin\.hr$/
   if (!emailRegex.test(studentEmail.value)) {
-    status.value = 'Please enter a valid email address.'
+    status.value = 'Please enter a valid UNIN email address (must end with @unin.hr).'
     statusType.value = 'error'
     return
   }
