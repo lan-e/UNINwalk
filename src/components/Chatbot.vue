@@ -11,6 +11,22 @@
             <div v-if="isLoading">
                 <LoadingSpinner :message="loadingMessage" />
             </div>
+            <!-- Typing indicator when bot is generating response -->
+            <div v-if="isTyping" class="message bot">
+                <div class="message-content typing-bubble">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <Icon
+                v-if="messages.length"
+                name="delete"
+                class="delete-button"
+                @click="clearChat"
+            />
         </div>
 
         <div class="chat-input">
@@ -18,9 +34,6 @@
                 :disabled="isTyping || isLoading" />
             <button @click="sendMessage" :disabled="!userInput || isTyping">
                 <Icon name="send" />
-            </button>
-            <button @click="clearChat">
-                <Icon name="delete" />
             </button>
         </div>
     </div>
@@ -84,6 +97,10 @@ const sendMessage = async () => {
     userInput.value = ''
     isTyping.value = true
 
+    // Scroll to bottom when typing bubble appears
+    await nextTick()
+    scrollToBottom()
+    
     try {
         const botResponse = await getChatbotAnswer(userQuestion)
 
@@ -146,3 +163,48 @@ onUnmounted(() => {
     if (cleanup) cleanup();
 });
 </script>
+
+<style scoped>
+.typing-bubble {
+    padding: 12px 16px;
+    display: inline-block;
+    max-width: fit-content;
+}
+
+.typing-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #999;
+    animation: typing 1.4s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+</style>
