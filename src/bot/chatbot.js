@@ -27,7 +27,7 @@ const CHAT_HISTORY_KEY = 'unin_chat_history';
 
 export function saveChatHistory(messages) {
   try {
-    sessionStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages));
+    localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages));
   } catch (error) {
     console.error('Failed to save chat history:', error);
   }
@@ -35,7 +35,7 @@ export function saveChatHistory(messages) {
 
 export function loadChatHistory() {
   try {
-    const history = sessionStorage.getItem(CHAT_HISTORY_KEY);
+    const history = localStorage.getItem(CHAT_HISTORY_KEY);
     return history ? JSON.parse(history) : [];
   } catch (error) {
     console.error('Failed to load chat history:', error);
@@ -45,7 +45,7 @@ export function loadChatHistory() {
 
 export function clearChatHistory() {
   try {
-    sessionStorage.removeItem(CHAT_HISTORY_KEY);
+    localStorage.removeItem(CHAT_HISTORY_KEY);
   } catch (error) {
     console.error('Failed to clear chat history:', error);
   }

@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onUnmounted } from 'vue';
 import Room from '@/components/Room.vue';
 import { useRoomsStore } from '@/stores/rooms';
 import uninData from '../data/unin-data.json'
@@ -20,12 +20,6 @@ import uninData from '../data/unin-data.json'
 const roomsStore = useRoomsStore()
 const rooms1 = uninData['UNIN1-1']
 const rooms2 = uninData['UNIN1-2']
-
-onMounted(() => {
-    if(roomsStore.currentRoom) {
-        roomsStore.openModal();
-    }
-})
 
 onUnmounted(() => {
     roomsStore.deselectRoom()

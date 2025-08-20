@@ -8,9 +8,6 @@
                     {{ message.time }}
                 </div>
             </div>
-            <div v-if="isLoading">
-                <LoadingSpinner :message="loadingMessage" />
-            </div>
             <!-- Typing indicator when bot is generating response -->
             <div v-if="isTyping" class="message bot">
                 <div class="message-content typing-bubble">
@@ -33,7 +30,8 @@
             <input v-model="userInput" @keyup.enter="sendMessage" :placeholder="$t('bot_input_message')"
                 :disabled="isTyping || isLoading" />
             <button @click="sendMessage" :disabled="!userInput || isTyping">
-                <Icon name="send" />
+                <div v-if="isLoading" class="spinner" />
+                <Icon v-else name="send" />
             </button>
         </div>
     </div>
@@ -205,6 +203,25 @@ onUnmounted(() => {
     30% {
         transform: translateY(-10px);
         opacity: 1;
+    }
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    border-radius: 50%;
+    border: 1px solid #f3f3f3;
+    border-top: 1px solid #e30613;
+    height: 20px;
+    width: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
 </style>
