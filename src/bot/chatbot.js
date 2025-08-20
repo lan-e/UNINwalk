@@ -22,6 +22,35 @@ let initializationStatus = {
   error: null,
 };
 
+// Chat history management
+const CHAT_HISTORY_KEY = 'unin_chat_history';
+
+export function saveChatHistory(messages) {
+  try {
+    sessionStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages));
+  } catch (error) {
+    console.error('Failed to save chat history:', error);
+  }
+}
+
+export function loadChatHistory() {
+  try {
+    const history = sessionStorage.getItem(CHAT_HISTORY_KEY);
+    return history ? JSON.parse(history) : [];
+  } catch (error) {
+    console.error('Failed to load chat history:', error);
+    return [];
+  }
+}
+
+export function clearChatHistory() {
+  try {
+    sessionStorage.removeItem(CHAT_HISTORY_KEY);
+  } catch (error) {
+    console.error('Failed to clear chat history:', error);
+  }
+}
+
 function formatDocumentsAsString(documents) {
   return documents.map((document) => document.pageContent).join("\n\n");
 }
@@ -99,6 +128,7 @@ export async function initializeChatbot(t) {
     Use the following pieces of context to answer the question at the end.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.
     For rooms that do not exist, just answer they do not exist.
+    IMPORTANT! If someone asks a question on Croatian, also answer in Croatian. For English questions answer in English.
     
     VERY IMPORTANT FORMATTING RULES:
     1. Room numbers: Format ALL room numbers as clickable navigation links:

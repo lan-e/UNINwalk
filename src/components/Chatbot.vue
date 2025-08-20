@@ -19,16 +19,19 @@
             <button @click="sendMessage" :disabled="!userInput || isTyping">
                 <Icon name="send" />
             </button>
+            <button @click="clearChat">
+                <Icon name="delete" />
+            </button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted, computed } from 'vue'
+import { ref, onMounted, nextTick, onUnmounted, computed, watch } from 'vue'
 import { useRoomsStore } from '@/stores/rooms'
 import { useRouter } from 'vue-router'
 import Icon from './UI/Icon.vue'
-import { getChatbotAnswer } from '@/bot/chatbot'
+import { getChatbotAnswer, loadChatHistory, saveChatHistory, clearChatHistory } from '@/bot/chatbot'
 import { useI18n } from 'vue-i18n'
 import LoadingSpinner from './UI/LoadingSpinner.vue'
 
@@ -59,31 +62,62 @@ const displayMessages = computed(() => {
     return [initialMessage, ...messages.value]
 })
 
+// Watch messages and save to session storage automatically
+watch(messages, (newMessages) => {
+    saveChatHistory(newMessages);
+}, { deep: true });
+
 const sendMessage = async () => {
     if (!userInput.value || isTyping.value) return
 
     const userQuestion = userInput.value
 
-    messages.value.push({
+    // Create user message object
+    const userMessage = {
         text: userInput.value,
         sender: 'user',
-        time: new Date().toLocaleTimeString()
-    })
+        time: new Date().toLocaleTimeString(),
+        timestamp: new Date()
+    }
 
+    messages.value.push(userMessage)
     userInput.value = ''
     isTyping.value = true
-    const botResponse = await getChatbotAnswer(userQuestion)
 
-    messages.value.push({
-        text: botResponse,
-        sender: 'bot',
-        time: new Date().toLocaleTimeString()
-    })
+    try {
+        const botResponse = await getChatbotAnswer(userQuestion)
 
-    isTyping.value = false
+        // Create bot message object
+        const botMessage = {
+            text: botResponse,
+            sender: 'bot',
+            time: new Date().toLocaleTimeString(),
+            timestamp: new Date()
+        }
+
+        messages.value.push(botMessage)
+    } catch (error) {
+        console.error('Error getting bot response:', error)
+        
+        const errorMessage = {
+            text: 'Sorry, I encountered an error. Please try again.',
+            sender: 'bot',
+            time: new Date().toLocaleTimeString(),
+            timestamp: new Date()
+        }
+        
+        messages.value.push(errorMessage)
+    } finally {
+        isTyping.value = false
+    }
 
     await nextTick()
     scrollToBottom()
+}
+
+const clearChat = () => {
+    messages.value = []
+    clearChatHistory()
 }
 
 const scrollToBottom = () => {
@@ -94,10 +128,21 @@ const scrollToBottom = () => {
 
 let cleanup;
 onMounted(() => {
-  cleanup = roomsStore.setupRoomClickListener(router);
+    // Load chat history when component mounts
+    const savedMessages = loadChatHistory()
+    if (savedMessages && savedMessages.length > 0) {
+        messages.value = savedMessages
+        
+        // Scroll to bottom after loading messages
+        nextTick(() => {
+            scrollToBottom()
+        })
+    }
+
+    cleanup = roomsStore.setupRoomClickListener(router);
 });
 
 onUnmounted(() => {
-  if (cleanup) cleanup();
+    if (cleanup) cleanup();
 });
 </script>
