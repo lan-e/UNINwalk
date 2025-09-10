@@ -29,7 +29,7 @@
                 <RouterLink to="/unin2">UNIN2</RouterLink>
                 <RouterLink to="/unin3">UNIN3</RouterLink>
               </template>
-              <RouterLink to="/teachers">{{ $t('teachers') }}</RouterLink>
+              <RouterLink to="/professors">{{ $t('professors') }}</RouterLink>
               
               <!-- Settings dropdown -->
               <div class="dropdown">

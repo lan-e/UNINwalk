@@ -176,8 +176,8 @@ onUnmounted(() => {
 })
 
 function continueAsGuest() {
-  localStorage.setItem('userEmail', 'Guest');
-  emit('login-success', 'Guest');
+  localStorage.setItem('userEmail', t('loggedAsGuest'));
+  emit('login-success', t('loggedAsGuest'));
 }
 
 function loadStudentsFromStorage() {

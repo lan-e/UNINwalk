@@ -28,8 +28,8 @@ const router = createRouter({
       component: UninThreeView,
     },
     {
-      path: "/teachers",
-      name: "teachers",
+      path: "/professors",
+      name: "professors",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
