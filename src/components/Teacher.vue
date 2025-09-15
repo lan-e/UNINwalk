@@ -16,7 +16,7 @@
                     <Icon name="language" />
                 </a>
                 <button v-if="info.room" type="button" :data-route="info.room_route" :data-room="info.room" class="router-link link-button">
-                    <Icon name="meeting_room" />
+                    <Icon name="meeting_room" style="pointer-events: none;" />
                     K-{{ info.room }}
                 </button>
             </div>

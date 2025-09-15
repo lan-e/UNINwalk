@@ -6,7 +6,7 @@
     "title": "viši predavač, dr. sc.",
     "email": "snjezana.ivancic@unin.hr",
     "image": "teacher1.png",
-    "phone": "042/493-371",
+    "phone": "+385 42 493 371",
     "web": "https://scholar.google.com/citations?user=iKMgEqoAAAAJ&hl=hr&oi=ao",
     "room": "27",
     "room_route": "/unin1"
@@ -18,7 +18,7 @@
     "title": "predavač, dipl. ing.",
     "email": "jelena.vlasic@unin.hr",
     "image": "teacher2.png",
-    "phone": "042/493-371",
+    "phone": "+385 42 493 371",
     "web": "https://scholar.google.hr/citations?user=BqihCmsAAAAJ",
     "room": "27",
     "room_route": "/unin1"
@@ -30,6 +30,7 @@
     "title": "izv. prof. dr. sc.",
     "email": "andrija.bernik@unin.hr",
     "image": "teacher3.png",
+    "phone": "+385 42 493 320",
     "web": "https://scholar.google.hr/citations?user=XP-ercgAAAAJ",
     "room": "34",
     "room_route": "/unin1"
@@ -52,7 +53,7 @@
     "title": "izv. prof. art. dr. sc.",
     "email": "robert.gecek@unin.hr",
     "image": "teacher5.jpg",
-    "phone": "042/493-365",
+    "phone": "+385 42 493 365",
     "web": "",
     "room": "24",
     "room_route": "/unin1"
@@ -66,6 +67,29 @@
     "image": "teacher6.jpg",
     "web": "https://scholar.google.hr/citations?user=jVkX20QAAAAJ",
     "room": "27",
+    "room_route": "/unin1"
+  },
+  {
+    "id": "teach7",
+    "type": "TEACHER",
+    "name": "Dean Valdec",
+    "title": "redoviti profesor, dr. sc.",
+    "email": "devaldec@unin.hr",
+    "image": "teacher7.jpg",
+    "phone": "+385 42 493 357",
+    "web": "https://scholar.google.hr/citations?user=eMROjpIAAAAJ",
+    "room": "25",
+    "room_route": "/unin1"
+  },
+  {
+    "id": "teach8",
+    "type": "TEACHER",
+    "name": "Vladimir Stanisavljević",
+    "title": "viši predavač, mr. sc.",
+    "email": "vladost@unin.hr",
+    "image": "teacher8.jpg",
+    "web": "https://scholar.google.hr/citations?user=OI-IK3sAAAAJ",
+    "room": "25",
     "room_route": "/unin1"
   }
 ]

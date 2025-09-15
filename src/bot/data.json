@@ -1,5 +1,19 @@
 [
   {
+  "id": "univ_general",
+  "name": "Sveučilište Sjever",
+  "type": "INFORMACIJE",
+  "info": {
+    "radno_vrijeme": "pon-pet 8-16h",
+    "glavni_telefon": "+385 42 493 338",
+    "email": "tajnistvo.vz@unin.hr",
+    "web": "https://www.unin.hr",
+    "adresa": "Jurja Križanića 31b, 42000 Varaždin",
+    "studentska_sluzba_radno_vrijeme": "pon-pet 12-16h",
+    "knjiznica_radno_vrijeme": "pon, uto, sri, pet 9-17h, čet 9-20h"
+  }
+},
+  {
     "id": "p1",
     "type": "PARKING",
     "building": "UNIN1-1",
@@ -134,7 +148,7 @@
   {
     "id": "k25",
     "name": "K-25",
-    "type": "PREDAVAONICA",
+    "type": "",
     "building": "UNIN1-2"
   },
   {
@@ -281,7 +295,7 @@
     "type": "STUDENTSKA KNJIŽNICA",
     "info": {
       "radno_vrijeme": "pon, uto, sri, pet  9-17 h, čet 9-20 h",
-      "telefon": "+385 (0)42 493 316",
+      "telefon": "+385 42 493 316",
       "email": "knjiznica.vz@unin.hr",
       "knjižničarka": "jasna.sipek@unin.hr"
     },

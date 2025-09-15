@@ -25,6 +25,7 @@ const messages = {
     deleteButton: "Delete",
     loginPageTitle: "Register/login or continue as a guest.",
     enterAsGuestButton: "Continue as a guest",
+    loggedAsGuest: "Guest",
     registeredStudentsTitle: "Registered students",
     registered: "Registered"
   },
@@ -52,6 +53,7 @@ const messages = {
     deleteButton: "Obriši",
     loginPageTitle: "Registriraj/logiraj se ili nastavi kao gost.",
     enterAsGuestButton: "Nastavi kao gost",
+    loggedAsGuest: "Gost",
     registeredStudentsTitle: "Registrirani studenti",
     registered: "Registriran"
   },

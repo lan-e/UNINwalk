@@ -13,6 +13,8 @@ import teacher3Image from '@/assets/images/teacher3.png';
 import teacher4Image from '@/assets/images/teacher4.jpg';
 import teacher5Image from '@/assets/images/teacher5.jpg';
 import teacher6Image from '@/assets/images/teacher6.jpg';
+import teacher7Image from '@/assets/images/teacher7.jpg';
+import teacher8Image from '@/assets/images/teacher8.jpg';
 
 const imageMap = {
   'teacher1.png': teacher1Image,
@@ -21,6 +23,8 @@ const imageMap = {
   'teacher4.jpg': teacher4Image,
   'teacher5.jpg': teacher5Image,
   'teacher6.jpg': teacher6Image,
+  'teacher7.jpg': teacher7Image,
+  'teacher8.jpg': teacher8Image,
 };
 
 const teachersWithImages = teachersData.map(teacher => ({
