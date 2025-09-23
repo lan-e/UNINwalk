@@ -1,6 +1,6 @@
 <template>
-    <Login v-if="!userEmail" @login-success="handleLoginSuccess" />
-    <div v-else @click="handleClickOutsideRoom">
+    <!-- <Login v-if="!userEmail" @login-success="handleLoginSuccess" /> -->
+    <div @click="handleClickOutsideRoom">
       <header>
         <div class="wrapper">
           <nav>
@@ -37,11 +37,11 @@
                   <Icon name="settings" style="font-size:20px" />
                 </button>
                 <div class="dropdown-content settings" v-show="showSettingsDropdown">
-                  <span class="user-profile">
+                  <!-- <span class="user-profile">
                     <span class="user-email">{{ userEmail }}</span>
                     <Icon @click="logout" name="logout" style="font-size:18px;cursor: pointer;"/>
                   </span>
-                  <hr />
+                  <hr /> -->
                   <ToggleTheme />
                   <hr />
                   <LanguageSwitcher />
@@ -68,7 +68,6 @@ import Icon from './components/UI/Icon.vue';
 import { initializeChatbot, getInitializationStatus } from './bot/chatbot.js';
 import LanguageSwitcher from './components/LanguageSwitcher.vue';
 import { useI18n } from 'vue-i18n';
-import Login from './components/Login.vue';
 
 const { t, locale } = useI18n();
 const roomsStore = useRoomsStore();

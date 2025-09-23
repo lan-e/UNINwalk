@@ -32,7 +32,7 @@ const messages = {
   hr: {
     home: "Početna",
     professors: "Profesori",
-    bot_message: "Pozdrav! Kako mogu pomoći? Možete me pitati o predavaonama ili profesorima.",
+    bot_message: "Pozdrav! Mogu li kako pomoći? Možete me pitati o predavaonama ili profesorima.",
     bot_input_message: "Postavite mi pitanje...",
     floor1: "Prizemlje",
     floor2: "1. kat",
