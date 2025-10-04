@@ -1,7 +1,9 @@
 <template>
-    <div class="teacher-container">
-        <img :src="info.profile_image" alt="" class="teacher-image">
-        <div class="teacher-info">
+    <div class="professor-container">
+        <div class="professor-image-container">
+            <img :src="info.image" alt="" class="professor-image">
+        </div>
+        <div class="professor-info">
             <div class="name">{{ info.name }}</div>
             <div class="title">{{ info.title }}</div>
             <div class="email">{{ info.email }}</div>
