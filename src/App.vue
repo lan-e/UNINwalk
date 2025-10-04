@@ -60,7 +60,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView, useRouter } from 'vue-router';
 import ToggleTheme from './components/ToggleTheme.vue';
 import { useRoomsStore } from './stores/rooms';
 import RoomModal from './components/RoomModal.vue';
@@ -80,6 +80,7 @@ const showSettingsDropdown = ref(false);
 
 // Make userEmail reactive - this will control app access
 const userEmail = ref(localStorage.getItem('userEmail'));
+const router = useRouter()
 
 // Function to check localStorage and update reactive state
 const checkLoginStatus = () => {
@@ -144,6 +145,7 @@ const handleClickOutsideRoom = (event) => {
     // deselect room if click is outside room, modal, and modal overlay
     if (!isRoomClick && !isModalClick && !isModalOverlayClick) {
       roomsStore.deselectRoom();
+      router.push({ query: null });
       roomsStore.closeModal();
     }
   }

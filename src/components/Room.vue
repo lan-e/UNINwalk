@@ -32,6 +32,8 @@ import { useRoomsStore } from '@/stores/rooms';
 import ToiletsIcon from './ToiletsIcon.vue';
 import StairsIconFloorOne from './StairsIconFloorOne.vue';
 import StairsIconGroundFloor from './StairsIconGroundFloor.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { onMounted } from 'vue';
 
 const props = defineProps({
     room: {
@@ -42,10 +44,19 @@ const props = defineProps({
 
 const roomsStore = useRoomsStore();
 const isClickable = !props.room.id.includes('toilets') && !props.room.id.includes('_stairs');
+const router = useRouter();
 
 const selectRoom = () => {
-    if(!isClickable) return
+    if(!isClickable) return;
     roomsStore.selectRoom(props.room);
     roomsStore.openModal();
+    router.push({ query: {room: props.room.id }});
 };
+
+onMounted(() => {
+    const shouldHighlightRoom = router.currentRoute.value.query.room === props.room.id;
+    if(shouldHighlightRoom) {
+        roomsStore.selectRoom(props.room);
+    }
+})
 </script>

@@ -87,6 +87,13 @@
   justify-content: center;
   margin: 0 16px;
 }
+.floor-plan hr {
+  width: 94%;
+  border: none;
+  border-top: 1px solid var(--color-text);
+  margin-top: 24px;
+  opacity: 0.2;
+}
 
 .floor {
   margin: 0 auto;
@@ -96,7 +103,8 @@
 .floor-title {
   font-weight: 600;
   font-size: 24px;
-  margin: 20px 0;
+  margin-top: 48px;
+  margin-bottom: -24px;
 }
 
 .clickable {
@@ -619,8 +627,19 @@ body.has-scroll {
   z-index: 3;
 }
 .modal .modal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 600;
   font-size: 16px;
+  cursor: default;
+}
+.modal .modal-title .material-symbols-outlined {
+  cursor: pointer;
+}
+.modal .modal-title .copied-link {
+  color: #e30613;
+  cursor: default;
 }
 .modal .info-container {
   display: flex;
