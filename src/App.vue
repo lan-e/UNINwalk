@@ -195,32 +195,26 @@ const handleStorageChange = (event) => {
 
 onMounted(() => {
   window.addEventListener("resize", updateIsMobile);
-  window.addEventListener('storage', handleStorageChange); // Listen for localStorage changes
+  // window.addEventListener('storage', handleStorageChange); // Listen for localStorage changes
   document.addEventListener('click', closeDropdownOnClickOutside);
   
   // Initialize login status
-  checkLoginStatus();
-  
-  // Only initialize chatbot if user is logged in
-  if (userEmail.value) {
-    initializeChatbotWithLoading();
-  } else {
-    isLoading.value = false; // Skip loading if not logged in
-  }
+  // checkLoginStatus();
+  initializeChatbotWithLoading();
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateIsMobile);
-  window.removeEventListener('storage', handleStorageChange);
+  // window.removeEventListener('storage', handleStorageChange);
   document.removeEventListener('click', closeDropdownOnClickOutside);
 });
 
 // Watch for login state changes to initialize chatbot when user logs in
-watch(userEmail, (newValue, oldValue) => {
-  if (newValue && !oldValue) {
-    // User just logged in, initialize chatbot
-    isLoading.value = true;
-    initializeChatbotWithLoading();
-  }
-});
+// watch(userEmail, (newValue, oldValue) => {
+//   if (newValue && !oldValue) {
+//     // User just logged in, initialize chatbot
+//     isLoading.value = true;
+//     initializeChatbotWithLoading();
+//   }
+// });
 </script>

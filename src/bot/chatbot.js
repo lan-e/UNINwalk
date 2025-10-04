@@ -7,7 +7,7 @@ import {
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import data from "./data.json";
-import teachersData from "./teachers-data.json";
+import professorsData from "./teachers-data.json";
 import { Document } from "langchain/document";
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
 
@@ -98,7 +98,7 @@ export async function initializeChatbot(t) {
     );
 
     // Create documents for professor data
-    const teachersDocs = teachersData.map(
+    const professorsDocs = professorsData.map(
       (professor) =>
         new Document({
           pageContent: JSON.stringify(professor),
@@ -107,7 +107,7 @@ export async function initializeChatbot(t) {
     );
 
     // Combine all documents
-    const allDocs = [...roomDocs, ...teachersDocs];
+    const allDocs = [...roomDocs, ...professorsDocs];
 
     // Step 4: Create vector store (this is the longest step)
     initializationStatus.status = t("loading_message");

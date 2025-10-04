@@ -325,7 +325,7 @@ nav .dropdown-content a:hover {
     font-size: 14px;
   }
 }
-.teachers-wrapper {
+.professors-wrapper {
   margin: 32px;
   display: flex;
   gap: 32px;
@@ -334,47 +334,54 @@ nav .dropdown-content a:hover {
   justify-content: center;
 }
 
-.teacher-container {
+.professor-container {
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
   color: var(--color-text);
   background: var(--color-background-mute);
   box-shadow: 4px 4px 8px var(--color-background);
   border-radius: 16px;
   padding: 12px 16px;
-  width: 400px;
+  width: 600px;
 }
-.teacher-container .teacher-image {
+.professor-container .professor-image-container {
   width: 104px;
   height: 104px;
+  min-width: 104px;
+  min-height: 104px;
+}
+.professor-container .professor-image-container .professor-image {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 8px;
 }
-.teacher-container .teacher-info {
+.professor-container .professor-info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.teacher-container .teacher-info .name {
+.professor-container .professor-info .name {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 4px;
 }
-.teacher-container .teacher-info a {
+.professor-container .professor-info a {
   color: var(--color-text);
 }
-.teacher-container .teacher-info a:hover {
+.professor-container .professor-info a:hover {
   color: #e30613;
 }
-.teacher-container .teacher-info .router-link {
+.professor-container .professor-info .router-link {
   font-size: 16px;
   text-decoration: none;
 }
-.teacher-container .teacher-info .title,
-.teacher-container .teacher-info .email {
+.professor-container .professor-info .title,
+.professor-container .professor-info .email {
   font-size: 14px;
 }
-.teacher-container .teacher-info .icons {
+.professor-container .professor-info .icons {
   display: flex;
   gap: 4px;
   margin-top: 8px;
