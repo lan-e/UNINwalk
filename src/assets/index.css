@@ -310,29 +310,6 @@ nav .dropdown-content a:hover {
   background-color: var(--color-hover);
 }
 
-@media screen and (max-width: 768px) {
-  nav .navigation {
-    gap: 10px;
-  }
-  nav .navigation a {
-    font-size: 12px;
-  }
-  .material-symbols-outlined {
-    font-size: 20px;
-  }
-  .theme-toggle {
-    padding: 0;
-  }
-  .theme-toggle:hover {
-    background: none;
-  }
-  .chatbot-container {
-    height: 300px;
-  }
-  .floor-title {
-    font-size: 14px;
-  }
-}
 .professors-wrapper {
   margin: 32px;
   display: flex;
@@ -621,25 +598,24 @@ body.has-scroll {
   background: var(--color-background);
   box-shadow: 4px 4px 8px var(--color-background);
   padding: 16px;
-  height: 300px;
-  width: 300px;
+  height: 50%;
+  width: 500px;
   font-size: 14px;
   z-index: 3;
 }
 .modal .modal-title {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
   font-weight: 600;
   font-size: 16px;
   cursor: default;
 }
-.modal .modal-title .material-symbols-outlined {
-  cursor: pointer;
-}
-.modal .modal-title .copied-link {
-  color: #e30613;
-  cursor: default;
+.modal .title-text-copy-link-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .modal .info-container {
   display: flex;
@@ -684,7 +660,7 @@ body.has-scroll {
 
 .button {
   border: none;
-  background: #E30613;
+  background: #e30613;
   color: #fff;
   border-radius: 4px;
   padding: 4px 8px;
@@ -705,16 +681,48 @@ body.has-scroll {
 .button.secondary:hover {
   background-color: var(--color-background-mute);
 }
-.button.icon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+
+.grey-button.icon {
   background: none;
   color: #4d4d4d;
   padding: 4px;
   font-size: 10px;
 }
-.button.icon:hover {
+.grey-button.icon:hover {
   background: rgba(241, 241, 241, 0.507);
   transition: 0.2s all ease-in-out;
+}
+.grey-button.copied-link {
+  color: #e30613;
+  cursor: default;
+}
+.grey-button.copied-link:hover {
+  background: none;
+}
+
+@media screen and (max-width: 768px) {
+  nav .navigation {
+    gap: 10px;
+  }
+  nav .navigation a {
+    font-size: 12px;
+  }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .theme-toggle {
+    padding: 0;
+  }
+  .theme-toggle:hover {
+    background: none;
+  }
+  .chatbot-container {
+    height: 300px;
+  }
+  .floor-title {
+    font-size: 14px;
+  }
+  .modal {
+    width: 80%;
+  }
 }/*# sourceMappingURL=index.css.map */
