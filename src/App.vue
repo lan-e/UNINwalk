@@ -26,6 +26,8 @@ import RoomModal from "./components/RoomModal.vue";
 import { initializeChatbot, getInitializationStatus } from "./bot/chatbot.js";
 import { useI18n } from "vue-i18n";
 import Navigation from "./components/Navigation.vue";
+import { fetchProfessorsData, fetchRoomsData, fetchUninData } from "./apiCalls";
+import { useGeneralStore } from "./stores/general_store";
 
 const { t } = useI18n();
 const roomsStore = useRoomsStore();
@@ -36,6 +38,7 @@ const loadingMessage = ref(t("initializing_llm_message"));
 const showDropdown = ref(false);
 const showSettingsDropdown = ref(false);
 const router = useRouter();
+const generalStore = useGeneralStore();
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
@@ -121,7 +124,10 @@ async function initializeChatbotWithLoading() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  roomsStore.rooms = await fetchRoomsData();
+  generalStore.professors = await fetchProfessorsData();
+  generalStore.uninData = await fetchUninData();
   window.addEventListener("resize", updateIsMobile);
   document.addEventListener("click", closeDropdownOnClickOutside);
   initializeChatbotWithLoading();

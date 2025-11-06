@@ -1,17 +1,18 @@
 <template>
   <div class="professors-wrapper">
-    <Professor v-for="professor in professorsData" :key="professor.name" :info="professor" />
+    <Professor
+      v-for="professor in professorsData"
+      :key="professor.name"
+      :info="professor"
+    />
   </div>
 </template>
 
 <script setup>
-import Professor from '@/components/Professor.vue';
-import { onMounted, ref } from 'vue';
-import { fetchProfessorsData } from '@/apiCalls';
+import Professor from "@/components/Professor.vue";
+import { computed } from "vue";
+import { useGeneralStore } from "@/stores/general_store";
 
-const professorsData = ref(null)
-
-onMounted(async() => {
-  professorsData.value = await fetchProfessorsData()
-})
+const generalStore = useGeneralStore();
+const professorsData = computed(() => generalStore.professors || []);
 </script>

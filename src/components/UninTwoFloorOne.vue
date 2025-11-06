@@ -53,8 +53,8 @@
 
 <script setup>
 import { useRoomsStore } from '@/stores/rooms';
-import uninData from '../data/unin-data.json'
+import { computed } from 'vue';
 
 const roomsStore = useRoomsStore()
-const rooms = uninData['UNIN2-2']
+const rooms = computed(() => roomsStore.rooms['UNIN2-2'] || [])
 </script>

@@ -15,15 +15,14 @@
 </template>
 
 <script setup>
-import { onUnmounted } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import Room from '@/components/Room.vue';
 import { useRoomsStore } from '@/stores/rooms';
-import uninData from '../data/unin-data.json'
 import { useRouter } from 'vue-router';
 
 const roomsStore = useRoomsStore()
-const groundFloorRooms = uninData['UNIN1-1']
-const firstFloorRooms = uninData['UNIN1-2']
+const groundFloorRooms = computed(() => roomsStore.rooms['UNIN1-1'] || [])
+const firstFloorRooms = computed(() => roomsStore.rooms['UNIN1-2'] || [])
 const router = useRouter()
 
 onUnmounted(() => {

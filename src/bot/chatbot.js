@@ -6,10 +6,10 @@ import {
 } from "@langchain/core/runnables";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import data from "./data.json";
-import professorsData from "./teachers-data.json";
 import { Document } from "langchain/document";
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
+import { useGeneralStore } from "@/stores/general_store";
+import { computed } from "vue";
 
 // Store the chain instance
 let chatChain = null;
@@ -21,13 +21,13 @@ let initializationStatus = {
 };
 
 // Chat history management
-const CHAT_HISTORY_KEY = 'unin_chat_history';
+const CHAT_HISTORY_KEY = "unin_chat_history";
 
 export function saveChatHistory(messages) {
   try {
     localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages));
   } catch (error) {
-    console.error('Failed to save chat history:', error);
+    console.error("Failed to save chat history:", error);
   }
 }
 
@@ -36,7 +36,7 @@ export function loadChatHistory() {
     const history = localStorage.getItem(CHAT_HISTORY_KEY);
     return history ? JSON.parse(history) : [];
   } catch (error) {
-    console.error('Failed to load chat history:', error);
+    console.error("Failed to load chat history:", error);
     return [];
   }
 }
@@ -45,7 +45,7 @@ export function clearChatHistory() {
   try {
     localStorage.removeItem(CHAT_HISTORY_KEY);
   } catch (error) {
-    console.error('Failed to clear chat history:', error);
+    console.error("Failed to clear chat history:", error);
   }
 }
 
@@ -54,6 +54,8 @@ function formatDocumentsAsString(documents) {
 }
 
 export async function initializeChatbot(t) {
+  const generalStore = useGeneralStore();
+
   // If already initialized or initializing, return current status
   if (
     initializationStatus.isInitialized ||
@@ -88,8 +90,9 @@ export async function initializeChatbot(t) {
     // Step 3: Create documents from both room data and professor data
     initializationStatus.status = t("loading_message");
 
+    const data = computed(() => generalStore.uninData || []);
     // Create documents for room data
-    const roomDocs = data.map(
+    const roomDocs = data.value.map(
       (obj) =>
         new Document({
           pageContent: JSON.stringify(obj),
@@ -97,8 +100,9 @@ export async function initializeChatbot(t) {
         })
     );
 
+    const professorsData = computed(() => generalStore.professors || []);
     // Create documents for professor data
-    const professorsDocs = professorsData.map(
+    const professorsDocs = professorsData.value.map(
       (professor) =>
         new Document({
           pageContent: JSON.stringify(professor),

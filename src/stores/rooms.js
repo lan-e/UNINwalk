@@ -1,18 +1,18 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import uninData from "../data/unin-data.json";
 
 export const useRoomsStore = defineStore("rooms", () => {
+  const rooms = ref([]);
   const currentRoom = ref(null);
   const isModalOpen = ref(false);
 
-  // Find room in the uninData
+  // find room in the rooms array
   function findRoom(room) {
     for (let section of ["UNIN2-1", "UNIN2-2", "UNIN1-1", "UNIN1-2"]) {
-      if (uninData[section] && uninData[section][`k${room}`]) {
+      if (rooms.value[section] && rooms.value[section][`k${room}`]) {
         // return both the room info and the floor name
         return {
-          ...uninData[section][`k${room}`],
+          ...rooms.value[section][`k${room}`],
           section: section,
         };
       }
@@ -104,6 +104,7 @@ export const useRoomsStore = defineStore("rooms", () => {
   }
 
   return {
+    rooms,
     currentRoom,
     isModalOpen,
     findRoom,
