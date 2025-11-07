@@ -310,6 +310,52 @@ nav .dropdown-content a:hover {
   background-color: var(--color-hover);
 }
 
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: auto;
+  max-width: 632px;
+  /* override autofill background */
+  /* override autofill text color */
+}
+.search-container .search-input {
+  color: var(--color-text);
+  background: var(--color-background-mute);
+  caret-color: var(--color-text);
+}
+.search-container .search-input:-webkit-autofill,
+.search-container .search-input:-webkit-autofill:hover,
+.search-container .search-input:-webkit-autofill:focus,
+.search-container .search-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--color-background-mute) inset !important;
+}
+.search-container .search-input:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+.search-container .reset-input-button {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-text);
+}
+.search-container .reset-input-button:hover {
+  color: #e30613;
+  transition: 0.1s all;
+}
+.search-container .reset-input-button:disabled {
+  cursor: default;
+}
+.search-container .reset-input-button:disabled:hover {
+  color: var(--color-text);
+}
+
 .professors-wrapper {
   margin: 32px;
   display: flex;
@@ -724,5 +770,8 @@ body.has-scroll {
   }
   .modal {
     width: 80%;
+  }
+  .search-container {
+    margin: 32px;
   }
 }/*# sourceMappingURL=index.css.map */

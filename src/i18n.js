@@ -27,7 +27,8 @@ const messages = {
     enterAsGuestButton: "Continue as a guest",
     loggedAsGuest: "Guest",
     registeredStudentsTitle: "Registered students",
-    registered: "Registered"
+    registered: "Registered",
+    search_input_message: "Search for professors...",
   },
   hr: {
     home: "Početna",
@@ -55,7 +56,8 @@ const messages = {
     enterAsGuestButton: "Nastavi kao gost",
     loggedAsGuest: "Gost",
     registeredStudentsTitle: "Registrirani studenti",
-    registered: "Registriran"
+    registered: "Registriran",
+    search_input_message: "Pretraži profesore...",
   },
 };
 

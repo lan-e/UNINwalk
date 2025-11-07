@@ -1,7 +1,24 @@
 <template>
+  <div class="search-container">
+    <input
+      id="searchBox"
+      class="search-input"
+      spellcheck="false"
+      :placeholder="$t('search_input_message')"
+      :value="inputText"
+      @input="searchProfessors"
+    />
+    <button
+      class="reset-input-button"
+      @click="resetProfessors"
+      :disabled="!inputText"
+    >
+      <Icon name="close" style="font-size: 20px" />
+    </button>
+  </div>
   <div class="professors-wrapper">
     <Professor
-      v-for="professor in professorsData"
+      v-for="professor in professorsList"
       :key="professor.name"
       :info="professor"
     />
@@ -10,9 +27,49 @@
 
 <script setup>
 import Professor from "@/components/Professor.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useGeneralStore } from "@/stores/general_store";
+import Icon from "@/components/UI/Icon.vue";
 
 const generalStore = useGeneralStore();
-const professorsData = computed(() => generalStore.professors || []);
+const inputText = ref("");
+
+const professorsData = computed(() => {
+  return generalStore.professors || [];
+});
+
+const professorsList = computed(() => {
+  // show all if search is empty
+  if (!inputText.value.trim()) {
+    return professorsData.value;
+  }
+
+  const searchText = inputText.value.toLowerCase().trim();
+
+  return professorsData.value.filter((professor) => {
+    const professorName = professor.name.toLowerCase();
+    const professorRoom = professor.room?.toString().toLowerCase() || "";
+
+    // normalize room numbers by removing prefixes like "k-"
+    const normalizedRoom = professorRoom.replace(/^[a-z]-/i, "");
+    const normalizedSearch = searchText.replace(/^[a-z]-/i, "");
+
+    return (
+      professorName.includes(searchText) ||
+      professorRoom.includes(searchText) ||
+      normalizedRoom === normalizedSearch ||
+      // also match if user types just the number and room has prefix
+      (professorRoom.includes("-") && professorRoom.endsWith("-" + searchText))
+    );
+  });
+});
+
+function searchProfessors(event) {
+  inputText.value = event.target.value;
+}
+
+function resetProfessors() {
+  if (!inputText.value) return;
+  inputText.value = "";
+}
 </script>
