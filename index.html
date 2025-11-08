@@ -1,23 +1,165 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" href="/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://unin-walk.vercel.app/">
-  <meta property="og:title" content="UNINwalk">
-  <meta property="og:description" content="Get information about UNIN rooms or professors with our chatbot.">
-  <meta property="og:image" content="https://iili.io/K5wtVv1.png">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
-  <title>UNINwalk</title>
-</head>
+    <!-- Primary Meta Tags -->
+    <title>UNINwalk</title>
+    <meta
+      name="title"
+      content="UNINwalk - University North Campus Navigation & Room Finder"
+    />
+    <meta
+      name="description"
+      content="Find rooms, professors, and navigate University North with our interactive chatbot and campus map."
+    />
+    <meta
+      name="keywords"
+      content="University North, UNIN campus map, find professor office, UNIN room finder, campus navigation, UNIN-1, UNIN-2, UNIN-3, University North Croatia"
+    />
+    <meta name="author" content="UNINwalk Team" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://msl.unin.hr/uninwalk/" />
 
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
-</body>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://msl.unin.hr/uninwalk/" />
+    <meta
+      property="og:title"
+      content="UNINwalk - University North Campus Navigation"
+    />
+    <meta
+      property="og:description"
+      content="Find rooms, professors, and navigate University North with our interactive chatbot and campus map."
+    />
+    <meta property="og:image" content="https://iili.io/K5wtVv1.png" />
+    <meta property="og:site_name" content="UNINwalk" />
+    <meta property="og:locale" content="en_US" />
 
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://msl.unin.hr/uninwalk/" />
+    <meta
+      name="twitter:title"
+      content="UNINwalk - University North Campus Navigation"
+    />
+    <meta
+      name="twitter:description"
+      content="Find rooms, professors, and navigate University North with our interactive chatbot and campus map."
+    />
+    <meta name="twitter:image" content="https://iili.io/K5wtVv1.png" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "UNINwalk",
+        "description": "Interactive campus navigation tool for University North (UNIN). Find rooms, professor offices, and navigate the campus buildings with ease.",
+        "url": "https://msl.unin.hr/uninwalk/",
+        "applicationCategory": "NavigationApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "featureList": [
+          "Interactive campus map",
+          "Room finder",
+          "Professor directory",
+          "AI chatbot assistant",
+          "Multi-building navigation (UNIN-1, UNIN-2, UNIN-3)"
+        ],
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "University North",
+          "url": "https://unin.hr"
+        }
+      }
+    </script>
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+    />
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script type="module" src="/src/main.js"></script>
+    <!-- Noscript Fallback for SEO and Accessibility -->
+    <noscript>
+      <div
+        style="
+          max-width: 800px;
+          margin: 50px auto;
+          padding: 20px;
+          font-family: Arial, sans-serif;
+        "
+      >
+        <h1>UNINwalk - University North Campus Navigation</h1>
+        <p>
+          Welcome to UNINwalk, the interactive campus navigation tool for
+          University North (Sveučilište Sjever).
+        </p>
+
+        <h2>Features</h2>
+        <ul>
+          <li>
+            <strong>Interactive Campus Map</strong> - Navigate UNIN-1, UNIN-2,
+            and UNIN-3 buildings
+          </li>
+          <li>
+            <strong>Room Finder</strong> - Quickly locate any classroom or
+            facility
+          </li>
+          <li>
+            <strong>Professor Directory</strong> - Find professor offices and
+            contact information
+          </li>
+          <li>
+            <strong>AI Chatbot Assistant</strong> - Ask questions about rooms
+            and professors
+          </li>
+          <li>
+            <strong>Floor Plans</strong> - Detailed layouts of all building
+            floors
+          </li>
+        </ul>
+
+        <h2>Buildings</h2>
+        <ul>
+          <li><strong>UNIN-1:</strong> Rooms 1-39 (2 floors)</li>
+          <li><strong>UNIN-2:</strong> Main academic building</li>
+          <li><strong>UNIN-3:</strong> Additional facilities</li>
+        </ul>
+
+        <h2>How to Use</h2>
+        <p>
+          JavaScript is required to use the interactive features of UNINwalk.
+          Please enable JavaScript in your browser to access:
+        </p>
+        <ul>
+          <li>Interactive campus maps</li>
+          <li>Real-time room search</li>
+          <li>Professor finder</li>
+          <li>AI chatbot assistance</li>
+        </ul>
+
+        <p>
+          <strong>University North</strong><br />
+          Sveučilište Sjever<br />
+          Croatia
+        </p>
+      </div>
+    </noscript>
+  </body>
 </html>
