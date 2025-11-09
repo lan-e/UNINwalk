@@ -27,7 +27,10 @@
         </template>
       </Button>
     </div>
-    <div v-if="roomsStore?.currentRoom?.info" class="info-container">
+    <div
+      v-if="roomsStore?.currentRoom?.info || roomsStore.professorsInRoom"
+      class="info-container"
+    >
       <div v-for="(item, title) in roomsStore?.currentRoom?.info">
         <div class="info-item">
           <div class="info-title">
@@ -36,6 +39,14 @@
           {{ item }}
         </div>
       </div>
+
+      <Professor
+        v-if="roomsStore.professorsInRoom"
+        v-for="professor in roomsStore.professorsInRoom"
+        :key="professor.name"
+        :info="professor"
+        :isRoomNumberShown="false"
+      />
     </div>
   </div>
   <div
@@ -50,6 +61,7 @@ import { useRoomsStore } from "@/stores/rooms";
 import Button from "./UI/Button.vue";
 import Icon from "./UI/Icon.vue";
 import { ref } from "vue";
+import Professor from "./Professor.vue";
 
 const roomsStore = useRoomsStore();
 const isLinkCopied = ref(false);

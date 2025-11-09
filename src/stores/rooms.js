@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useGeneralStore } from "./general_store";
 
 export const useRoomsStore = defineStore("rooms", () => {
   const rooms = ref([]);
   const currentRoom = ref(null);
   const isModalOpen = ref(false);
+  const professorsInRoom = ref([]);
 
   // find room in the rooms array
   function findRoom(room) {
@@ -84,7 +86,35 @@ export const useRoomsStore = defineStore("rooms", () => {
   }
 
   function openModal() {
+    const generalStore = useGeneralStore();
+
     isModalOpen.value = true;
+
+    professorsInRoom.value = generalStore.professors.filter((professor) => {
+      if (!professor.room?.trim()) return false;
+
+      const profRoom = professor.room.toLowerCase().trim();
+      const currentRoomId = currentRoom.value.id.toLowerCase().trim();
+
+      // exact match
+      if (currentRoomId === profRoom) return true;
+
+      // extract numbers
+      const profRoomNum = profRoom.match(/\d+/)?.[0];
+      const currentRoomNum = currentRoomId.match(/\d+/)?.[0];
+
+      if (!profRoomNum || !currentRoomNum || profRoomNum !== currentRoomNum)
+        return false;
+
+      // professor's room is a number (e.g., "3", "36", "27")
+      const profIsJustNumber = /^\d+$/.test(profRoom);
+
+      // current room: letter + optional hyphen + number (e.g., "k3", "k-27")
+      const currentIsSimpleRoom = /^[a-z]-?\d+$/.test(currentRoomId);
+
+      // match only if professor has just a number and current room is simple format
+      return profIsJustNumber && currentIsSimpleRoom;
+    });
 
     const isScrollable =
       document.documentElement.scrollHeight > window.innerHeight;
@@ -107,6 +137,7 @@ export const useRoomsStore = defineStore("rooms", () => {
     rooms,
     currentRoom,
     isModalOpen,
+    professorsInRoom,
     findRoom,
     selectRoom,
     handleRouterLinkClick,

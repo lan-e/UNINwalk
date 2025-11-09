@@ -12,14 +12,14 @@
       </div>
     </header>
 
-    <RouterView :isLoading="isLoading" :loadingMessage="loadingMessage" />
+    <RouterView />
 
     <RoomModal v-if="roomsStore?.currentRoom && roomsStore.isModalOpen" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, provide } from "vue";
 import { RouterView, useRouter } from "vue-router";
 import { useRoomsStore } from "./stores/rooms";
 import RoomModal from "./components/RoomModal.vue";
@@ -39,6 +39,11 @@ const showDropdown = ref(false);
 const showSettingsDropdown = ref(false);
 const router = useRouter();
 const generalStore = useGeneralStore();
+
+provide("chatbot_loading", {
+  isLoading,
+  loadingMessage,
+});
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;

@@ -52,6 +52,10 @@
   --color-border-hover: var(--vt-c-divider-dark-1);
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-2);
+
+  body {
+    scrollbar-color: var(--color-background) var(--color-background-soft);
+  }
 }
 
 /* Automatic dark theme based on system preference (when no manual preference is set) */

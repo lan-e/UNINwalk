@@ -9,7 +9,7 @@
                 </div>
             </div>
             <!-- Typing indicator when bot is generating response -->
-            <div v-if="isTyping" class="message bot">
+            <div v-if="isGeneratingAnswer" class="message bot">
                 <div class="message-content typing-bubble">
                     <div class="typing-dots">
                         <span></span>
@@ -27,10 +27,14 @@
         </div>
 
         <div class="chat-input">
-            <input v-model="userInput" @keyup.enter="sendMessage" :placeholder="$t('bot_input_message')"
-                :disabled="isTyping || isLoading" />
-            <button @click="sendMessage" :disabled="!userInput || isTyping">
-                <div v-if="isLoading" class="spinner" />
+            <input 
+                v-model="userInput" 
+                @keyup.enter="sendMessage" 
+                :placeholder="inputPlaceholder"
+                :disabled="isInputDisabled" 
+            />
+            <button @click="sendMessage" :disabled="isSendButtonDisabled">
+                <div v-if="chatbotContext.isLoading.value" class="spinner" />
                 <Icon v-else name="send" />
             </button>
         </div>
@@ -38,29 +42,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted, computed, watch } from 'vue'
+import { ref, onMounted, nextTick, onUnmounted, computed, watch, inject } from 'vue'
 import { useRoomsStore } from '@/stores/rooms'
 import { useRouter } from 'vue-router'
 import Icon from './UI/Icon.vue'
 import { getChatbotAnswer, loadChatHistory, saveChatHistory, clearChatHistory } from '@/bot/chatbot'
 import { useI18n } from 'vue-i18n'
-import LoadingSpinner from './UI/LoadingSpinner.vue'
 
-const props = defineProps({
-    isLoading: {
-        type: Boolean
-    },
-    loadingMessage: {
-        type: String
-    }
-})
 const { t } = useI18n();
 const messages = ref([])
 const userInput = ref('')
-const isTyping = ref(false)
+const isGeneratingAnswer = ref(false)
 const messagesContainer = ref(null)
 const roomsStore = useRoomsStore()
 const router = useRouter()
+const chatbotContext = inject("chatbot_loading")
+
+const inputPlaceholder = computed(() => {
+  return chatbotContext.isLoading.value
+    ? t("loading_message")
+    : t("bot_input_message");
+});
+
+// input is disabled if user chatbot is loading or generating answer
+const isInputDisabled = computed(() => {
+    return chatbotContext.isLoading.value || isGeneratingAnswer.value
+})
+
+// send button is disabled if input is empty or generating answer
+const isSendButtonDisabled = computed(() => {
+    return !userInput.value || isGeneratingAnswer.value
+})
 
 // Computed property that includes initial message
 const displayMessages = computed(() => {
@@ -79,7 +91,7 @@ watch(messages, (newMessages) => {
 }, { deep: true });
 
 const sendMessage = async () => {
-    if (!userInput.value || isTyping.value) return
+    if (!userInput.value || isGeneratingAnswer.value) return
 
     const userQuestion = userInput.value
 
@@ -93,7 +105,7 @@ const sendMessage = async () => {
 
     messages.value.push(userMessage)
     userInput.value = ''
-    isTyping.value = true
+    isGeneratingAnswer.value = true
 
     // Scroll to bottom when typing bubble appears
     await nextTick()
@@ -123,7 +135,7 @@ const sendMessage = async () => {
         
         messages.value.push(errorMessage)
     } finally {
-        isTyping.value = false
+        isGeneratingAnswer.value = false
     }
 
     await nextTick()

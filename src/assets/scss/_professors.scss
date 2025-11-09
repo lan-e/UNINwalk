@@ -53,7 +53,8 @@
 
 .professors-wrapper {
   margin: 32px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   gap: 32px;
   flex-wrap: wrap;
   align-items: center;
@@ -68,7 +69,6 @@
   box-shadow: 4px 4px 8px var(--color-background);
   border-radius: 16px;
   padding: 12px 16px;
-  width: 600px;
 
   .professor-image-container {
     width: 104px;
