@@ -28,14 +28,50 @@
   }
 
   .modal {
-    width: 80%;
+    width: 85%;
+
+    .professor-container {
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .info-container {
+      padding: 0;
+      padding-top: 16px;
+    }
   }
 
   .search-container {
-    margin: 32px;
+    margin: 16px;
+    max-width: calc(100% - 32px);
   }
 
   .professors-wrapper {
     grid-template-columns: auto;
+    gap: 16px;
+  }
+
+  .professor-container {
+    padding: 8px;
+    max-width: 300px;
+    margin: 0 auto;
+
+    .professor-image-container {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+    }
+
+    .professor-info {
+      .name {
+        font-size: 16px; // slightly smaller on mobile
+      }
+
+      .title,
+      .email {
+        font-size: 12px; // adjust text size
+      }
+    }
   }
 }

@@ -370,6 +370,8 @@ nav .dropdown-content a:hover {
 }
 
 .professor-container {
+  width: 400px;
+  margin: 0 auto;
   display: flex;
   gap: 16px;
   color: var(--color-text);
@@ -773,12 +775,40 @@ body.has-scroll {
     font-size: 14px;
   }
   .modal {
-    width: 80%;
+    width: 85%;
+  }
+  .modal .professor-container {
+    width: 100%;
+    max-width: 280px;
+  }
+  .modal .info-container {
+    padding: 0;
+    padding-top: 16px;
   }
   .search-container {
-    margin: 32px;
+    margin: 16px;
+    max-width: calc(100% - 32px);
   }
   .professors-wrapper {
     grid-template-columns: auto;
+    gap: 16px;
+  }
+  .professor-container {
+    padding: 8px;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .professor-container .professor-image-container {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+  .professor-container .professor-info .name {
+    font-size: 16px;
+  }
+  .professor-container .professor-info .title,
+  .professor-container .professor-info .email {
+    font-size: 12px;
   }
 }/*# sourceMappingURL=index.css.map */
