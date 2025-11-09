@@ -1,5 +1,5 @@
 <template>
-    <g :id="'room-' + room.id" @click="selectRoom"
+    <g :id="'room-' + room.id" @click="handleRoomClick"
         :class="['room', { selected: roomsStore?.currentRoom?.id === room.id }, { clickable: isClickable}]">
         <svg width="1131" height="323" x="9.69" y="53.71" viewBox="0 0 1131 323" fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -46,11 +46,13 @@ const roomsStore = useRoomsStore();
 const isClickable = !props.room.id.includes('toilets') && !props.room.id.includes('_stairs');
 const router = useRouter();
 
-const selectRoom = () => {
+const handleRoomClick = () => {
     if(!isClickable) return;
-    roomsStore.selectRoom(props.room);
-    roomsStore.openModal();
-    router.push({ query: {room: props.room.id }});
+    
+    const roomNumber = props.room.id.replace(/^k-?/i, ''); // Removes "k" or "k-" prefix
+    roomsStore.handleRoomSelection(roomNumber, null, router);
+    
+    router.push({ query: { room: props.room.id }});
 };
 
 onMounted(() => {

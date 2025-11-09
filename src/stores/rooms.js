@@ -7,6 +7,7 @@ export const useRoomsStore = defineStore("rooms", () => {
   const currentRoom = ref(null);
   const isModalOpen = ref(false);
   const professorsInRoom = ref([]);
+  const savedScrollPosition = ref(null); // track if scroll was saved
 
   // find room in the rooms array
   function findRoom(room) {
@@ -51,6 +52,28 @@ export const useRoomsStore = defineStore("rooms", () => {
     }
   }
 
+  // NEW: Shared function for handling room selection
+  function handleRoomSelection(roomId, route, router) {
+    const success = selectRoom(roomId);
+
+    if (success) {
+      if (route) {
+        // Route change - scroll after navigation
+        router.push(route).then(() => {
+          scrollToRoom(roomId);
+        });
+      } else {
+        // no route change - scroll first, wait for animation, then open modal
+        scrollToRoom(roomId);
+        setTimeout(() => {
+          openModal();
+        }, 350); // gives smooth scroll time to complete
+      }
+    } else {
+      console.error("Room not found:", roomId);
+    }
+  }
+
   // Handle router link click
   function handleRouterLinkClick(e, router) {
     if (e.target.classList.contains("router-link")) {
@@ -58,16 +81,7 @@ export const useRoomsStore = defineStore("rooms", () => {
       const room = e.target.getAttribute("data-room");
 
       if (room) {
-        const success = selectRoom(room);
-        if (success) {
-          console.log("Room saved to store:", currentRoom.value);
-        } else {
-          console.log("Room not found:", room);
-        }
-      }
-
-      if (route) {
-        router.push(route);
+        handleRoomSelection(room, route, router);
       }
     }
   }
@@ -83,6 +97,30 @@ export const useRoomsStore = defineStore("rooms", () => {
     return () => {
       document.removeEventListener("click", clickHandler);
     };
+  }
+
+  // scrolls to the selected room only if needed
+  function scrollToRoom(roomId) {
+    // wait for next tick to ensure DOM is updated
+    setTimeout(() => {
+      const roomElement = document.querySelector(`[id="room-k${roomId}"]`);
+
+      if (roomElement) {
+        const rect = roomElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // check if room is already visible in viewport
+        const isVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+
+        // only scroll if room is not fully visible
+        if (!isVisible) {
+          roomElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }
+    }, 100); // small delay to ensure navigation and rendering is complete
   }
 
   function openModal() {
@@ -119,6 +157,10 @@ export const useRoomsStore = defineStore("rooms", () => {
     const isScrollable =
       document.documentElement.scrollHeight > window.innerHeight;
     if (isScrollable) {
+      // save current scroll position
+      const scrollY = window.scrollY;
+      savedScrollPosition.value = scrollY;
+      document.body.style.top = `-${scrollY}px`;
       document.body.classList.add("has-scroll");
     }
   }
@@ -130,7 +172,18 @@ export const useRoomsStore = defineStore("rooms", () => {
 
   function closeModal() {
     isModalOpen.value = false;
-    document.body.classList.remove("has-scroll");
+
+    // only restore scroll if it was actually saved
+    if (savedScrollPosition.value !== null) {
+      document.body.classList.remove("has-scroll");
+      document.body.style.top = "";
+      window.scrollTo(0, savedScrollPosition.value);
+      savedScrollPosition.value = null;
+    } else {
+      // remove the class if no scroll was saved
+      document.body.classList.remove("has-scroll");
+      document.body.style.top = "";
+    }
   }
 
   return {
@@ -145,5 +198,7 @@ export const useRoomsStore = defineStore("rooms", () => {
     openModal,
     deselectRoom,
     closeModal,
+    scrollToRoom,
+    handleRoomSelection,
   };
 });

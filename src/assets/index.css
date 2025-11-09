@@ -638,7 +638,7 @@ body.has-scroll {
 .modal {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -693,7 +693,7 @@ body.has-scroll {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: rgba(204, 204, 204, 0.3568627451);
