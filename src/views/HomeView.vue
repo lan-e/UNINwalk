@@ -18,6 +18,7 @@ import UninAll from "@/components/UninAll.vue";
   gap: 48px;
   padding: 32px;
   padding-top: 0;
+  margin-top: 64px;
 }
 
 @media (max-width: 768px) {

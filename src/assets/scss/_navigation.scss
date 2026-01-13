@@ -1,10 +1,17 @@
 nav {
+  position: fixed;
   display: flex;
+  top: 0;
+  z-index: 100;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin: 16px;
+  padding: 8px 12px;
   text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--color-background);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
 
   .navigation {
     display: flex;
@@ -48,7 +55,7 @@ nav {
     display: inline-block;
   }
 
-   .dropdown-content.settings {
+  .dropdown-content.settings {
     position: absolute;
     right: 4px;
     max-width: 200px;
@@ -62,11 +69,11 @@ nav {
   }
 
   hr {
-    border:none;
+    border: none;
     border-bottom: 1px solid #e2e2e2;
   }
 
-  .user-profile{
+  .user-profile {
     display: flex;
     align-items: center;
     padding: 4px 8px;

@@ -89,6 +89,7 @@
   align-items: center;
   justify-content: center;
   margin: 0 16px;
+  margin-top: 64px;
 }
 .floor-plan hr {
   width: 94%;
@@ -225,12 +226,19 @@ input {
 }
 
 nav {
+  position: fixed;
   display: flex;
+  top: 0;
+  z-index: 100;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin: 16px;
+  padding: 8px 12px;
   text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--color-background);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
 }
 nav .navigation {
   display: flex;
@@ -321,6 +329,7 @@ nav .dropdown-content a:hover {
   gap: 8px;
   margin: auto;
   max-width: 632px;
+  margin-top: 100px;
   /* override autofill background */
   /* override autofill text color */
 }
@@ -788,6 +797,7 @@ body.has-scroll {
   .search-container {
     margin: 16px;
     max-width: calc(100% - 32px);
+    margin-top: 80px;
   }
   .professors-wrapper {
     grid-template-columns: auto;
