@@ -65,7 +65,7 @@ const professorsList = computed(() => {
     // also match if user types just the number and room has prefix
     const roomMatches =
       professorRoom.includes(searchText) ||
-      normalizedRoom === normalizedSearch ||
+      normalizedRoom.startsWith(normalizedSearch) ||
       (professorRoom.includes("-") && professorRoom.endsWith("-" + searchText));
 
     return nameMatchesAllWords || roomMatches;
