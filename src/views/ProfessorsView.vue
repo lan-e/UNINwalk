@@ -46,6 +46,9 @@ const professorsList = computed(() => {
 
   const searchText = inputText.value.toLowerCase().trim();
 
+  // split search into words for flexible matching
+  const searchWords = searchText.split(/\s+/).filter((word) => word.length > 0);
+
   return professorsData.value.filter((professor) => {
     const professorName = professor.name.toLowerCase();
     const professorRoom = professor.room?.toString().toLowerCase() || "";
@@ -54,13 +57,18 @@ const professorsList = computed(() => {
     const normalizedRoom = professorRoom.replace(/^[a-z]-/i, "");
     const normalizedSearch = searchText.replace(/^[a-z]-/i, "");
 
-    return (
-      professorName.includes(searchText) ||
+    // check if all search words appear in the name (in any order)
+    const nameMatchesAllWords = searchWords.every((word) =>
+      professorName.includes(word)
+    );
+
+    // also match if user types just the number and room has prefix
+    const roomMatches =
       professorRoom.includes(searchText) ||
       normalizedRoom === normalizedSearch ||
-      // also match if user types just the number and room has prefix
-      (professorRoom.includes("-") && professorRoom.endsWith("-" + searchText))
-    );
+      (professorRoom.includes("-") && professorRoom.endsWith("-" + searchText));
+
+    return nameMatchesAllWords || roomMatches;
   });
 });
 
