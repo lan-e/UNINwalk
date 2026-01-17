@@ -2,7 +2,7 @@ nav {
   position: fixed;
   display: flex;
   top: 0;
-  z-index: 100;
+  z-index: 1;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -87,7 +87,7 @@ nav {
     position: absolute;
     background-color: var(--color-background);
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 10;
+    z-index: 2;
     border-radius: 4px;
     top: 100%;
     left: 0;
