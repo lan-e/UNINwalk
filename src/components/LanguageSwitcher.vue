@@ -36,7 +36,7 @@ function toggleLanguage() {
 
     span {
         &.active {
-            color: #e30613;
+            color: var(--color-active);
         }
     }
 }

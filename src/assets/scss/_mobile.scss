@@ -1,3 +1,9 @@
+@media screen and (max-width: 1300px) {
+  .professors-wrapper {
+    grid-template-columns: auto auto;
+  }
+}
+
 @media screen and (max-width: 768px) {
   nav .navigation {
     gap: 10px;

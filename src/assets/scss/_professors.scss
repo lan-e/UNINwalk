@@ -38,7 +38,7 @@
     color: var(--color-text);
 
     &:hover {
-      color: #e30613;
+      color: var(--color-active);
       transition: 0.1s all;
     }
 
@@ -55,7 +55,7 @@
 .professors-wrapper {
   margin: 32px;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   gap: 32px;
   flex-wrap: wrap;
   align-items: center;
@@ -102,7 +102,7 @@
       color: var(--color-text);
 
       &:hover {
-        color: #e30613;
+        color: var(--color-active);
       }
     }
 

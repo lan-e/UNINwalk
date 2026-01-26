@@ -31,7 +31,6 @@
                 v-model="userInput" 
                 @keyup.enter="sendMessage" 
                 :placeholder="inputPlaceholder"
-                :disabled="isInputDisabled" 
             />
             <button @click="sendMessage" :disabled="isSendButtonDisabled">
                 <div v-if="chatbotContext.isLoading.value" class="spinner" />
@@ -64,14 +63,10 @@ const inputPlaceholder = computed(() => {
     : t("bot_input_message");
 });
 
-// input is disabled if user chatbot is loading or generating answer
-const isInputDisabled = computed(() => {
-    return chatbotContext.isLoading.value || isGeneratingAnswer.value
-})
 
-// send button is disabled if input is empty or generating answer
+// send button is disabled if chatbot is loading, input is empty or generating answer
 const isSendButtonDisabled = computed(() => {
-    return !userInput.value || isGeneratingAnswer.value
+    return chatbotContext.isLoading.value || !userInput.value || isGeneratingAnswer.value 
 })
 
 // Computed property that includes initial message
@@ -222,7 +217,7 @@ onUnmounted(() => {
     animation: spin 1s linear infinite;
     border-radius: 50%;
     border: 1px solid #f3f3f3;
-    border-top: 1px solid #e30613;
+    border-top: 1px solid var(--color-active);
     height: 20px;
     width: 20px;
 }

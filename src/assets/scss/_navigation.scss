@@ -28,10 +28,10 @@ nav {
       }
 
       &.router-link-exact-active {
-        color: #e30613;
+        color: var(--color-active);
 
         &:hover {
-          color: #e30613;
+          color: var(--color-active);
           cursor: default;
         }
       }

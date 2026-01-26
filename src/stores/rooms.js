@@ -65,9 +65,7 @@ export const useRoomsStore = defineStore("rooms", () => {
       } else {
         // no route change - scroll first, wait for animation, then open modal
         scrollToRoom(roomId);
-        setTimeout(() => {
-          openModal();
-        }, 350); // gives smooth scroll time to complete
+        openModal();
       }
     } else {
       console.error("Room not found:", roomId);

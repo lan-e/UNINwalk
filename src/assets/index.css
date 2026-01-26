@@ -27,6 +27,9 @@
   --color-border-hover: var(--vt-c-divider-light-1);
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-active: #e30613;
+  --color-active-hover: #c82333;
+  --color-active-selected: #fdd;
 }
 
 /* Explicit light theme (for manual toggle) */
@@ -38,6 +41,9 @@
   --color-border-hover: var(--vt-c-divider-light-1);
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-active: #e30613;
+  --color-active-hover: #c82333;
+  --color-active-selected: #fdd;
 }
 
 /* Explicit dark theme (for manual toggle) */
@@ -49,6 +55,9 @@
   --color-border-hover: var(--vt-c-divider-dark-1);
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-2);
+  --color-active: #e30613;
+  --color-active-hover: #c82333;
+  --color-active-selected: #e306156e;
 }
 :root.dark-theme body {
   scrollbar-color: var(--color-background) var(--color-background-soft);
@@ -80,7 +89,7 @@
   background-color: var(--color-background-mute);
 }
 .theme-toggle-button .active {
-  color: #e30613;
+  color: var(--color-active);
 }
 
 .floor-plan {
@@ -116,10 +125,10 @@
   transition: fill 0.3s ease;
 }
 .clickable:hover rect {
-  fill: #bbbbbb;
+  fill: var(--color-border);
 }
 .clickable.selected rect {
-  fill: #dfaaaa;
+  fill: var(--color-active-selected);
 }
 
 .room-name {
@@ -130,6 +139,19 @@
   -webkit-hyphens: auto;
           hyphens: auto;
   color: #000;
+}
+
+.room-name-color {
+  fill: var(--color-text);
+  color: var(--color-text);
+}
+
+.room-color {
+  fill: var(--color-background-mute);
+}
+
+.toilets-color {
+  fill: #d3d3d3;
 }
 
 .chatbot-container {
@@ -152,19 +174,19 @@
   font-size: 20px;
 }
 .chatbot-container .delete-button:hover {
-  color: #c82333;
+  color: var(--color-active-hover);
 }
 .chatbot-container button {
   display: flex;
   align-items: center;
-  background: #e30613;
+  background: var(--color-active);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 .chatbot-container button:hover {
-  background: #c82333;
+  background: var(--color-active-hover);
 }
 .chatbot-container button:disabled {
   background: #ccc;
@@ -201,7 +223,7 @@
   border-bottom-left-radius: 0.25rem;
 }
 .message.bot a {
-  color: #e30613;
+  color: var(--color-active);
 }
 
 .message-time {
@@ -223,6 +245,8 @@ input {
   border: 1px solid #ddd;
   border-radius: 4px;
   outline: none;
+  background: var(--color-background-soft);
+  color: var(--color-text);
 }
 
 nav {
@@ -254,10 +278,10 @@ nav .navigation a:hover {
   color: #969696;
 }
 nav .navigation a.router-link-exact-active {
-  color: #e30613;
+  color: var(--color-active);
 }
 nav .navigation a.router-link-exact-active:hover {
-  color: #e30613;
+  color: var(--color-active);
   cursor: default;
 }
 nav .dropdown-button {
@@ -358,7 +382,7 @@ nav .dropdown-content a:hover {
   color: var(--color-text);
 }
 .search-container .reset-input-button:hover {
-  color: #e30613;
+  color: var(--color-active);
   transition: 0.1s all;
 }
 .search-container .reset-input-button:disabled {
@@ -371,7 +395,7 @@ nav .dropdown-content a:hover {
 .professors-wrapper {
   margin: 32px;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   gap: 32px;
   flex-wrap: wrap;
   align-items: center;
@@ -416,7 +440,7 @@ nav .dropdown-content a:hover {
   color: var(--color-text);
 }
 .professor-container .professor-info a:hover {
-  color: #e30613;
+  color: var(--color-active);
 }
 .professor-container .professor-info .router-link {
   font-size: 16px;
@@ -700,7 +724,7 @@ body.has-scroll {
   cursor: pointer;
 }
 .link-button:hover {
-  color: #e30613;
+  color: var(--color-active);
 }
 
 .overlay {
@@ -721,7 +745,7 @@ body.has-scroll {
 
 .button {
   border: none;
-  background: #e30613;
+  background: var(--color-active);
   color: #fff;
   border-radius: 4px;
   padding: 4px 8px;
@@ -732,7 +756,7 @@ body.has-scroll {
   cursor: pointer;
 }
 .button:hover {
-  background: #c82333;
+  background: var(--color-active-hover);
 }
 .button.secondary {
   background: none;
@@ -754,13 +778,18 @@ body.has-scroll {
   transition: 0.2s all ease-in-out;
 }
 .grey-button.copied-link {
-  color: #e30613;
+  color: var(--color-active);
   cursor: default;
 }
 .grey-button.copied-link:hover {
   background: none;
 }
 
+@media screen and (max-width: 1300px) {
+  .professors-wrapper {
+    grid-template-columns: auto auto;
+  }
+}
 @media screen and (max-width: 768px) {
   nav .navigation {
     gap: 10px;

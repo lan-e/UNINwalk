@@ -32,11 +32,11 @@
   transition: fill 0.3s ease;
 
   &:hover rect {
-    fill: #bbbbbb;
+    fill: var(--color-border);
   }
 
   &.selected rect {
-    fill: #dfaaaa;
+    fill: var(--color-active-selected);
   }
 }
 
@@ -47,4 +47,17 @@
   overflow-wrap: break-word;
   hyphens: auto;
   color: #000;
+}
+
+.room-name-color {
+  fill: var(--color-text);
+  color: var(--color-text);
+}
+
+.room-color {
+  fill: var(--color-background-mute);
+}
+
+.toilets-color {
+  fill: #d3d3d3;
 }

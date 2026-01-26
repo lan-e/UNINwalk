@@ -30,6 +30,9 @@
   --color-border-hover: var(--vt-c-divider-light-1);
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-active: #e30613;
+  --color-active-hover: #c82333;
+  --color-active-selected: #fdd;
 }
 
 /* Explicit light theme (for manual toggle) */
@@ -41,6 +44,9 @@
   --color-border-hover: var(--vt-c-divider-light-1);
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-active: #e30613;
+  --color-active-hover: #c82333;
+  --color-active-selected: #fdd;
 }
 
 /* Explicit dark theme (for manual toggle) */
@@ -52,6 +58,9 @@
   --color-border-hover: var(--vt-c-divider-dark-1);
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-2);
+  --color-active: #e30613;
+  --color-active-hover: #c82333;
+  --color-active-selected: #e306156e;
 
   body {
     scrollbar-color: var(--color-background) var(--color-background-soft);
@@ -86,6 +95,6 @@
   }
 
   .active {
-    color: #e30613;
+    color: var(--color-active);
   }
 }
