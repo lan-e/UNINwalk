@@ -36,7 +36,7 @@
     }
 
     &:disabled {
-      background: #ccc;
+      background: var(--color-border);
       cursor: not-allowed;
     }
   }
@@ -97,4 +97,243 @@ input {
   outline: none;
   background: var(--color-background-soft);
   color: var(--color-text);
+}
+
+.typing-bubble {
+  padding: 12px 16px;
+  display: inline-block;
+  max-width: fit-content;
+}
+
+.typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #999;
+  animation: typing 1.4s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 50%;
+  border: 1px solid #f3f3f3;
+  border-top: 1px solid #e30613;
+  height: 20px;
+  width: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* RAGAs Evaluation Display */
+.ragas-container {
+  background: var(--color-background-soft);
+  border-top: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ragas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--color-background-mute);
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-background-soft);
+  }
+
+  // Prevent hover effect when hovering over copy button
+  &:has(.copy-button:hover) {
+    background: var(--color-background-mute);
+  }
+}
+
+.ragas-header-active {
+  background: var(--color-background-soft);
+
+  &:has(.copy-button:hover) {
+    background: var(--color-background-soft);
+  }
+}
+
+.ragas-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.copy-button {
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.ragas-content {
+  padding: 12px 14px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ragas-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--color-background);
+  color: var(--color-text);
+  border-radius: 6px;
+  border-left: 4px solid #6c757d;
+  transition: all 0.2s;
+}
+
+.metric-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.metric-item.overall {
+  font-weight: 600;
+  margin-top: 4px;
+  border-left-width: 6px;
+}
+
+.metric-label {
+  font-size: 13px;
+}
+
+.metric-value {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+.metric-item.score-high {
+  border-left-color: #28a745;
+}
+
+.metric-item.score-high .metric-value {
+  color: #155724;
+  background: #d4edda;
+}
+
+.metric-item.score-medium {
+  border-left-color: #ffc107;
+}
+
+.metric-item.score-medium .metric-value {
+  color: #856404;
+  background: #fff3cd;
+}
+
+.metric-item.score-low {
+  border-left-color: #dc3545;
+}
+
+.metric-item.score-low .metric-value {
+  color: #721c24;
+  background: #f8d7da;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .message-content {
+    max-width: 90%;
+  }
+
+  .evaluation-summary {
+    max-width: 90%;
+  }
+
+  .ragas-header {
+    padding: 8px 12px;
+  }
+
+  .ragas-title {
+    font-size: 13px;
+  }
+
+  .copy-button {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .metric-item {
+    padding: 6px 10px;
+  }
+
+  .metric-label {
+    font-size: 12px;
+  }
+
+  .metric-value {
+    font-size: 13px;
+  }
 }

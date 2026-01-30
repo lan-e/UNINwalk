@@ -10,9 +10,13 @@ import { Document } from "langchain/document";
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
 import { useGeneralStore } from "@/stores/general_store";
 import { computed } from "vue";
+import RAGEvaluator from "@/ragEvaluator";
 
-// Store the chain instance
+// Store the chain instance and retriever
 let chatChain = null;
+let vectorStoreRetriever = null;
+let ragEvaluator = null;
+
 let initializationStatus = {
   isInitializing: false,
   isInitialized: false,
@@ -53,6 +57,21 @@ function formatDocumentsAsString(documents) {
   return documents.map((document) => document.pageContent).join("\n\n");
 }
 
+// Enhanced function to get retrieved documents
+async function getRetrievedDocuments(question) {
+  if (!vectorStoreRetriever) {
+    return [];
+  }
+
+  try {
+    const docs = await vectorStoreRetriever.invoke(question);
+    return docs.map((doc) => doc.pageContent);
+  } catch (error) {
+    console.error("Error retrieving documents:", error);
+    return [];
+  }
+}
+
 export async function initializeChatbot(t) {
   const generalStore = useGeneralStore();
 
@@ -72,6 +91,9 @@ export async function initializeChatbot(t) {
       status: t("initializing_llm_message"),
       error: null,
     };
+
+    // Initialize RAG evaluator
+    ragEvaluator = new RAGEvaluator(import.meta.env.VITE_GROQ_API_KEY);
 
     // Step 1: Initialize embeddings
     initializationStatus.status = t("initializing_llm_message");
@@ -97,7 +119,7 @@ export async function initializeChatbot(t) {
         new Document({
           pageContent: JSON.stringify(obj),
           metadata: { type: "room" },
-        })
+        }),
     );
 
     const professorsData = computed(() => generalStore.professors || []);
@@ -107,7 +129,7 @@ export async function initializeChatbot(t) {
         new Document({
           pageContent: JSON.stringify(professor),
           metadata: { type: "professor" },
-        })
+        }),
     );
 
     // Combine all documents
@@ -117,12 +139,12 @@ export async function initializeChatbot(t) {
     initializationStatus.status = t("loading_message");
     const vectorStore = await MemoryVectorStore.fromDocuments(
       allDocs,
-      embeddings
+      embeddings,
     );
 
-    // Step 5: Initialize retriever
+    // Step 5: Initialize retriever (save reference for evaluation)
     initializationStatus.status = t("loading_message");
-    const vectorStoreRetriever = vectorStore.asRetriever();
+    vectorStoreRetriever = vectorStore.asRetriever();
 
     // Step 6: Create prompt template
     initializationStatus.status = "Configuring chatbot chain...";
@@ -151,7 +173,7 @@ export async function initializeChatbot(t) {
        For example: E-mail adresa je <a href="mailto:email@address.com">email@address.com</a>.
     
     4. Phone numbers: Format ALL phone numbers as clickable tel links:
-       <a href="tel:phone-number">phone-number</a>
+      <a href="tel:phone-number">phone-number</a>
        
        For example: telefon <a href="tel:042/493-371">042/493-371</a>.
     
@@ -219,13 +241,31 @@ export async function initializeChatbot(t) {
   }
 }
 
-export async function getChatbotAnswer(question) {
+export async function getChatbotAnswer(question, options = {}) {
   if (!chatChain) {
     throw new Error("Chatbot not initialized. Please initialize first.");
   }
 
   try {
-    return await chatChain.invoke(question);
+    const answer = await chatChain.invoke(question);
+
+    // If evaluation is requested, perform RAG evaluation
+    if (options.evaluate && ragEvaluator) {
+      const retrievedDocs = await getRetrievedDocuments(question);
+      const context = retrievedDocs.join("\n\n");
+
+      const evaluation = await ragEvaluator.evaluateRAGPipeline({
+        question,
+        answer,
+        context,
+        retrievedDocs,
+        groundTruthAnswer: options.groundTruth || null,
+      });
+
+      return { answer, evaluation };
+    }
+
+    return { answer };
   } catch (error) {
     console.error("Error getting answer:", error);
     throw error;

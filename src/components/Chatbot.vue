@@ -1,61 +1,160 @@
 <template>
-    <div class="chatbot-container">
-        <div class="chat-messages" ref="messagesContainer">
-            <div v-for="(message, index) in displayMessages" :key="index" :class="['message', message.sender]">
-                <div class="message-content" v-html="message.text">
-                </div>
-                <div class="message-time">
-                    {{ message.time }}
-                </div>
-            </div>
-            <!-- Typing indicator when bot is generating response -->
-            <div v-if="isGeneratingAnswer" class="message bot">
-                <div class="message-content typing-bubble">
-                    <div class="typing-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-            </div>
-            <Icon
-                v-if="messages.length"
-                name="delete"
-                class="delete-button"
-                @click="clearChat"
-            />
+  <div class="chatbot-container">
+    <div class="chat-messages" ref="messagesContainer">
+      <div
+        v-for="(message, index) in displayMessages"
+        :key="index"
+        :class="['message', message.sender]"
+      >
+        <div class="message-content" v-html="message.text"></div>
+        <div class="message-time">
+          {{ message.time }}
         </div>
-
-        <div class="chat-input">
-            <input 
-                v-model="userInput" 
-                @keyup.enter="sendMessage" 
-                :placeholder="inputPlaceholder"
-            />
-            <button @click="sendMessage" :disabled="isSendButtonDisabled">
-                <div v-if="chatbotContext.isLoading.value" class="spinner" />
-                <Icon v-else name="send" />
-            </button>
+      </div>
+      <!-- Typing indicator when bot is generating response -->
+      <div v-if="isGeneratingAnswer" class="message bot">
+        <div class="message-content typing-bubble">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
+      </div>
+      <Icon
+        v-if="messages.length"
+        name="delete"
+        class="delete-button"
+        @click="clearChat"
+      />
     </div>
+
+    <div class="chat-input">
+      <input
+        v-model="userInput"
+        @keyup.enter="sendMessage"
+        :placeholder="inputPlaceholder"
+      />
+      <button @click="sendMessage" :disabled="isSendButtonDisabled">
+        <div v-if="chatbotContext.isLoading.value" class="spinner" />
+        <Icon v-else name="send" />
+      </button>
+    </div>
+
+    <!-- RAGAs Evaluation Display -->
+    <div v-if="aggregatedEvaluation" class="ragas-container">
+      <div
+        class="ragas-header"
+        :class="{ 'ragas-header-active': showRagasSection }"
+        @click="toggleRagasSection"
+      >
+        <div class="ragas-title">
+          <Icon :name="showRagasSection ? 'expand_more' : 'chevron_right'" />
+          <span>{{ t("ragas_title") }}</span>
+        </div>
+        <button
+          @click.stop="copyForGoogleForms(aggregatedEvaluation)"
+          class="copy-button"
+          :class="{ 'copy-success': copySuccess }"
+          :title="copySuccess ? 'Copied!' : 'Copy RAGAs values'"
+        >
+          <Icon :name="copySuccess ? 'check' : 'content_copy'" />
+        </button>
+      </div>
+
+      <div v-if="showRagasSection" class="ragas-content">
+        <div class="ragas-metrics">
+          <div
+            v-if="aggregatedEvaluation.metrics.faithfulness"
+            class="metric-item"
+            :class="
+              getScoreClass(aggregatedEvaluation.metrics.faithfulness.score)
+            "
+          >
+            <span class="metric-label">{{ t("faithfulness") }}</span>
+            <span class="metric-value">{{
+              formatScore(aggregatedEvaluation.metrics.faithfulness.score)
+            }}</span>
+          </div>
+
+          <div
+            v-if="aggregatedEvaluation.metrics.answerRelevancy"
+            class="metric-item"
+            :class="
+              getScoreClass(aggregatedEvaluation.metrics.answerRelevancy.score)
+            "
+          >
+            <span class="metric-label">{{ t("answer_relevancy") }}</span>
+            <span class="metric-value">{{
+              formatScore(aggregatedEvaluation.metrics.answerRelevancy.score)
+            }}</span>
+          </div>
+
+          <div
+            v-if="aggregatedEvaluation.metrics.contextPrecision"
+            class="metric-item"
+            :class="
+              getScoreClass(aggregatedEvaluation.metrics.contextPrecision.score)
+            "
+          >
+            <span class="metric-label">{{ t("context_precision") }}</span>
+            <span class="metric-value">{{
+              formatScore(aggregatedEvaluation.metrics.contextPrecision.score)
+            }}</span>
+          </div>
+
+          <div
+            class="metric-item overall"
+            :class="getScoreClass(aggregatedEvaluation.overallScore)"
+          >
+            <span class="metric-label">{{ t("overall_score") }}</span>
+            <span class="metric-value">{{
+              formatScore(aggregatedEvaluation.overallScore)
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted, computed, watch, inject } from 'vue'
-import { useRoomsStore } from '@/stores/rooms'
-import { useRouter } from 'vue-router'
-import Icon from './UI/Icon.vue'
-import { getChatbotAnswer, loadChatHistory, saveChatHistory, clearChatHistory } from '@/bot/chatbot'
-import { useI18n } from 'vue-i18n'
+import {
+  ref,
+  onMounted,
+  nextTick,
+  onUnmounted,
+  computed,
+  watch,
+  inject,
+} from "vue";
+import { useRoomsStore } from "@/stores/rooms";
+import { useRouter } from "vue-router";
+import Icon from "./UI/Icon.vue";
+import {
+  getChatbotAnswer,
+  loadChatHistory,
+  saveChatHistory,
+  clearChatHistory,
+} from "@/bot/chatbot";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const messages = ref([])
-const userInput = ref('')
-const isGeneratingAnswer = ref(false)
-const messagesContainer = ref(null)
-const roomsStore = useRoomsStore()
-const router = useRouter()
-const chatbotContext = inject("chatbot_loading")
+const messages = ref([]);
+const userInput = ref("");
+const isGeneratingAnswer = ref(false);
+const messagesContainer = ref(null);
+const roomsStore = useRoomsStore();
+const router = useRouter();
+const chatbotContext = inject("chatbot_loading");
+
+// Evaluation state
+const evaluationEnabled = ref(true);
+const lastEvaluation = ref(null);
+const conversationEvaluations = ref([]);
+const aggregatedEvaluation = ref(null);
+const showRagasSection = ref(false);
+const copySuccess = ref(false);
 
 const inputPlaceholder = computed(() => {
   return chatbotContext.isLoading.value
@@ -63,172 +162,244 @@ const inputPlaceholder = computed(() => {
     : t("bot_input_message");
 });
 
-
 // send button is disabled if chatbot is loading, input is empty or generating answer
 const isSendButtonDisabled = computed(() => {
-    return chatbotContext.isLoading.value || !userInput.value || isGeneratingAnswer.value 
-})
+  return (
+    chatbotContext.isLoading.value ||
+    !userInput.value ||
+    isGeneratingAnswer.value
+  );
+});
 
 // Computed property that includes initial message
 const displayMessages = computed(() => {
-    const initialMessage = {
-        text: t('bot_message'),
-        sender: 'bot',
-        time: new Date().toLocaleTimeString(),
-        isInitial: true
-    }
-    return [initialMessage, ...messages.value]
-})
+  const initialMessage = {
+    text: t("bot_message"),
+    sender: "bot",
+    time: new Date().toLocaleTimeString(),
+    isInitial: true,
+  };
+  return [initialMessage, ...messages.value];
+});
 
-// Watch messages and save to session storage automatically
-watch(messages, (newMessages) => {
+// Watch messages and save to local storage automatically
+watch(
+  messages,
+  (newMessages) => {
     saveChatHistory(newMessages);
-}, { deep: true });
+  },
+  { deep: true },
+);
 
 const sendMessage = async () => {
-    if (!userInput.value || isGeneratingAnswer.value) return
+  if (
+    chatbotContext.isLoading.value ||
+    !userInput.value ||
+    isGeneratingAnswer.value
+  )
+    return;
 
-    const userQuestion = userInput.value
+  const userQuestion = userInput.value;
 
-    // Create user message object
-    const userMessage = {
-        text: userInput.value,
-        sender: 'user',
-        time: new Date().toLocaleTimeString(),
-        timestamp: new Date()
+  // Create user message object
+  const userMessage = {
+    text: userInput.value,
+    sender: "user",
+    time: new Date().toLocaleTimeString(),
+    timestamp: new Date(),
+  };
+
+  messages.value.push(userMessage);
+  userInput.value = "";
+  isGeneratingAnswer.value = true;
+
+  // Scroll to bottom when typing bubble appears
+  await nextTick();
+  scrollToBottom();
+
+  try {
+    // Call chatbot with evaluation option
+    const result = await getChatbotAnswer(userQuestion, {
+      evaluate: evaluationEnabled.value,
+    });
+
+    if (result.evaluation) {
+      lastEvaluation.value = {
+        ...result.evaluation,
+        question: userQuestion,
+        answer: result.answer,
+        timestamp: new Date(),
+      };
+      conversationEvaluations.value.push(lastEvaluation.value);
+      calculateAggregatedEvaluation();
     }
 
-    messages.value.push(userMessage)
-    userInput.value = ''
-    isGeneratingAnswer.value = true
+    const botMessage = {
+      text: result.answer,
+      sender: "bot",
+      time: new Date().toLocaleTimeString(),
+      timestamp: new Date(),
+      evaluation: result.evaluation || null,
+      question: userQuestion,
+      showDetails: false,
+    };
 
-    // Scroll to bottom when typing bubble appears
-    await nextTick()
-    scrollToBottom()
-    
-    try {
-        const botResponse = await getChatbotAnswer(userQuestion)
+    messages.value.push(botMessage);
+  } catch (error) {
+    console.error("Error getting bot response:", error);
 
-        // Create bot message object
-        const botMessage = {
-            text: botResponse,
-            sender: 'bot',
-            time: new Date().toLocaleTimeString(),
-            timestamp: new Date()
-        }
+    const errorMessage = {
+      text: "Oprosti, došlo je do greške. Molimo pokušaj ponovno.",
+      sender: "bot",
+      time: new Date().toLocaleTimeString(),
+      timestamp: new Date(),
+    };
 
-        messages.value.push(botMessage)
-    } catch (error) {
-        console.error('Error getting bot response:', error)
-        
-        const errorMessage = {
-            text: 'Sorry, I encountered an error. Please try again.',
-            sender: 'bot',
-            time: new Date().toLocaleTimeString(),
-            timestamp: new Date()
-        }
-        
-        messages.value.push(errorMessage)
-    } finally {
-        isGeneratingAnswer.value = false
-    }
+    messages.value.push(errorMessage);
+  } finally {
+    isGeneratingAnswer.value = false;
+  }
 
-    await nextTick()
-    scrollToBottom()
-}
+  await nextTick();
+  scrollToBottom();
+};
 
 const clearChat = () => {
-    messages.value = []
-    clearChatHistory()
-}
+  messages.value = [];
+  clearChatHistory();
+  conversationEvaluations.value = [];
+  aggregatedEvaluation.value = null;
+  lastEvaluation.value = null;
+};
 
 const scrollToBottom = () => {
-    if (messagesContainer.value) {
-        messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+  }
+};
+
+// calculate aggregated evaluation (bez contextRecall)
+const calculateAggregatedEvaluation = () => {
+  if (conversationEvaluations.value.length === 0) {
+    aggregatedEvaluation.value = null;
+    return;
+  }
+
+  const metrics = {
+    faithfulness: [],
+    answerRelevancy: [],
+    contextPrecision: [],
+  };
+
+  // Collect all scores
+  conversationEvaluations.value.forEach((evaluation) => {
+    if (evaluation.metrics.faithfulness?.score !== undefined) {
+      metrics.faithfulness.push(evaluation.metrics.faithfulness.score);
     }
-}
+    if (evaluation.metrics.answerRelevancy?.score !== undefined) {
+      metrics.answerRelevancy.push(evaluation.metrics.answerRelevancy.score);
+    }
+    if (evaluation.metrics.contextPrecision?.score !== undefined) {
+      metrics.contextPrecision.push(evaluation.metrics.contextPrecision.score);
+    }
+  });
+
+  // Calculate averages
+  const avgMetrics = {};
+
+  Object.keys(metrics).forEach((key) => {
+    if (metrics[key].length > 0) {
+      const avg = metrics[key].reduce((a, b) => a + b, 0) / metrics[key].length;
+      avgMetrics[key] = {
+        score: avg,
+        reasoning: `Prosječna vrijednost iz ${metrics[key].length} evaluacija`,
+      };
+    }
+  });
+
+  // Calculate overall score
+  const allScores = Object.values(avgMetrics).map((m) => m.score);
+  const overallScore =
+    allScores.length > 0
+      ? allScores.reduce((a, b) => a + b, 0) / allScores.length
+      : 0;
+
+  aggregatedEvaluation.value = {
+    metrics: avgMetrics,
+    overallScore,
+    question: `Cijela konverzacija (${conversationEvaluations.value.length} odgovora)`,
+  };
+};
+
+const toggleRagasSection = () => {
+  showRagasSection.value = !showRagasSection.value;
+};
+
+// copy for Google Forms (bez contextRecall)
+const copyForGoogleForms = async (evaluation) => {
+  if (!evaluation) return;
+
+  const metrics = evaluation.metrics;
+
+  // format:faithfulness TAB answerRelevancy TAB contextPrecision TAB overall
+  const copyText = `${(metrics.faithfulness?.score || 0).toFixed(2)}\t${(metrics.answerRelevancy?.score || 0).toFixed(2)}\t${(metrics.contextPrecision?.score || 0).toFixed(2)}\t${(evaluation.overallScore || 0).toFixed(2)}`;
+
+  try {
+    await navigator.clipboard.writeText(copyText);
+    copySuccess.value = true;
+    setTimeout(() => {
+      copySuccess.value = false;
+    }, 2000);
+  } catch (error) {
+    console.error("Failed to copy:", error);
+  }
+};
+
+// Format score as percentage
+const formatScore = (score) => {
+  return score !== undefined ? score.toFixed(2) : "N/A";
+};
+
+// Get score class for styling
+const getScoreClass = (score) => {
+  if (score === undefined) return "";
+  if (score >= 0.75) return "score-high";
+  if (score >= 0.5) return "score-medium";
+  return "score-low";
+};
 
 let cleanup;
 onMounted(() => {
-    // Load chat history when component mounts
-    const savedMessages = loadChatHistory()
-    if (savedMessages && savedMessages.length > 0) {
-        messages.value = savedMessages
-        
-        // Scroll to bottom after loading messages
-        nextTick(() => {
-            scrollToBottom()
-        })
+  // Load chat history when component mounts
+  const savedMessages = loadChatHistory();
+  if (savedMessages && savedMessages.length > 0) {
+    messages.value = savedMessages;
+
+    // Extract evaluations from saved messages
+    conversationEvaluations.value = savedMessages
+      .filter((msg) => msg.sender === "bot" && msg.evaluation)
+      .map((msg) => ({
+        ...msg.evaluation,
+        question: msg.question || "Pitanje nije spremljeno",
+        timestamp: msg.timestamp,
+      }));
+
+    // Calculate aggregated evaluation from loaded messages
+    if (conversationEvaluations.value.length > 0) {
+      calculateAggregatedEvaluation();
+      showRagasSection.value = false;
     }
 
-    cleanup = roomsStore.setupRoomClickListener(router);
+    // Scroll to bottom after loading messages
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+
+  cleanup = roomsStore.setupRoomClickListener(router);
 });
 
 onUnmounted(() => {
-    if (cleanup) cleanup();
+  if (cleanup) cleanup();
 });
 </script>
-
-<style scoped>
-.typing-bubble {
-    padding: 12px 16px;
-    display: inline-block;
-    max-width: fit-content;
-}
-
-.typing-dots {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.typing-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #999;
-    animation: typing 1.4s ease-in-out infinite;
-}
-
-.typing-dots span:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.typing-dots span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-dots span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes typing {
-    0%, 60%, 100% {
-        transform: translateY(0);
-        opacity: 0.4;
-    }
-    30% {
-        transform: translateY(-10px);
-        opacity: 1;
-    }
-}
-
-.spinner {
-    animation: spin 1s linear infinite;
-    border-radius: 50%;
-    border: 1px solid #f3f3f3;
-    border-top: 1px solid var(--color-active);
-    height: 20px;
-    width: 20px;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-</style>

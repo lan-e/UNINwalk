@@ -12,10 +12,13 @@ const messages = {
     loading_message: "Loading chatbot...",
     your_location_button: "Current Location",
     building_info_message: "Click on a building to select it.",
-    available_parking_spots: "Available spots are marked under P1 and P2 parking slots.",
-    map_instructions: "Press \"Current Location\" to see your position on the map.",
+    available_parking_spots:
+      "Available spots are marked under P1 and P2 parking slots.",
+    map_instructions:
+      'Press "Current Location" to see your position on the map.',
     location_nearby: "You are approximately {distance}m from {location}",
-    location_far: "You are not near UNIN. You are approximately {distance}m away.",
+    location_far:
+      "You are not near UNIN. You are approximately {distance}m away.",
     location_inside: "You are inside {location}.",
     location_inside_parking: "You are in parking area {location}.",
     location_nearby_parking: "You are near parking area {location}.",
@@ -29,11 +32,17 @@ const messages = {
     registeredStudentsTitle: "Registered students",
     registered: "Registered",
     search_input_message: "Search for professors...",
+    ragas_title: "RAGAS Evaluation",
+    faithfulness: "Faithfulness",
+    context_precision: "Context precision",
+    answer_relevancy: "Answer relevancy",
+    overall_score: "Overall score",
   },
   hr: {
     home: "Početna",
     professors: "Profesori",
-    bot_message: "Pozdrav! Mogu li kako pomoći? Možete me pitati o predavaonama ili profesorima.",
+    bot_message:
+      "Pozdrav! Mogu li kako pomoći? Možete me pitati o predavaonama ili profesorima.",
     bot_input_message: "Postavite mi pitanje...",
     floor1: "Prizemlje",
     floor2: "1. kat",
@@ -41,10 +50,13 @@ const messages = {
     loading_message: "Učitavanje chatbot asistenta...",
     your_location_button: "Trenutna lokacija",
     building_info_message: "Pritisnite na zgradu za prikaz tlocrta predavaona.",
-    available_parking_spots: "Broj slobodnih parkirnih mjesta označen je ispod P1 i P2 parkinga.",
-    map_instructions: "Pritisnite \"Trenutna lokacija\" za prikaz svoje lokacije na mapi.",
+    available_parking_spots:
+      "Broj slobodnih parkirnih mjesta označen je ispod P1 i P2 parkinga.",
+    map_instructions:
+      'Pritisnite "Trenutna lokacija" za prikaz svoje lokacije na mapi.',
     location_nearby: "Nalazite se {distance}m od {location}.",
-    location_far: "Ne nalazite se blizu UNIN. Udaljeni ste otprilike {distance}m.",
+    location_far:
+      "Ne nalazite se blizu UNIN. Udaljeni ste otprilike {distance}m.",
     location_inside: "Nalazite se unutar {location}.",
     location_inside_parking: "Nalazite se na parkingu {location}.",
     location_nearby_parking: "Nalazite se u blizini parkinga {location}.",
@@ -58,6 +70,11 @@ const messages = {
     registeredStudentsTitle: "Registrirani studenti",
     registered: "Registriran",
     search_input_message: "Pretraži profesore...",
+    ragas_title: "RAGAS evaluacija",
+    faithfulness: "Vjernost",
+    answer_relevancy: "Relevantnost odgovora",
+    context_precision: "Preciznost konteksta",
+    overall_score: "Ukupna ocjena",
   },
 };
 
