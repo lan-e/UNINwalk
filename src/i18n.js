@@ -37,6 +37,7 @@ const messages = {
     context_precision: "Context precision",
     answer_relevancy: "Answer relevancy",
     overall_score: "Overall score",
+    evaluating: "Evaluating response...",
   },
   hr: {
     home: "Početna",
@@ -75,6 +76,7 @@ const messages = {
     answer_relevancy: "Relevantnost odgovora",
     context_precision: "Preciznost konteksta",
     overall_score: "Ukupna ocjena",
+    evaluating: "Evaluacija odgovora...",
   },
 };
 

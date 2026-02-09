@@ -23,7 +23,6 @@ import { ref, onMounted, onUnmounted, provide } from "vue";
 import { RouterView, useRouter } from "vue-router";
 import { useRoomsStore } from "./stores/rooms";
 import RoomModal from "./components/RoomModal.vue";
-import { initializeChatbot, getInitializationStatus } from "./bot/chatbot.js";
 import { useI18n } from "vue-i18n";
 import Navigation from "./components/Navigation.vue";
 import { fetchProfessorsData, fetchRoomsData, fetchUninData } from "./apiCalls";
@@ -64,7 +63,7 @@ const closeDropdownOnClickOutside = (event) => {
   const dropdownContents = document.querySelectorAll(".dropdown-content");
 
   const clickedInsideDropdown = [...dropdownButtons, ...dropdownContents].some(
-    (el) => el.contains(event.target)
+    (el) => el.contains(event.target),
   );
 
   if (!clickedInsideDropdown) {
@@ -93,49 +92,12 @@ const handleClickOutsideRoom = (event) => {
   }
 };
 
-async function initializeChatbotWithLoading() {
-  try {
-    // Start initialization
-    const checkStatus = () => {
-      const status = getInitializationStatus();
-      loadingMessage.value = status.status;
-
-      if (status.isInitialized) {
-        // Initialization completed successfully
-        isLoading.value = false;
-        clearInterval(statusInterval);
-      } else if (status.error) {
-        // Initialization failed
-        loadingMessage.value = `Error: ${status.error}`;
-        setTimeout(() => {
-          isLoading.value = false;
-        }, 3000); // Show error for 3 seconds then proceed anyway
-        clearInterval(statusInterval);
-      }
-    };
-
-    // Check status every 500ms
-    const statusInterval = setInterval(checkStatus, 500);
-
-    // Start the initialization process
-    await initializeChatbot(t);
-  } catch (error) {
-    console.error("Failed to initialize:", error);
-    loadingMessage.value = "Failed to initialize chatbot";
-    // Show error for 3 seconds then proceed anyway
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 3000);
-  }
-}
-
 onMounted(async () => {
   roomsStore.rooms = await fetchRoomsData();
   generalStore.professors = await fetchProfessorsData();
   generalStore.uninData = await fetchUninData();
   window.addEventListener("resize", updateIsMobile);
   document.addEventListener("click", closeDropdownOnClickOutside);
-  initializeChatbotWithLoading();
 });
 
 onUnmounted(() => {

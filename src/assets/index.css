@@ -239,6 +239,50 @@
   border-top: 1px solid #ddd;
 }
 
+.evaluation-loader {
+  padding: 12px 16px;
+  margin: 0 12px 12px;
+  background: var(--color-background-soft);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.evaluation-loader-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.loader-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.loader-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #888;
+  animation: typing 1.4s ease-in-out infinite;
+}
+.loader-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+.loader-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.evaluation-text {
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+}
+
 input {
   flex: 1;
   padding: 0.5rem;

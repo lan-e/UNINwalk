@@ -6,13 +6,27 @@
         :key="index"
         :class="['message', message.sender]"
       >
-        <div class="message-content" v-html="message.text"></div>
-        <div class="message-time">
+        <div
+          v-if="message.text"
+          class="message-content"
+          v-html="message.text"
+        />
+        <div
+          v-else-if="message.sender === 'bot'"
+          class="message-content typing-bubble"
+        >
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div v-if="message.text" class="message-time">
           {{ message.time }}
         </div>
       </div>
       <!-- Typing indicator when bot is generating response -->
-      <div v-if="isGeneratingAnswer" class="message bot">
+      <div v-if="isGeneratingAnswer && !isStreaming" class="message bot">
         <div class="message-content typing-bubble">
           <div class="typing-dots">
             <span></span>
@@ -33,16 +47,26 @@
       <input
         v-model="userInput"
         @keyup.enter="sendMessage"
-        :placeholder="inputPlaceholder"
+        :placeholder="t('bot_input_message')"
       />
       <button @click="sendMessage" :disabled="isSendButtonDisabled">
-        <div v-if="chatbotContext.isLoading.value" class="spinner" />
-        <Icon v-else name="send" />
+        <Icon name="send" />
       </button>
     </div>
 
+    <div v-if="isEvaluating" class="evaluation-loader">
+      <div class="evaluation-loader-content">
+        <div class="loader-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="evaluation-text">{{ t("evaluating") }}</span>
+      </div>
+    </div>
+
     <!-- RAGAs Evaluation Display -->
-    <div v-if="aggregatedEvaluation" class="ragas-container">
+    <div v-if="aggregatedEvaluation && !isEvaluating" class="ragas-container">
       <div
         class="ragas-header"
         :class="{ 'ragas-header-active': showRagasSection }"
@@ -72,9 +96,9 @@
             "
           >
             <span class="metric-label">{{ t("faithfulness") }}</span>
-            <span class="metric-value">{{
-              formatScore(aggregatedEvaluation.metrics.faithfulness.score)
-            }}</span>
+            <span class="metric-value">
+              {{ formatScore(aggregatedEvaluation.metrics.faithfulness.score) }}
+            </span>
           </div>
 
           <div
@@ -85,9 +109,11 @@
             "
           >
             <span class="metric-label">{{ t("answer_relevancy") }}</span>
-            <span class="metric-value">{{
-              formatScore(aggregatedEvaluation.metrics.answerRelevancy.score)
-            }}</span>
+            <span class="metric-value">
+              {{
+                formatScore(aggregatedEvaluation.metrics.answerRelevancy.score)
+              }}
+            </span>
           </div>
 
           <div
@@ -98,9 +124,11 @@
             "
           >
             <span class="metric-label">{{ t("context_precision") }}</span>
-            <span class="metric-value">{{
-              formatScore(aggregatedEvaluation.metrics.contextPrecision.score)
-            }}</span>
+            <span class="metric-value">
+              {{
+                formatScore(aggregatedEvaluation.metrics.contextPrecision.score)
+              }}
+            </span>
           </div>
 
           <div
@@ -108,9 +136,9 @@
             :class="getScoreClass(aggregatedEvaluation.overallScore)"
           >
             <span class="metric-label">{{ t("overall_score") }}</span>
-            <span class="metric-value">{{
-              formatScore(aggregatedEvaluation.overallScore)
-            }}</span>
+            <span class="metric-value">
+              {{ formatScore(aggregatedEvaluation.overallScore) }}
+            </span>
           </div>
         </div>
       </div>
@@ -119,20 +147,12 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  onMounted,
-  nextTick,
-  onUnmounted,
-  computed,
-  watch,
-  inject,
-} from "vue";
+import { ref, onMounted, nextTick, onUnmounted, computed, watch } from "vue";
 import { useRoomsStore } from "@/stores/rooms";
 import { useRouter } from "vue-router";
 import Icon from "./UI/Icon.vue";
 import {
-  getChatbotAnswer,
+  getChatbotAnswerStream,
   loadChatHistory,
   saveChatHistory,
   clearChatHistory,
@@ -143,10 +163,11 @@ const { t } = useI18n();
 const messages = ref([]);
 const userInput = ref("");
 const isGeneratingAnswer = ref(false);
+const isStreaming = ref(false);
+const isEvaluating = ref(false);
 const messagesContainer = ref(null);
 const roomsStore = useRoomsStore();
 const router = useRouter();
-const chatbotContext = inject("chatbot_loading");
 
 // Evaluation state
 const evaluationEnabled = ref(true);
@@ -156,19 +177,9 @@ const aggregatedEvaluation = ref(null);
 const showRagasSection = ref(false);
 const copySuccess = ref(false);
 
-const inputPlaceholder = computed(() => {
-  return chatbotContext.isLoading.value
-    ? t("loading_message")
-    : t("bot_input_message");
-});
-
 // send button is disabled if chatbot is loading, input is empty or generating answer
 const isSendButtonDisabled = computed(() => {
-  return (
-    chatbotContext.isLoading.value ||
-    !userInput.value ||
-    isGeneratingAnswer.value
-  );
+  return !userInput.value || isGeneratingAnswer.value;
 });
 
 // Computed property that includes initial message
@@ -192,12 +203,7 @@ watch(
 );
 
 const sendMessage = async () => {
-  if (
-    chatbotContext.isLoading.value ||
-    !userInput.value ||
-    isGeneratingAnswer.value
-  )
-    return;
+  if (!userInput.value || isGeneratingAnswer.value) return;
 
   const userQuestion = userInput.value;
 
@@ -213,15 +219,42 @@ const sendMessage = async () => {
   userInput.value = "";
   isGeneratingAnswer.value = true;
 
-  // Scroll to bottom when typing bubble appears
+  // Create bot message placeholder for streaming
+  const botMessage = {
+    text: "",
+    sender: "bot",
+    time: new Date().toLocaleTimeString(),
+    timestamp: new Date(),
+    evaluation: null,
+    question: userQuestion,
+    showDetails: false,
+  };
+  messages.value.push(botMessage);
+  const botMessageIndex = messages.value.length - 1;
+
+  // Start streaming - hides typing indicator but keeps button disabled
+  isStreaming.value = true;
+
+  // Scroll to bottom when bot message appears
   await nextTick();
   scrollToBottom();
 
   try {
-    // Call chatbot with evaluation option
-    const result = await getChatbotAnswer(userQuestion, {
-      evaluate: evaluationEnabled.value,
-    });
+    // Call chatbot with streaming and evaluation option
+    const result = await getChatbotAnswerStream(
+      userQuestion,
+      (_token, fullText) => {
+        // Update bot message text as tokens arrive
+        messages.value[botMessageIndex].text = fullText;
+        scrollToBottom();
+      },
+      {
+        evaluate: evaluationEnabled.value,
+        onEvaluationStart: () => {
+          isEvaluating.value = true;
+        },
+      },
+    );
 
     if (result.evaluation) {
       lastEvaluation.value = {
@@ -232,32 +265,20 @@ const sendMessage = async () => {
       };
       conversationEvaluations.value.push(lastEvaluation.value);
       calculateAggregatedEvaluation();
+      // Update the bot message with evaluation
+      messages.value[botMessageIndex].evaluation = result.evaluation;
     }
-
-    const botMessage = {
-      text: result.answer,
-      sender: "bot",
-      time: new Date().toLocaleTimeString(),
-      timestamp: new Date(),
-      evaluation: result.evaluation || null,
-      question: userQuestion,
-      showDetails: false,
-    };
-
-    messages.value.push(botMessage);
+    isEvaluating.value = false;
   } catch (error) {
     console.error("Error getting bot response:", error);
 
-    const errorMessage = {
-      text: "Oprosti, došlo je do greške. Molimo pokušaj ponovno.",
-      sender: "bot",
-      time: new Date().toLocaleTimeString(),
-      timestamp: new Date(),
-    };
-
-    messages.value.push(errorMessage);
+    // Update bot message with error text
+    messages.value[botMessageIndex].text =
+      "Oprosti, došlo je do greške. Molimo pokušaj ponovno.";
+    isEvaluating.value = false;
   } finally {
     isGeneratingAnswer.value = false;
+    isStreaming.value = false;
   }
 
   await nextTick();
@@ -293,14 +314,14 @@ const calculateAggregatedEvaluation = () => {
 
   // Collect all scores
   conversationEvaluations.value.forEach((evaluation) => {
-    if (evaluation.metrics.faithfulness?.score !== undefined) {
-      metrics.faithfulness.push(evaluation.metrics.faithfulness.score);
+    if (evaluation.faithfulness !== undefined) {
+      metrics.faithfulness.push(evaluation.faithfulness);
     }
-    if (evaluation.metrics.answerRelevancy?.score !== undefined) {
-      metrics.answerRelevancy.push(evaluation.metrics.answerRelevancy.score);
+    if (evaluation.answerRelevancy !== undefined) {
+      metrics.answerRelevancy.push(evaluation.answerRelevancy);
     }
-    if (evaluation.metrics.contextPrecision?.score !== undefined) {
-      metrics.contextPrecision.push(evaluation.metrics.contextPrecision.score);
+    if (evaluation.contextPrecision !== undefined) {
+      metrics.contextPrecision.push(evaluation.contextPrecision);
     }
   });
 
